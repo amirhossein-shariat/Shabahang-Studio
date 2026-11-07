@@ -4,6 +4,7 @@ import { EMAIL, PHONE, getDictionary, hasLocale } from "@/dictionaries";
 import { getContactDict } from "@/dictionaries/pages";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Sections";
+import { BaleIcon, PhoneIcon, TelegramIcon } from "@/components/Icons";
 import ContactForm from "@/components/ContactForm";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/contact">): Promise<Metadata> {
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/contact">)
   return { title: meta.title, description: meta.description, alternates: { canonical: `/${lang}/contact`, languages: { fa: "/fa/contact", en: "/en/contact" } } };
 }
 
-const pill = "inline-block rounded-full border border-white/20 px-5 py-2 text-sm transition hover:border-gold hover:text-gold-light";
+const pill = "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 text-sm transition hover:border-gold hover:text-gold-light";
 
 export default async function ContactPage({ params }: PageProps<"/[lang]/contact">) {
   const { lang } = await params;
@@ -36,10 +37,10 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
                 <dt className="text-muted">{c.phone}</dt>
                 <dd dir="ltr" className="mt-1 text-start font-latin text-2xl font-light tracking-wider text-gold-light">{PHONE.display}</dd>
                 <dd className="mt-3 flex flex-wrap gap-3">
-                  <a href={`tel:${PHONE.intl}`} className={pill}>{c.call}</a>
-                  <a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className={pill}>{c.telegram}</a>
+                  <a href={`tel:${PHONE.intl}`} className={pill}><PhoneIcon className="text-gold" />{c.call}</a>
+                  <a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className={pill}><TelegramIcon className="text-gold" />{c.telegram}</a>
                 </dd>
-                <dd className="mt-3 text-muted">{c.bale}</dd>
+                <dd className="mt-3 flex items-center gap-2 text-muted"><BaleIcon className="text-gold" />{c.bale}</dd>
               </div>
               <div>
                 <dt className="text-muted">{c.email}</dt>

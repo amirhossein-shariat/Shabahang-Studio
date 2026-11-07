@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
 import { LogoMark } from "./Logo";
+import { BaleIcon, PhoneIcon, TelegramIcon } from "./Icons";
 import { EMAIL, PHONE, type Dict } from "@/dictionaries";
 
 export function Services({ t, lang }: { t: Dict["services"]; lang: string }) {
@@ -70,9 +71,9 @@ export function Cta({ t, lang }: { t: Dict["cta"]; lang: string }) {
         <p className="text-xs tracking-widest text-muted">{t.phoneLabel}</p>
         <p dir="ltr" className="font-latin text-2xl font-light tracking-wider text-gold-light">{PHONE.display}</p>
         <ul className="flex flex-wrap justify-center gap-3 text-sm">
-          <li><a href={`tel:${PHONE.intl}`} className="inline-block rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light">{t.call}</a></li>
-          <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light">{t.telegram}</a></li>
-          <li><span className="inline-block rounded-full border border-white/10 px-5 py-2 text-muted">{t.bale}</span></li>
+          <li><a href={`tel:${PHONE.intl}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light"><PhoneIcon className="text-gold" />{t.call}</a></li>
+          <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light"><TelegramIcon className="text-gold" />{t.telegram}</a></li>
+          <li><span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2 text-muted"><BaleIcon />{t.bale}</span></li>
         </ul>
         <p className="mt-2 text-xs text-muted">{t.emailLabel}</p>
         <a href={`mailto:${EMAIL}`} dir="ltr" className="font-latin text-sm text-gold-light underline-offset-4 hover:underline">{EMAIL}</a>
