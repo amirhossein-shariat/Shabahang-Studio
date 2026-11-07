@@ -37,7 +37,11 @@ const fa: Dict = {
     title: "آماده‌ای برند بیدار بماند؟",
     desc: "درباره‌ی پروژه‌ات برایمان بنویس تا با هم شروع کنیم.",
     button: "شروع پروژه",
-    contact: "[YOUR EMAIL] · [YOUR PHONE]",
+    contact: "[YOUR EMAIL]",
+    phoneLabel: "تلفن و پیام‌رسان‌ها",
+    call: "تماس",
+    telegram: "تلگرام",
+    bale: "بله",
   },
   footer: { rights: "شباهنگ استودیو. همه‌ی حقوق محفوظ است." },
 };

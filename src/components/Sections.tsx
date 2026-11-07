@@ -1,8 +1,9 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { LogoMark } from "./Logo";
-import type { Dict } from "@/dictionaries";
+import { PHONE, type Dict } from "@/dictionaries";
 
-export function Services({ t }: { t: Dict["services"] }) {
+export function Services({ t, lang }: { t: Dict["services"]; lang: string }) {
   return (
     <Reveal id="services" className="mx-auto max-w-7xl scroll-mt-20 px-5 py-28 md:px-10">
       <p data-item className="text-sm font-bold tracking-[0.25em] text-gold">{t.kicker}</p>
@@ -25,6 +26,11 @@ export function Services({ t }: { t: Dict["services"] }) {
           </li>
         ))}
       </ul>
+      <p data-item className="mt-10">
+        <Link href={`/${lang}/services`} className="font-bold text-gold hover:text-gold-light">
+          {lang === "fa" ? "خدمات و پکیج‌ها ←" : "Services & packages →"}
+        </Link>
+      </p>
     </Reveal>
   );
 }
@@ -60,7 +66,16 @@ export function Cta({ t }: { t: Dict["cta"] }) {
           {t.button}
         </a>
       </div>
-      <p data-item dir="ltr" className="mt-8 font-latin text-sm text-muted">{t.contact}</p>
+      <div data-item className="mt-10 flex flex-col items-center gap-4">
+        <p className="text-xs tracking-widest text-muted">{t.phoneLabel}</p>
+        <p dir="ltr" className="font-latin text-2xl font-light tracking-wider text-gold-light">{PHONE.display}</p>
+        <ul className="flex flex-wrap justify-center gap-3 text-sm">
+          <li><a href={`tel:${PHONE.intl}`} className="inline-block rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light">{t.call}</a></li>
+          <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light">{t.telegram}</a></li>
+          <li><span className="inline-block rounded-full border border-white/10 px-5 py-2 text-muted">{t.bale}</span></li>
+        </ul>
+        <p dir="ltr" className="mt-2 font-latin text-sm text-muted">{t.contact}</p>
+      </div>
     </Reveal>
   );
 }

@@ -13,7 +13,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <Header lang={lang} t={t.nav} />
       <main>
         <Hero t={t.hero} />
-        <Services t={t.services} />
+        <Services t={t.services} lang={lang} />
         <Work t={t.work} />
         <Cta t={t.cta} />
       </main>
