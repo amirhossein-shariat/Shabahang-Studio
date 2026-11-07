@@ -45,6 +45,8 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
         style={{
           background: "radial-gradient(70% 100% at 50% 100%, rgba(232,140,90,.45), rgba(123,108,246,.25) 45%, transparent 75%)",
           animation: "breathe 9s ease-in-out infinite",
+          maskImage: "linear-gradient(to top, transparent 0%, #000 40%)",
+          WebkitMaskImage: "linear-gradient(to top, transparent 0%, #000 40%)",
         }}
         aria-hidden="true"
       />
@@ -116,12 +118,12 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
           >
             {t.cta1}
           </Link>
-          <a
-            href="#work"
+          <Link
+            href={`/${lang}/work`}
             className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-bold text-text transition hover:border-gold hover:text-gold-light"
           >
             {t.cta2}
-          </a>
+          </Link>
         </div>
       </div>
       <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] tracking-[0.3em] text-muted" aria-hidden="true">

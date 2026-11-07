@@ -32,7 +32,9 @@ const en: Dict = {
     title: "Selected projects",
     note: "Case studies are coming soon.",
     placeholder: "[Project — awaiting content]",
+    all: "All work →",
   },
+  clients: { title: "Our clients", placeholder: "[Client logo]" },
   cta: {
     title: "Ready for a brand that never sleeps?",
     desc: "Tell us about your project and let's begin.",

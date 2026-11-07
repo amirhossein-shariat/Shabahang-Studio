@@ -30,7 +30,8 @@ html {
 }
 
 body {
-  background: var(--midnight);
+  /* transparent on purpose: the fixed sky layer sits behind the page, html paints the base colour */
+  background: transparent;
   color: var(--text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -85,7 +86,16 @@ html[lang="en"] body {
     radial-gradient(120% 90% at 50% 30%, var(--indigo) 0%, var(--midnight) 70%);
 }
 
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track { display: flex; width: max-content; animation: marquee 45s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+
 @media (prefers-reduced-motion: reduce) {
+  .marquee-track { flex-wrap: wrap; width: auto; justify-content: center; }
+  .marquee-dup { display: none; }
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;

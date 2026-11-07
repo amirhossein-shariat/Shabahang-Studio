@@ -36,7 +36,7 @@ export function Services({ t, lang }: { t: Dict["services"]; lang: string }) {
   );
 }
 
-export function Work({ t }: { t: Dict["work"] }) {
+export function Work({ t, lang }: { t: Dict["work"]; lang: string }) {
   return (
     <Reveal id="work" className="mx-auto max-w-7xl scroll-mt-20 px-5 py-28 md:px-10">
       <p data-item className="text-sm font-bold tracking-[0.25em] text-gold">{t.kicker}</p>
@@ -53,6 +53,9 @@ export function Work({ t }: { t: Dict["work"] }) {
         ))}
       </ul>
       <p data-item className="mt-6 text-sm text-muted">{t.note}</p>
+      <p data-item className="mt-6">
+        <Link href={`/${lang}/work`} className="font-bold text-gold hover:text-gold-light">{t.all}</Link>
+      </p>
     </Reveal>
   );
 }

@@ -12,7 +12,8 @@ export type Dict = {
   nav: { work: string; services: string; studio: string; contact: string; talk: string };
   hero: { eyebrow: string; title: string; sub: string; tagline: string; desc: string; cta1: string; cta2: string; scroll: string };
   services: { kicker: string; title: string; items: { key: string; name: string; en: string; line: string; detail: string }[] };
-  work: { kicker: string; title: string; note: string; placeholder: string };
+  work: { kicker: string; title: string; note: string; placeholder: string; all: string };
+  clients: { title: string; placeholder: string };
   cta: { title: string; desc: string; button: string; emailLabel: string; phoneLabel: string; call: string; telegram: string; bale: string };
   footer: { rights: string };
 };

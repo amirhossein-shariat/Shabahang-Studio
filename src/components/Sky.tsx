@@ -1,35 +1,31 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { createStarfield } from "@/lib/starfield";
 
-const StarCanvas = dynamic(() => import("./StarCanvas"), { ssr: false });
-
-/** Fixed full-page background: static gradient first, GPU stars lazy-loaded, CSS nebula. */
+/** Fixed full-page background: gradient, CSS nebula and an interactive starfield. */
 export default function Sky() {
-  const [cfg, setCfg] = useState<{ count: number; reduced: boolean } | null>(null);
+  const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const mobile = window.matchMedia("(max-width: 768px)").matches;
-    const start = () => setCfg({ count: mobile ? 1200 : 4500, reduced });
-    // Let the hero paint and animate in first; the 3D layer is decoration.
-    const id = window.setTimeout(start, 1500);
-    return () => window.clearTimeout(id);
+    const field = createStarfield(canvas, { reduced });
+    return () => field.destroy();
   }, []);
 
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 sky-bg" aria-hidden="true">
-      {/* Nebula layers (pure CSS) */}
       <div
-        className="absolute -top-1/4 start-[-10%] h-[70vmax] w-[70vmax] rounded-full opacity-40 blur-3xl"
+        className="absolute -top-1/4 start-[-10%] h-[70vmax] w-[70vmax] rounded-full opacity-30 blur-3xl"
         style={{ background: "radial-gradient(circle, rgba(123,108,246,.45), transparent 65%)" }}
       />
       <div
-        className="absolute -bottom-1/3 end-[-15%] h-[60vmax] w-[60vmax] rounded-full opacity-30 blur-3xl"
+        className="absolute -bottom-1/3 end-[-15%] h-[60vmax] w-[60vmax] rounded-full opacity-25 blur-3xl"
         style={{ background: "radial-gradient(circle, rgba(232,140,90,.5), transparent 65%)" }}
       />
-      {cfg && <StarCanvas count={cfg.count} reduced={cfg.reduced} />}
+      <canvas ref={ref} className="absolute inset-0" />
     </div>
   );
 }
