@@ -47,10 +47,6 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
                 <dd className="mt-1"><a href={`mailto:${EMAIL}`} dir="ltr" className="font-latin text-gold-light underline-offset-4 hover:underline">{EMAIL}</a></dd>
               </div>
               <div>
-                <dt className="text-muted">{c.address}</dt>
-                <dd className="mt-1">{c.addressValue}</dd>
-              </div>
-              <div>
                 <dt className="text-muted">{c.hours}</dt>
                 <dd className="mt-1">{c.hoursValue}</dd>
               </div>

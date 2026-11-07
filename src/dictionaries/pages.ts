@@ -14,7 +14,7 @@ export type AboutDict = {
 export type ContactDict = {
   meta: { title: string; description: string };
   kicker: string; title: string; intro: string;
-  channels: { title: string; phone: string; call: string; telegram: string; bale: string; email: string; address: string; addressValue: string; hours: string; hoursValue: string };
+  channels: { title: string; phone: string; call: string; telegram: string; bale: string; email: string; hours: string; hoursValue: string };
   form: {
     title: string; name: string; reach: string; reachHint: string; service: string; message: string; submit: string;
     services: string[]; opened: string; fallback: string; required: string;
@@ -85,7 +85,7 @@ const contactFa: ContactDict = {
   intro: "هر کدام از راه‌ها برایتان راحت‌تر است همان را انتخاب کنید. فرم زیر یک ایمیل آماده می‌کند و برای ارسال، برنامه‌ی ایمیل شما باز می‌شود.",
   channels: {
     title: "راه‌های ارتباطی", phone: "تلفن", call: "تماس", telegram: "تلگرام", bale: "بله (با همین شماره)", email: "ایمیل",
-    address: "نشانی", addressValue: "[نشانی استودیو — در انتظار اطلاعات]", hours: "ساعت پاسخ‌گویی", hoursValue: "[ساعت پاسخ‌گویی — در انتظار اطلاعات]",
+    hours: "ساعت پاسخ‌گویی", hoursValue: "۹ الی ۲۱",
   },
   form: {
     title: "درخواست پروژه", name: "نام و نام شرکت", reach: "راه تماس", reachHint: "شماره یا ایمیل", service: "موضوع", message: "توضیح کوتاه پروژه", submit: "آماده‌سازی ایمیل",
@@ -103,7 +103,7 @@ const contactEn: ContactDict = {
   intro: "Use whichever channel suits you. The form prepares an email, and your mail app opens so you can send it.",
   channels: {
     title: "Ways to reach us", phone: "Phone", call: "Call", telegram: "Telegram", bale: "Bale (same number)", email: "Email",
-    address: "Address", addressValue: "[Studio address — awaiting details]", hours: "Response hours", hoursValue: "[Response hours — awaiting details]",
+    hours: "Response hours", hoursValue: "9:00 to 21:00",
   },
   form: {
     title: "Project request", name: "Your name and company", reach: "How to reach you", reachHint: "Phone or email", service: "Topic", message: "A short description", submit: "Prepare email",
