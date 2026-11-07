@@ -1,7 +1,11 @@
-import { CLIENTS } from "@/data/studio";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { CLIENTS as ALL_CLIENTS } from "@/data/studio";
 import type { Dict } from "@/dictionaries";
 
 const PLACEHOLDER_SLOTS = 8;
+/** Logos whose file is not in public/ yet are skipped instead of rendering a broken image. */
+const CLIENTS = ALL_CLIENTS.filter((c) => existsSync(join(process.cwd(), "public", c.logo)));
 /** Few logos need repeating so one row is always wider than the screen and the loop has no gap. */
 const REPS = 4;
 
