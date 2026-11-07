@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  --midnight: #07091a;
+  --indigo: #14173a;
+  --gold: #e8c682;
+  --gold-light: #f6e3b0;
+  --violet: #7b6cf6;
+  --amber: #e88c5a;
+  --text: #ede6d6;
+  --muted: #a9a7bd;
+}
+
+@theme inline {
+  --color-midnight: var(--midnight);
+  --color-indigo: var(--indigo);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-violet: var(--violet);
+  --color-amber: var(--amber);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-vazir), var(--font-sora), system-ui, sans-serif;
+  --font-latin: var(--font-sora), system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--midnight);
+}
+
+body {
+  background: var(--midnight);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="en"] body {
+  font-family: var(--font-latin);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--midnight);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Motion primitives ---------- */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+@keyframes orbit {
+  to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+@keyframes pulse-star {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 18px rgba(232, 198, 130, 0.55)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 34px rgba(246, 227, 176, 0.85)); }
+}
+
+.gold-text {
+  background: linear-gradient(100deg, var(--gold) 0%, var(--gold-light) 30%, var(--amber) 50%, var(--gold-light) 70%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 9s linear infinite;
+}
+
+.sky-bg {
+  background:
+    radial-gradient(120% 90% at 50% 30%, var(--indigo) 0%, var(--midnight) 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
