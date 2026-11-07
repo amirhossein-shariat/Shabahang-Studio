@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
 import { LogoMark } from "./Logo";
-import { PHONE, type Dict } from "@/dictionaries";
+import { EMAIL, PHONE, type Dict } from "@/dictionaries";
 
 export function Services({ t, lang }: { t: Dict["services"]; lang: string }) {
   return (
@@ -56,15 +56,15 @@ export function Work({ t }: { t: Dict["work"] }) {
   );
 }
 
-export function Cta({ t }: { t: Dict["cta"] }) {
+export function Cta({ t, lang }: { t: Dict["cta"]; lang: string }) {
   return (
     <Reveal id="contact" className="mx-auto max-w-4xl scroll-mt-20 px-5 py-32 text-center md:px-10">
       <h2 data-item className="gold-text text-4xl font-black leading-tight md:text-6xl">{t.title}</h2>
       <p data-item className="mt-6 text-muted">{t.desc}</p>
       <div data-item className="mt-10">
-        <a href="#contact" className="inline-block rounded-full bg-gold px-10 py-4 text-sm font-bold text-midnight transition hover:bg-gold-light">
+        <Link href={`/${lang}/contact`} className="inline-block rounded-full bg-gold px-10 py-4 text-sm font-bold text-midnight transition hover:bg-gold-light">
           {t.button}
-        </a>
+        </Link>
       </div>
       <div data-item className="mt-10 flex flex-col items-center gap-4">
         <p className="text-xs tracking-widest text-muted">{t.phoneLabel}</p>
@@ -74,7 +74,8 @@ export function Cta({ t }: { t: Dict["cta"] }) {
           <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light">{t.telegram}</a></li>
           <li><span className="inline-block rounded-full border border-white/10 px-5 py-2 text-muted">{t.bale}</span></li>
         </ul>
-        <p dir="ltr" className="mt-2 font-latin text-sm text-muted">{t.contact}</p>
+        <p className="mt-2 text-xs text-muted">{t.emailLabel}</p>
+        <a href={`mailto:${EMAIL}`} dir="ltr" className="font-latin text-sm text-gold-light underline-offset-4 hover:underline">{EMAIL}</a>
       </div>
     </Reveal>
   );

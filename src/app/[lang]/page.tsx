@@ -12,10 +12,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <Header lang={lang} t={t.nav} />
       <main>
-        <Hero t={t.hero} />
+        <Hero t={t.hero} lang={lang} />
         <Services t={t.services} lang={lang} />
         <Work t={t.work} />
-        <Cta t={t.cta} />
+        <Cta t={t.cta} lang={lang} />
       </main>
       <Footer t={t.footer} />
     </>

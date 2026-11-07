@@ -37,7 +37,7 @@ const en: Dict = {
     title: "Ready for a brand that never sleeps?",
     desc: "Tell us about your project and let's begin.",
     button: "Start a project",
-    contact: "[YOUR EMAIL]",
+    emailLabel: "Email",
     phoneLabel: "Phone and messengers",
     call: "Call",
     telegram: "Telegram",

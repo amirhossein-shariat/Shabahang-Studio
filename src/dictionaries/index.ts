@@ -4,6 +4,7 @@ export const defaultLocale: Locale = "fa";
 export const hasLocale = (l: string): l is Locale =>
   (locales as readonly string[]).includes(l);
 
+export const EMAIL = "Amirhosseinshariatt@gmail.com";
 export const PHONE = { display: "0912 867 2522", intl: "+989128672522" } as const;
 
 export type Dict = {
@@ -12,7 +13,7 @@ export type Dict = {
   hero: { eyebrow: string; title: string; sub: string; tagline: string; desc: string; cta1: string; cta2: string; scroll: string };
   services: { kicker: string; title: string; items: { key: string; name: string; en: string; line: string; detail: string }[] };
   work: { kicker: string; title: string; note: string; placeholder: string };
-  cta: { title: string; desc: string; button: string; contact: string; phoneLabel: string; call: string; telegram: string; bale: string };
+  cta: { title: string; desc: string; button: string; emailLabel: string; phoneLabel: string; call: string; telegram: string; bale: string };
   footer: { rights: string };
 };
 

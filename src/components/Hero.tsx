@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { STAR_PATH } from "./Logo";
 import type { Dict } from "@/dictionaries";
@@ -17,7 +18,7 @@ const TINY_STARS = Array.from({ length: 18 }, (_, i) => ({
   delay: (i % 6) * 0.7,
 }));
 
-export default function Hero({ t }: { t: Dict["hero"] }) {
+export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
   const root = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -109,12 +110,12 @@ export default function Hero({ t }: { t: Dict["hero"] }) {
           {t.desc}
         </p>
         <div data-rise className="mt-10 flex flex-wrap justify-center gap-4">
-          <a
-            href="#contact"
+          <Link
+            href={`/${lang}/contact`}
             className="rounded-full bg-gold px-8 py-3.5 text-sm font-bold text-midnight transition hover:bg-gold-light"
           >
             {t.cta1}
-          </a>
+          </Link>
           <a
             href="#work"
             className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-bold text-text transition hover:border-gold hover:text-gold-light"
