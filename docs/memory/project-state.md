@@ -5,15 +5,17 @@ Next.js (App Router, TypeScript, Tailwind v4), fa/en routing (`/fa`, `/en`, RTL 
 calm Canvas2D starfield (`src/lib/starfield.ts`: twinkle, slow drift, faint scroll depth; no mouse/touch reaction). Note: this Next.js version differs from older ones;
 read `node_modules/next/dist/docs/` before framework-level changes (see `AGENTS.md`).
 
-Pages: home, `/services`, `/about`, `/contact`. Portfolio pages exist but are switched off (see flags).
+Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist but are switched off (see flags).
 
 ## Content that lives in data files (admin-panel candidates)
 - `src/data/packages.ts` — Instagram packages (see `admin-panel.md`)
+- `src/data/services.ts` — the five pillars + sub-services (home cards, services page, naming; see `naming-research.md`)
 - `src/dictionaries/{fa,en,pages,services,work}.ts` — page texts
 - `src/data/studio.ts` — client logos (`CLIENTS`) and portfolio projects (`PROJECTS`)
 - `src/dictionaries/index.ts` — `EMAIL`, `PHONE`
 
 ## Flags
+- `FEATURES.showLogin` in `src/config.ts` = true: sign-in page + header link. UI only, see `auth-and-panels.md`.
 - `FEATURES.showWork` in `src/config.ts` = **false**. Hides the portfolio: nav link, hero button, home section, and
   `/work` + `/work/[category]` return 404. Nothing was deleted; set it to `true` to bring everything back.
 
@@ -27,6 +29,8 @@ Pages: home, `/services`, `/about`, `/contact`. Portfolio pages exist but are sw
 - IT pricing is per **user** (owner approved defaults on 2026-11-07); the IT table on the services page still shows `[قیمت]`.
 - Instagram packages and discounts replaced the old 10 % / 20 % scheme (6 % for 3 months, 12 % for 6 months, setup fee 3 for 1 month).
 - Background stars: custom Canvas2D instead of drei/three. A pointer/touch-reactive version was built and then removed on 2026-11-09 because the owner found it artificial; do not re-add it.
+- Sticky footer: `body` is a flex column and `body > main` grows, so the footer sits at the bottom of short pages.
+- No SMS for sign-up/sign-in, ever (owner's rule).
 - Persian text must never get letter-spacing (it detaches the letters); `globals.css` forces `letter-spacing: normal` on Persian pages except `dir="ltr"` Latin runs.
 
 ## Placeholders still open

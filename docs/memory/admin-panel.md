@@ -24,6 +24,7 @@ Verified against the owner's numbers: 1 month 13 / 23 / 38; 3 months 9.4 / 18.8 
 6 months 8.8 / 17.6 / 30.8 monthly, 52.8 / 105.6 / 184.8 total.
 
 ## Beyond packages (also wanted in the panel, lower priority)
+- The five service pillars and their sub-services (`src/data/services.ts`): names, taglines, summaries, models, sub-service cards and icons.
 - Titles and descriptions of the other pages (home, services, about, contact), in both languages (`src/dictionaries/*`).
 - IT package table on the services page (`src/dictionaries/services.ts`, key `it`) — same add / remove / edit needs.
 - Client logos for the home marquee (`src/data/studio.ts` → `CLIENTS`, files in `public/clients/`): upload, remove, reorder,
@@ -31,6 +32,8 @@ Verified against the owner's numbers: 1 month 13 / 23 / 38; 3 months 9.4 / 18.8 
 - Portfolio projects (`PROJECTS` in `src/data/studio.ts`) and the switch that shows/hides portfolio pages
   (`FEATURES.showWork` in `src/config.ts`, currently **false**).
 - Contact details (`EMAIL`, `PHONE` in `src/dictionaries/index.ts`) and response hours (`src/dictionaries/pages.ts`).
+
+Sign-in rules (one login, role detected after credentials, **no SMS**) are in `auth-and-panels.md`.
 
 ## Decisions still open before building it
 1. **Where the site is hosted** (the panel needs a server or serverless runtime; a purely static host cannot save edits).
