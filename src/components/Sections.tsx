@@ -1,37 +1,41 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
-import { LogoMark } from "./Logo";
+import ServiceIcon from "./ServiceIcon";
+import { PILLARS, SERVICES_UI } from "@/data/services";
 import { BaleIcon, PhoneIcon, TelegramIcon } from "./Icons";
 import { EMAIL, PHONE, type Dict } from "@/dictionaries";
 
-export function Services({ t, lang }: { t: Dict["services"]; lang: string }) {
+export function Services({ t, lang }: { t: Dict["services"]; lang: "fa" | "en" }) {
+  const other = lang === "fa" ? "en" : "fa";
   return (
     <Reveal id="services" className="mx-auto max-w-7xl scroll-mt-20 px-5 py-28 md:px-10">
       <p data-item className="text-sm font-bold tracking-[0.25em] text-gold">{t.kicker}</p>
       <h2 data-item className="mt-3 max-w-2xl text-4xl font-black leading-tight md:text-5xl">{t.title}</h2>
       <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {t.items.map((s, i) => (
-          <li
-            key={s.key}
-            data-item
-            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition hover:border-gold/50 hover:bg-white/[0.06]"
-          >
-            <div className="flex items-center justify-between">
-              <span dir="ltr" className="font-latin text-xs tracking-widest text-muted">0{i + 1}</span>
-              <LogoMark size={18} className="opacity-60 transition group-hover:opacity-100" />
-            </div>
-            <h3 className="mt-6 text-2xl font-black">{s.name}</h3>
-            <p className="mt-1 text-xs text-muted">{s.en}</p>
-            <p className="mt-5 font-bold text-gold-light">{s.line}</p>
-            <p className="mt-3 text-sm leading-7 text-muted">{s.detail}</p>
+        {PILLARS.filter((p) => p.enabled).map((p, i) => (
+          <li key={p.id} data-item>
+            <Link
+              href={`/${lang}/services#${p.id}`}
+              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-gold/60 hover:bg-white/[0.06]"
+            >
+              <div className="flex items-center justify-between">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold transition group-hover:bg-gold group-hover:text-midnight">
+                  <ServiceIcon name={p.icon} />
+                </span>
+                <span dir="ltr" className="font-latin text-xs tracking-widest text-muted">0{i + 1}</span>
+              </div>
+              <h3 className="mt-6 text-2xl font-black">{p.name[lang]}</h3>
+              <p className="mt-1 text-xs text-muted">{p.name[other]}</p>
+              <p className="mt-5 font-bold text-gold-light">{p.line[lang]}</p>
+              <p className="mt-3 flex-1 text-sm leading-7 text-muted">{p.summary[lang]}</p>
+              <p className="mt-6 flex items-center gap-2 text-sm font-bold text-gold">
+                {SERVICES_UI.homeMore[lang]}
+                <ServiceIcon name="arrow" size={16} className="transition group-hover:translate-x-[-4px] rtl:rotate-180 rtl:group-hover:translate-x-1" />
+              </p>
+            </Link>
           </li>
         ))}
       </ul>
-      <p data-item className="mt-10">
-        <Link href={`/${lang}/services`} className="font-bold text-gold hover:text-gold-light">
-          {lang === "fa" ? "خدمات و پکیج‌ها ←" : "Services & packages →"}
-        </Link>
-      </p>
     </Reveal>
   );
 }

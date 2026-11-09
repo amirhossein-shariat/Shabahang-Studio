@@ -29,7 +29,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!hasLocale(lang)) notFound();
   return (
     <html lang={lang} dir={lang === "fa" ? "rtl" : "ltr"} className={`${sora.variable} ${vazir.variable}`}>
-      <body className="min-h-svh">
+      <body className="flex min-h-svh flex-col">
         <Sky />
         {children}
       </body>
