@@ -20,7 +20,7 @@ export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-8 text-sm text-muted md:flex">
           {links.map(([href, label]) => (
-            <Link key={href} href={href} className="transition-colors hover:text-gold-light">
+            <Link key={href} href={href} className="nav-link transition-colors hover:text-gold-light">
               {label}
             </Link>
           ))}

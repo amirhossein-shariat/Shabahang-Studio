@@ -1,8 +1,4 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Link from "next/link";
-import gsap from "gsap";
 import { FEATURES } from "@/config";
 import { STAR_PATH } from "./Logo";
 import type { Dict } from "@/dictionaries";
@@ -19,27 +15,12 @@ const TINY_STARS = Array.from({ length: 18 }, (_, i) => ({
   delay: (i % 6) * 0.7,
 }));
 
+/** Entrance delay in seconds, read by the .hero-rise class */
+const d = (n: number) => ({ "--d": n }) as React.CSSProperties;
+
 export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
-  const root = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const ctx = gsap.context(() => {
-      gsap.from("[data-rise]", {
-        opacity: 0,
-        y: 36,
-        duration: 1.1,
-        ease: "power3.out",
-        stagger: 0.14,
-        delay: 0.2,
-      });
-      gsap.from("[data-star]", { opacity: 0, scale: 0.4, duration: 1.6, ease: "expo.out" });
-    }, root);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={root} className="relative flex min-h-svh items-center justify-center overflow-hidden px-5 pt-24 pb-16">
+    <section className="relative flex min-h-svh items-center justify-center overflow-hidden px-5 pt-24 pb-16">
       {/* horizon glow */}
       <div
         className="absolute inset-x-0 bottom-0 h-[55%] origin-bottom"
@@ -60,8 +41,8 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
         />
       ))}
 
-      {/* orbit rings */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true">
+      {/* orbit rings: they grow in, then keep turning */}
+      <div className="rings-in absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true">
         {RINGS.map((r) => (
           <div
             key={r.size}
@@ -88,31 +69,27 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center">
-        <svg
-          data-star
-          viewBox="0 0 100 100"
-          className="mb-6 h-14 w-14 md:h-20 md:w-20"
-          style={{ animation: "pulse-star 5s ease-in-out infinite" }}
-          aria-hidden="true"
-        >
-          <path d={STAR_PATH} fill="var(--gold)" />
-        </svg>
-        <p data-rise className="mb-4 text-xs tracking-[0.2em] text-muted">
+        <span className="star-in mb-6">
+          <svg viewBox="0 0 100 100" className="h-14 w-14 md:h-20 md:w-20" style={{ animation: "pulse-star 5s ease-in-out infinite" }} aria-hidden="true">
+            <path d={STAR_PATH} fill="var(--gold)" />
+          </svg>
+        </span>
+        <p className="hero-rise mb-4 text-xs tracking-[0.2em] text-muted" style={d(0.5)}>
           {t.eyebrow}
         </p>
-        <h1 data-rise className="gold-text text-[clamp(4rem,17vw,10.5rem)] font-black leading-[1.05]">
-          {t.title}
-        </h1>
-        <p data-rise dir="ltr" className="font-latin text-[clamp(0.9rem,2.4vw,1.5rem)] font-light tracking-[0.7em] text-gold-light">
+        <div className="title-in">
+          <h1 className="gold-text text-[clamp(4rem,17vw,10.5rem)] font-black leading-[1.05]">{t.title}</h1>
+        </div>
+        <p dir="ltr" className="hero-rise font-latin text-[clamp(0.9rem,2.4vw,1.5rem)] font-light tracking-[0.7em] text-gold-light" style={d(0.9)}>
           {t.sub}
         </p>
-        <p data-rise className="mt-8 text-xl font-bold text-text md:text-2xl">
+        <p className="hero-rise mt-8 text-xl font-bold text-text md:text-2xl" style={d(1.15)}>
           {t.tagline}
         </p>
-        <p data-rise dir="ltr" className="mt-2 max-w-xl font-latin text-sm font-light text-muted">
+        <p dir="ltr" className="hero-rise mt-2 max-w-xl font-latin text-sm font-light text-muted" style={d(1.35)}>
           {t.desc}
         </p>
-        <div data-rise className="mt-10 flex flex-wrap justify-center gap-4">
+        <div className="hero-rise mt-10 flex flex-wrap justify-center gap-4" style={d(1.6)}>
           <Link
             href={`/${lang}/contact`}
             className="rounded-full bg-gold px-8 py-3.5 text-sm font-bold text-midnight transition hover:bg-gold-light"
@@ -129,7 +106,7 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
           )}
         </div>
       </div>
-      <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] tracking-[0.3em] text-muted" aria-hidden="true">
+      <span className="hero-rise absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] tracking-[0.3em] text-muted" style={d(2)} aria-hidden="true">
         {t.scroll}
       </span>
     </section>

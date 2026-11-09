@@ -30,6 +30,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html lang={lang} dir={lang === "fa" ? "rtl" : "ltr"} className={`${sora.variable} ${vazir.variable}`}>
       <body className="flex min-h-svh flex-col">
+        <div className="scroll-progress" aria-hidden="true" />
         <Sky />
         {children}
       </body>
