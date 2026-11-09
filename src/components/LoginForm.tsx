@@ -63,7 +63,7 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
       onClick={() => setShow((v) => !v)}
       aria-label={show ? t.hide : t.show}
       aria-pressed={show}
-      className="absolute inset-y-0 end-2 my-auto flex h-9 w-9 items-center justify-center rounded-lg text-muted transition hover:text-gold-light"
+      className="absolute inset-y-0 end-2 my-auto flex h-9 w-9 items-center justify-center rounded-lg text-muted transition hover:text-gold"
     >
       <ServiceIcon name={show ? "eyeOff" : "eye"} size={20} />
     </button>
@@ -105,7 +105,7 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
                 data-tab={k}
                 aria-selected={tab === k}
                 onClick={() => go(k)}
-                className={"rounded-full px-4 py-2.5 text-sm font-bold transition " + (tab === k ? "bg-gold text-midnight" : "text-muted hover:text-gold-light")}
+                className={"rounded-full px-4 py-2.5 text-sm font-bold transition " + (tab === k ? "bg-gold text-midnight" : "text-muted hover:text-gold")}
               >
                 {t.tabs[k]}
               </button>
@@ -122,21 +122,17 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
                 {eye}
               </span>
             </label>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
-              <label htmlFor="remember" className="flex cursor-pointer items-center gap-2 text-muted">
-                <input id="remember" name="remember" type="checkbox" className="h-4 w-4 accent-[#E8C682]" />
-                {t.login.remember}
-              </label>
-              <button type="button" onClick={() => setHelp((v) => !v)} aria-expanded={help} className="text-gold transition hover:text-gold-light">{t.login.forgot}</button>
+            <div className="mt-4 flex items-center justify-end text-sm">
+              <button type="button" onClick={() => setHelp((v) => !v)} aria-expanded={help} className="text-gold transition hover:text-gold">{t.login.forgot}</button>
             </div>
             {help && (
               <p className="mt-3 rounded-xl border border-white/10 bg-black/20 p-3 text-center text-sm leading-7 text-muted">
-                {t.login.forgotHelp} <Link href={`/${lang}/contact`} className="font-bold text-gold hover:text-gold-light">{t.contact}</Link>
+                {t.login.forgotHelp} <Link href={`/${lang}/contact`} className="font-bold text-gold hover:text-gold">{t.contact}</Link>
               </p>
             )}
             <button type="submit" className="mt-6 w-full rounded-full bg-gold px-8 py-3.5 text-sm font-bold text-midnight transition hover:bg-gold-light">{t.login.submit}</button>
             {message("login")}
-            <p className="mt-2 text-center text-sm text-muted">{t.login.toSignup} <button type="button" onClick={() => go("signup")} className="font-bold text-gold hover:text-gold-light">{t.login.toSignupLink}</button></p>
+            <p className="mt-2 text-center text-sm text-muted">{t.login.toSignup} <button type="button" onClick={() => go("signup")} className="font-bold text-gold hover:text-gold">{t.login.toSignupLink}</button></p>
           </form>
 
           <form id="signup-form" hidden={tab !== "signup"} onSubmit={onSignup} noValidate>
@@ -145,7 +141,6 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
             </label>
             <label htmlFor="su-id" className="mt-5 block text-sm">{t.signup.id}
               <input id="su-id" name="username" autoComplete="username" autoCapitalize="none" spellCheck={false} placeholder={t.signup.idHint} className={field} />
-              <span className="mt-1.5 block text-xs text-muted">{t.signup.idRule}</span>
             </label>
             <label htmlFor="su-password" className="mt-5 block text-sm">{t.signup.password}
               <span className="relative mt-2 block">
@@ -164,7 +159,7 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
             </label>
             <button type="submit" className="mt-6 w-full rounded-full bg-gold px-8 py-3.5 text-sm font-bold text-midnight transition hover:bg-gold-light">{t.signup.submit}</button>
             {message("signup")}
-            <p className="mt-2 text-center text-sm text-muted">{t.signup.toLogin} <button type="button" onClick={() => go("login")} className="font-bold text-gold hover:text-gold-light">{t.signup.toLoginLink}</button></p>
+            <p className="mt-2 text-center text-sm text-muted">{t.signup.toLogin} <button type="button" onClick={() => go("login")} className="font-bold text-gold hover:text-gold">{t.signup.toLoginLink}</button></p>
           </form>
         </div>
       </div>
