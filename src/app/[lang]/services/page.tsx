@@ -62,17 +62,17 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
     <>
       <Header lang={lang} t={home.nav} path="services" />
       <main>
-        <section className="mx-auto max-w-6xl px-5 pt-36 pb-8 md:px-10">
+        <section className="page-head mx-auto max-w-6xl px-5 pt-36 pb-8 md:px-10">
           <p className="text-sm font-bold tracking-[0.25em] text-gold">{t.hero.kicker}</p>
           <h1 className="gold-text mt-4 max-w-3xl text-4xl font-black leading-tight md:text-6xl">{t.hero.title}</h1>
           <p className="mt-6 max-w-2xl leading-8 text-muted">{t.hero.desc}</p>
         </section>
 
-        <nav aria-label={ui.jump[lang]} className="sticky top-[68px] z-20 border-y border-white/5 bg-midnight/70 backdrop-blur-md">
-          <ul className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 py-3 md:px-10">
+        <nav aria-label={ui.jump[lang]} className="chip-nav sticky top-[68px] z-20 border-y border-white/5 bg-midnight/70 backdrop-blur-md">
+          <ul className="chip-row mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 py-3 md:px-10">
             {pillars.map((p) => (
               <li key={p.id} className="shrink-0">
-                <Link href={`/${lang}/services#${p.id}`} className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-muted transition hover:border-gold hover:text-gold-light">
+                <Link href={`/${lang}/services#${p.id}`} className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-sm text-muted transition hover:border-gold/70 hover:bg-gold/10 hover:text-gold">
                   <ServiceIcon name={p.icon} size={16} className="text-gold" />
                   {p.name[lang]}
                 </Link>
@@ -103,7 +103,7 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
             <h3 className="mt-10 text-sm font-bold tracking-[0.2em] text-muted">{ui.inside[lang]}</h3>
             <ul className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
               {p.subs.map((x) => (
-                <li key={x.name.fa} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:bg-white/[0.05] hover:shadow-[0_18px_45px_-22px_rgba(232,198,130,0.4)]">
+                <li key={x.name.fa} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:bg-white/[0.05] hover:shadow-[0_0_44px_-14px_rgba(232,198,130,0.45)]">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 text-gold transition duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]">
                     <ServiceIcon name={x.icon} size={20} />
                   </span>
@@ -134,7 +134,7 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
           <Link href={`/${lang}/contact`} className="mt-8 inline-block rounded-full bg-gold px-10 py-4 text-sm font-bold text-midnight transition hover:bg-gold-light">
             {t.cta.button}
           </Link>
-          <p className="mt-6"><Link href={`/${lang}`} className="text-sm text-muted hover:text-gold-light">{t.back}</Link></p>
+          <p className="mt-6"><Link href={`/${lang}`} className="text-sm text-muted hover:text-gold">{t.back}</Link></p>
         </section>
       </main>
       <Footer t={home.footer} />

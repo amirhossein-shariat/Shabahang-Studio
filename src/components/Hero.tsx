@@ -99,7 +99,7 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
           {FEATURES.showWork && (
           <Link
             href={`/${lang}/work`}
-            className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-bold text-text transition hover:border-gold hover:text-gold-light"
+            className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-bold text-text transition hover:border-gold hover:text-gold"
           >
             {t.cta2}
           </Link>

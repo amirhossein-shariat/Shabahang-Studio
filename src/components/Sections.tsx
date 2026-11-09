@@ -16,7 +16,7 @@ export function Services({ t, lang }: { t: Dict["services"]; lang: "fa" | "en" }
           <li key={p.id} data-item>
             <Link
               href={`/${lang}/services#${p.id}`}
-              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:border-gold/60 hover:bg-white/[0.06] hover:shadow-[0_22px_55px_-20px_rgba(232,198,130,0.45)]"
+              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:border-gold/60 hover:bg-white/[0.06] hover:shadow-[0_0_50px_-14px_rgba(232,198,130,0.5)]"
             >
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold transition duration-300 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-gold group-hover:text-midnight">
@@ -58,7 +58,7 @@ export function Work({ t, lang }: { t: Dict["work"]; lang: string }) {
       </ul>
       <p data-item className="mt-6 text-sm text-muted">{t.note}</p>
       <p data-item className="mt-6">
-        <Link href={`/${lang}/work`} className="font-bold text-gold hover:text-gold-light">{t.all}</Link>
+        <Link href={`/${lang}/work`} className="font-bold text-gold hover:text-gold">{t.all}</Link>
       </p>
     </Reveal>
   );
@@ -78,8 +78,8 @@ export function Cta({ t, lang }: { t: Dict["cta"]; lang: string }) {
         <p className="text-xs tracking-widest text-muted">{t.phoneLabel}</p>
         <p dir="ltr" className="font-latin text-2xl font-light tracking-wider text-gold-light">{PHONE.display}</p>
         <ul className="flex flex-wrap justify-center gap-3 text-sm">
-          <li><a href={`tel:${PHONE.intl}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light"><PhoneIcon className="text-gold" />{t.call}</a></li>
-          <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold-light"><TelegramIcon className="text-gold" />{t.telegram}</a></li>
+          <li><a href={`tel:${PHONE.intl}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold"><PhoneIcon className="text-gold" />{t.call}</a></li>
+          <li><a href={`https://t.me/${PHONE.intl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 transition hover:border-gold hover:text-gold"><TelegramIcon className="text-gold" />{t.telegram}</a></li>
           <li><span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2 text-muted"><BaleIcon />{t.bale}</span></li>
         </ul>
         <p className="mt-2 text-xs text-muted">{t.emailLabel}</p>
