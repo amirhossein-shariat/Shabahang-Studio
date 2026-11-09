@@ -20,14 +20,14 @@ export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-8 text-sm text-muted md:flex">
           {links.map(([href, label]) => (
-            <Link key={href} href={href} className="nav-link transition-colors hover:text-gold-light">
+            <Link key={href} href={href} className="nav-link transition-colors hover:text-gold">
               {label}
             </Link>
           ))}
         </nav>
         <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
           {FEATURES.showLogin && (
-            <Link href={`/${lang}/login`} aria-label={t.login} className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-gold-light">
+            <Link href={`/${lang}/login`} aria-label={t.login} className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-gold">
               <ServiceIcon name="user" size={18} />
               <span className="hidden sm:inline">{t.login}</span>
             </Link>
@@ -35,7 +35,7 @@ export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["
           <Link
             href={path ? `/${other}/${path}` : `/${other}`}
             hrefLang={other}
-            className="font-latin text-xs text-muted transition-colors hover:text-gold-light"
+            className="font-latin text-xs text-muted transition-colors hover:text-gold"
           >
             {other === "en" ? "EN" : "فا"}
           </Link>

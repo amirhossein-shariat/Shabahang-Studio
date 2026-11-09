@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/contact">)
   return { title: meta.title, description: meta.description, alternates: { canonical: `/${lang}/contact`, languages: { fa: "/fa/contact", en: "/en/contact" } } };
 }
 
-const pill = "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm transition hover:border-gold hover:text-gold-light";
+const pill = "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm transition hover:border-gold hover:text-gold";
 
 export default async function ContactPage({ params }: PageProps<"/[lang]/contact">) {
   const { lang } = await params;
@@ -26,7 +26,7 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
     <>
       <Header lang={lang} t={home.nav} path="contact" />
       <main className="mx-auto w-full max-w-5xl px-5 pt-36 pb-24 md:px-10">
-        <header className="mx-auto max-w-2xl text-center">
+        <header className="page-head mx-auto max-w-2xl text-center">
           <p className="text-sm font-bold tracking-[0.25em] text-gold">{t.kicker}</p>
           <h1 className="gold-text mt-4 text-4xl font-black leading-tight md:text-5xl">{t.title}</h1>
           <p className="mt-5 leading-8 text-muted">{t.intro}</p>

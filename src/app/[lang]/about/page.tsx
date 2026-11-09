@@ -24,7 +24,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
     <>
       <Header lang={lang} t={home.nav} path="about" />
       <main>
-        <section className="mx-auto max-w-6xl px-5 pt-36 pb-10 md:px-10">
+        <section className="page-head mx-auto max-w-6xl px-5 pt-36 pb-10 md:px-10">
           <p className="text-sm font-bold tracking-[0.25em] text-gold">{t.kicker}</p>
           <h1 className="gold-text mt-4 max-w-3xl text-4xl font-black leading-tight md:text-6xl">{t.title}</h1>
           <p className="mt-6 max-w-2xl leading-8 text-muted">{t.intro}</p>

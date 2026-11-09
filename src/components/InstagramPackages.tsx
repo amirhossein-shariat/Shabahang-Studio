@@ -26,9 +26,9 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
       <h2 className="mt-3 text-3xl font-black leading-tight md:text-4xl">{C.title[lang]}</h2>
       <p className="mt-2 max-w-2xl text-muted">{C.subtitle[lang]}</p>
 
-      <div className="mt-10">
+      <div className="mt-10 flex flex-col items-center text-center">
         <p className="text-xs font-bold tracking-[0.2em] text-muted" id="dur-label">{C.durationTitle[lang]}</p>
-        <div role="radiogroup" aria-labelledby="dur-label" className="mt-3 inline-flex flex-wrap gap-1 rounded-full border border-white/15 bg-white/[0.03] p-1">
+        <div role="radiogroup" aria-labelledby="dur-label" className="mt-3 inline-flex flex-wrap justify-center gap-1 rounded-full border border-white/15 bg-white/[0.03] p-1">
           {durations.map((x) => {
             const on = x.id === d.id;
             return (
@@ -38,7 +38,7 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
                 role="radio"
                 aria-checked={on}
                 onClick={() => setId(x.id)}
-                className={"rounded-full px-5 py-2 text-sm font-bold transition " + (on ? "bg-gold text-midnight" : "text-muted hover:text-gold-light")}
+                className={"rounded-full px-5 py-2 text-sm font-bold transition " + (on ? "bg-gold text-midnight" : "text-muted hover:text-gold")}
               >
                 {x.label[lang]}
                 {x.discountPercent > 0 && <span className={"ms-2 text-xs font-normal " + (on ? "text-midnight/80" : "text-gold")}>{nf.format(x.discountPercent)}٪ {C.discountLabel[lang]}</span>}
@@ -95,7 +95,7 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
                 ))}
               </ul>
 
-              <Link href={`/${lang}/contact`} className={"mt-7 block rounded-full px-6 py-3 text-center text-sm font-bold transition " + (p.badge ? "bg-gold text-midnight hover:bg-gold-light" : "border border-white/25 hover:border-gold hover:text-gold-light")}>
+              <Link href={`/${lang}/contact`} className={"mt-7 block rounded-full px-6 py-3 text-center text-sm font-bold transition " + (p.badge ? "bg-gold text-midnight hover:bg-gold-light" : "border border-white/25 hover:border-gold hover:text-gold")}>
                 {C.cta[lang]}
               </Link>
             </li>
