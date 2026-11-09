@@ -5,11 +5,11 @@ export type LoginDict = {
   tabs: { login: string; signup: string };
   show: string; hide: string; contact: string;
   login: {
-    title: string; sub: string; id: string; idHint: string; password: string; remember: string;
+    title: string; sub: string; id: string; idHint: string; password: string;
     forgot: string; forgotHelp: string; submit: string; required: string; notReady: string; toSignup: string; toSignupLink: string;
   };
   signup: {
-    title: string; sub: string; name: string; nameHint: string; id: string; idHint: string; idRule: string; password: string; confirm: string;
+    title: string; sub: string; name: string; nameHint: string; id: string; idHint: string; password: string; confirm: string;
     submit: string; strength: { label: string; weak: string; fair: string; strong: string };
     requiredAll: string; badId: string; short: string; mismatch: string; notReady: string; toLogin: string; toLoginLink: string;
   };
@@ -21,13 +21,13 @@ const fa: LoginDict = {
   show: "نمایش رمز", hide: "پنهان کردن رمز", contact: "تماس با ما",
   login: {
     title: "ورود به حساب", sub: "شناسه و رمز عبور خود را وارد کنید.", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei", password: "رمز عبور",
-    remember: "مرا در این دستگاه نگه دار", forgot: "رمز را فراموش کرده‌اید؟", forgotHelp: "بازنشانی رمز را مدیر شباهنگ انجام می‌دهد. از صفحه‌ی تماس درخواست دهید.",
+    forgot: "رمز را فراموش کرده‌اید؟", forgotHelp: "بازنشانی رمز را مدیر شباهنگ انجام می‌دهد. از صفحه‌ی تماس درخواست دهید.",
     submit: "ورود", required: "شناسه و رمز عبور را وارد کنید.", notReady: "سامانه‌ی ورود هنوز فعال نیست. به‌زودی با همین شناسه و رمز وارد می‌شوید.",
     toSignup: "حساب ندارید؟", toSignupLink: "ساخت حساب",
   },
   signup: {
     title: "ساخت حساب", sub: "اطلاعات زیر را کامل کنید.", name: "نام و نام خانوادگی یا نام شرکت", nameHint: "مثلاً علی رضایی", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei",
-    idRule: "حروف انگلیسی، عدد، نقطه و خط زیر", password: "رمز عبور", confirm: "تکرار رمز عبور", submit: "ساخت حساب",
+    password: "رمز عبور", confirm: "تکرار رمز عبور", submit: "ساخت حساب",
     strength: { label: "قدرت رمز", weak: "ضعیف", fair: "متوسط", strong: "قوی" },
     requiredAll: "همه‌ی فیلدها را کامل کنید.", badId: "شناسه فقط می‌تواند حروف انگلیسی، عدد، نقطه و خط زیر داشته باشد.",
     short: "رمز عبور باید حداقل ۸ نویسه باشد.", mismatch: "رمز عبور و تکرار آن یکسان نیستند.",
@@ -41,13 +41,13 @@ const en: LoginDict = {
   show: "Show password", hide: "Hide password", contact: "Contact us",
   login: {
     title: "Sign in to your account", sub: "Enter your ID and password.", id: "User ID", idHint: "e.g. ali.rezaei", password: "Password",
-    remember: "Keep me signed in on this device", forgot: "Forgot your password?", forgotHelp: "A Shabahang admin resets passwords. Request it from the contact page.",
+    forgot: "Forgot your password?", forgotHelp: "A Shabahang admin resets passwords. Request it from the contact page.",
     submit: "Sign in", required: "Enter your ID and password.", notReady: "Sign-in is not live yet. Soon you will sign in with this same ID and password.",
     toSignup: "No account?", toSignupLink: "Create one",
   },
   signup: {
     title: "Create your account", sub: "Fill in the details below.", name: "Full name or company", nameHint: "e.g. Ali Rezaei", id: "User ID", idHint: "e.g. ali.rezaei",
-    idRule: "English letters, digits, dot and underscore", password: "Password", confirm: "Repeat password", submit: "Create account",
+    password: "Password", confirm: "Repeat password", submit: "Create account",
     strength: { label: "Password strength", weak: "Weak", fair: "Fair", strong: "Strong" },
     requiredAll: "Fill in every field.", badId: "The ID can only contain English letters, digits, dot and underscore.",
     short: "The password must be at least 8 characters.", mismatch: "The password and its repeat do not match.",
