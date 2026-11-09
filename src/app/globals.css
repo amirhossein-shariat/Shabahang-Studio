@@ -37,6 +37,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keep the footer at the bottom of short pages */
+body > main {
+  flex: 1 0 auto;
+}
+
 html[lang="en"] body {
   font-family: var(--font-latin);
 }

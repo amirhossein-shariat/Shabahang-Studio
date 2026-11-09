@@ -5,7 +5,7 @@ const en: Dict = {
     title: "Shabahang Studio | Design, Motion & IT",
     description: "A full studio for design, digital and IT, for brands that never sleep.",
   },
-  nav: { work: "Work", services: "Services", studio: "Studio", contact: "Contact", talk: "Let's talk" },
+  nav: { work: "Work", services: "Services", studio: "Studio", contact: "Contact", talk: "Get in touch", login: "Sign in" },
   hero: {
     eyebrow: "Design · Digital · IT",
     title: "Shabahang",
@@ -19,13 +19,6 @@ const en: Dict = {
   services: {
     kicker: "Services",
     title: "Five pillars, one studio",
-    items: [
-      { key: "brand", name: "Brand", en: "برند و هویت", line: "Give your business a face.", detail: "Logo, visual identity, catalogues, packaging graphics and logo motion." },
-      { key: "web", name: "Web & Software", en: "سایت و نرم‌افزار", line: "Get online.", detail: "Company sites, online stores and custom panels, with 3 months of free support." },
-      { key: "growth", name: "Content & Growth", en: "محتوا و رشد", line: "Get seen.", detail: "Monthly packages for design, motion, content and page management." },
-      { key: "it", name: "IT & Infrastructure", en: "IT و زیرساخت", line: "Keep your systems healthy and on.", detail: "User support, monitoring, backups and VoIP on a monthly contract." },
-      { key: "product", name: "Product Design", en: "طراحی محصول", line: "Turn your idea into a product.", detail: "Industrial design, modelling and rendering, prototyping and 3D printing." },
-    ],
   },
   work: {
     kicker: "Work",
