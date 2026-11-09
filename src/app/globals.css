@@ -200,7 +200,19 @@ html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
 .nav-link:hover::after { transform: scaleX(1); }
 
 /* Primary buttons: a soft light sweeps across on hover */
-a.bg-gold, button.bg-gold { position: relative; overflow: hidden; isolation: isolate; }
+/* Cosmic gold: a metallic gradient (pale gold, warm gold, deep amber-bronze) with a faint violet halo instead of flat yellow */
+a.bg-gold, button.bg-gold {
+  position: relative; overflow: hidden; isolation: isolate;
+  background-image: linear-gradient(115deg, #f7e6b8 0%, #e8c682 28%, #c8964f 55%, #e9bd78 78%, #f7e6b8 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 10px 28px -12px rgba(232, 198, 130, 0.65), 0 0 22px -8px rgba(123, 108, 246, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition: background-position 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s, transform 0.3s;
+}
+a.bg-gold:hover, button.bg-gold:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 14px 34px -12px rgba(232, 198, 130, 0.85), 0 0 30px -6px rgba(123, 108, 246, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
 a.bg-gold::after, button.bg-gold::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
