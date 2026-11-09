@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, locales } from "@/dictionaries";
 import { CATEGORY_SLUGS, getWorkDict, isSlug } from "@/dictionaries/work";
 import { PROJECTS } from "@/data/studio";
+import { FEATURES } from "@/config";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Sections";
 
 export function generateStaticParams() {
+  if (!FEATURES.showWork) return [];
   return locales.flatMap((lang) => CATEGORY_SLUGS.map((category) => ({ lang, category })));
 }
 
@@ -25,7 +27,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/work/[cate
 
 export default async function CategoryPage({ params }: PageProps<"/[lang]/work/[category]">) {
   const { lang, category } = await params;
-  if (!hasLocale(lang) || !isSlug(category)) notFound();
+  if (!hasLocale(lang) || !isSlug(category) || !FEATURES.showWork) notFound();
   const [t, home] = [getWorkDict(lang), await getDictionary(lang)];
   const c = t.cats[category];
   const projects = PROJECTS[category];

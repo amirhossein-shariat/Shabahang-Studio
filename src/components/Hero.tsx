@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
+import { FEATURES } from "@/config";
 import { STAR_PATH } from "./Logo";
 import type { Dict } from "@/dictionaries";
 
@@ -118,12 +119,14 @@ export default function Hero({ t, lang }: { t: Dict["hero"]; lang: string }) {
           >
             {t.cta1}
           </Link>
+          {FEATURES.showWork && (
           <Link
             href={`/${lang}/work`}
             className="rounded-full border border-white/20 px-8 py-3.5 text-sm font-bold text-text transition hover:border-gold hover:text-gold-light"
           >
             {t.cta2}
           </Link>
+          )}
         </div>
       </div>
       <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] tracking-[0.3em] text-muted" aria-hidden="true">

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "@/dictionaries";
 import { CATEGORY_SLUGS, getWorkDict } from "@/dictionaries/work";
 import { PROJECTS } from "@/data/studio";
+import { FEATURES } from "@/config";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Sections";
 
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/work">): P
 
 export default async function WorkPage({ params }: PageProps<"/[lang]/work">) {
   const { lang } = await params;
-  if (!hasLocale(lang)) notFound();
+  if (!hasLocale(lang) || !FEATURES.showWork) notFound();
   const [t, home] = [getWorkDict(lang), await getDictionary(lang)];
   return (
     <>
