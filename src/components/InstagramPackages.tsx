@@ -4,11 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { INSTAGRAM_PACKAGES as C, priceFor, type Plan } from "@/data/packages";
 
-const TIER: Record<Plan["tier"], { text: string; bar: string; ring: string }> = {
-  bronze: { text: "text-amber", bar: "from-amber/80 to-amber/0", ring: "border-white/10" },
-  silver: { text: "text-text", bar: "from-white/70 to-white/0", ring: "border-white/25" },
-  gold: { text: "text-gold", bar: "from-gold to-gold/0", ring: "border-gold/50" },
+/** One colour per tier drives the top band, border, glow, medal dot and name. */
+const TIER: Record<Plan["tier"], string> = {
+  bronze: "#D98E5B",
+  silver: "#D5DAE4",
+  gold: "#EBCB88",
 };
+const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transparent)`;
 
 export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
   const durations = C.durations.filter((d) => d.enabled);
@@ -48,13 +50,24 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
 
       <ul className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5">
         {plans.map((p) => {
-          const t = TIER[p.tier];
+          const c = TIER[p.tier];
           const { monthly, total } = priceFor(p, d);
           return (
-            <li key={p.id} className={"relative flex flex-col overflow-hidden rounded-2xl border bg-white/[0.03] p-7 backdrop-blur-sm " + t.ring}>
-              <div className={"absolute inset-x-0 top-0 h-1 bg-gradient-to-r " + t.bar} aria-hidden="true" />
+            <li
+              key={p.id}
+              className="relative flex flex-col overflow-hidden rounded-2xl border bg-white/[0.03] p-7 pt-9 backdrop-blur-sm"
+              style={{ borderColor: mix(c, 60), backgroundImage: `linear-gradient(180deg, ${mix(c, 16)}, transparent 240px)` }}
+            >
+              <div aria-hidden="true" className="absolute inset-x-0 top-0 h-2.5" style={{ background: `linear-gradient(90deg, ${c}, color-mix(in srgb, ${c} 55%, #ffffff))` }} />
               <div className="flex items-center justify-between gap-3">
-                <h3 className={"text-xl font-black " + t.text}>{p.name[lang]}</h3>
+                <h3 className="flex items-center gap-3 text-xl font-black" style={{ color: c }}>
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-4 shrink-0 rounded-full"
+                    style={{ background: `radial-gradient(circle at 32% 30%, #ffffffcc, ${c} 50%, color-mix(in srgb, ${c} 55%, #000000))`, boxShadow: `0 0 14px ${mix(c, 55)}` }}
+                  />
+                  {p.name[lang]}
+                </h3>
                 {p.badge && <span className="rounded-full border border-gold/50 px-3 py-1 text-xs font-bold text-gold">{p.badge[lang]}</span>}
               </div>
 
@@ -69,8 +82,8 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
 
               <ul className="mt-6 flex-1 divide-y divide-white/5 text-sm">
                 {p.features.map((x, i) => (
-                  <li key={i} className="flex items-start gap-3 py-2.5">
-                    <span aria-hidden="true" className={"mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs " + (x.off ? "bg-white/5 text-muted" : "bg-gold/15 text-gold")}>{x.off ? "–" : "✓"}</span>
+                  <li key={i} className="flex items-center gap-3 py-2.5">
+                    <span aria-hidden="true" className={"flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs leading-none " + (x.off ? "border-white/15 text-muted" : "border-emerald-400/70 bg-emerald-400/10 text-emerald-400")}>{x.off ? "–" : "✓"}</span>
                     <span className="min-w-0">
                       <span className="block text-xs text-muted">{x.label[lang]}</span>
                       <span className={x.off ? "text-muted" : "text-text"}>

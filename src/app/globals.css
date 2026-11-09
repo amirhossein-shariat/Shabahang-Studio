@@ -41,6 +41,11 @@ html[lang="en"] body {
   font-family: var(--font-latin);
 }
 
+/* Persian script is cursive: any letter-spacing detaches the letters. Latin runs marked dir="ltr" keep theirs. */
+html[lang="fa"] [class*="tracking-"]:not([dir="ltr"]) {
+  letter-spacing: normal;
+}
+
 ::selection {
   background: var(--gold);
   color: var(--midnight);

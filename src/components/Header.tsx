@@ -28,7 +28,7 @@ export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["
           <Link
             href={path ? `/${other}/${path}` : `/${other}`}
             hrefLang={other}
-            className="font-latin text-xs tracking-widest text-muted transition-colors hover:text-gold-light"
+            className="font-latin text-xs text-muted transition-colors hover:text-gold-light"
           >
             {other === "en" ? "EN" : "فا"}
           </Link>
