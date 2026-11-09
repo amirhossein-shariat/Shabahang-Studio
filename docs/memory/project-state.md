@@ -2,7 +2,7 @@
 
 ## Stack and layout
 Next.js (App Router, TypeScript, Tailwind v4), fa/en routing (`/fa`, `/en`, RTL for fa), GSAP for entrances,
-Canvas2D interactive starfield (`src/lib/starfield.ts`). Note: this Next.js version differs from older ones;
+calm Canvas2D starfield (`src/lib/starfield.ts`: twinkle, slow drift, faint scroll depth; no mouse/touch reaction). Note: this Next.js version differs from older ones;
 read `node_modules/next/dist/docs/` before framework-level changes (see `AGENTS.md`).
 
 Pages: home, `/services`, `/about`, `/contact`. Portfolio pages exist but are switched off (see flags).
@@ -26,7 +26,8 @@ Pages: home, `/services`, `/about`, `/contact`. Portfolio pages exist but are sw
 ## Decisions made
 - IT pricing is per **user** (owner approved defaults on 2026-11-07); the IT table on the services page still shows `[قیمت]`.
 - Instagram packages and discounts replaced the old 10 % / 20 % scheme (6 % for 3 months, 12 % for 6 months, setup fee 3 for 1 month).
-- Background stars: custom Canvas2D instead of drei/three (owner wanted pointer/scroll interaction); three/drei were removed.
+- Background stars: custom Canvas2D instead of drei/three. A pointer/touch-reactive version was built and then removed on 2026-11-09 because the owner found it artificial; do not re-add it.
+- Persian text must never get letter-spacing (it detaches the letters); `globals.css` forces `letter-spacing: normal` on Persian pages except `dir="ltr"` Latin runs.
 
 ## Placeholders still open
 - Team introduction on `/about`, Bale link, official Bale icon (current one is a generic chat bubble), final logo SVG
