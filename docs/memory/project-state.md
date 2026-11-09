@@ -1,7 +1,7 @@
 # Project state (updated 2026-11-09)
 
 ## Stack and layout
-Next.js (App Router, TypeScript, Tailwind v4), fa/en routing (`/fa`, `/en`, RTL for fa), GSAP for entrances,
+Next.js (App Router, TypeScript, Tailwind v4), fa/en routing (`/fa`, `/en`, RTL for fa), motion done in CSS (GSAP was removed, see below),
 calm Canvas2D starfield (`src/lib/starfield.ts`: twinkle, slow drift, faint scroll depth; no mouse/touch reaction). Note: this Next.js version differs from older ones;
 read `node_modules/next/dist/docs/` before framework-level changes (see `AGENTS.md`).
 
@@ -15,7 +15,7 @@ Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist 
 - `src/dictionaries/index.ts` — `EMAIL`, `PHONE`
 
 ## Flags
-- `FEATURES.showLogin` in `src/config.ts` = true: sign-in page + header link. UI only, see `auth-and-panels.md`.
+- `FEATURES.showLogin` in `src/config.ts` = true: sign-in + sign-up page and header link. UI only, see `auth-and-panels.md`.
 - `FEATURES.showWork` in `src/config.ts` = **false**. Hides the portfolio: nav link, hero button, home section, and
   `/work` + `/work/[category]` return 404. Nothing was deleted; set it to `true` to bring everything back.
 
@@ -29,6 +29,8 @@ Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist 
 - IT pricing is per **user** (owner approved defaults on 2026-11-07); the IT table on the services page still shows `[قیمت]`.
 - Instagram packages and discounts replaced the old 10 % / 20 % scheme (6 % for 3 months, 12 % for 6 months, setup fee 3 for 1 month).
 - Background stars: custom Canvas2D instead of drei/three. A pointer/touch-reactive version was built and then removed on 2026-11-09 because the owner found it artificial; do not re-add it.
+- Motion (2026-11-09): CSS only. Page-in on every `main`, hero entrance (`.hero-rise`, `.title-in`, `.star-in`, `.rings-in`), scroll-driven reveals (`animation-timeline: view()`, only where supported; content is fully visible otherwise), drifting nebula, 3 rare CSS shooting stars in `Sky.tsx`, scroll progress line, nav underline, button light-sweep, card hover lift, package price pop and band shine. No mouse/touch-reactive effects (owner dislikes them). `prefers-reduced-motion` turns it all off. GSAP was removed from dependencies.
+- Forms: text fields show focus with the gold border only (global outline is switched off for them in `globals.css`); selects use `.select-field` with a custom chevron; placeholders follow page direction.
 - Sticky footer: `body` is a flex column and `body > main` grows, so the footer sits at the bottom of short pages.
 - No SMS for sign-up/sign-in, ever (owner's rule).
 - Persian text must never get letter-spacing (it detaches the letters); `globals.css` forces `letter-spacing: normal` on Persian pages except `dir="ltr"` Latin runs.
