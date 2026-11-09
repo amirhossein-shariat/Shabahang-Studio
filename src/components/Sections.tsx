@@ -16,7 +16,7 @@ export function Services({ t, lang }: { t: Dict["services"]; lang: "fa" | "en" }
           <li key={p.id} data-item>
             <Link
               href={`/${lang}/services#${p.id}`}
-              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5 hover:border-gold/60 hover:bg-white/[0.06] hover:shadow-[0_0_50px_-14px_rgba(232,198,130,0.5)]"
+              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition duration-300 hover:scale-[1.03] hover:border-gold/60 hover:bg-white/[0.06] hover:shadow-[0_0_50px_-14px_rgba(232,198,130,0.5)]"
             >
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold transition duration-300 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:bg-gold group-hover:text-midnight">
