@@ -62,6 +62,28 @@ html[lang="fa"] [class*="tracking-"]:not([dir="ltr"]) {
   border-radius: 4px;
 }
 
+/* Text fields show focus with their own gold border only (unlayered, so it beats the rule above) */
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-radius: revert-layer;
+}
+
+/* Select with a custom chevron that keeps its distance from the edge */
+.select-field {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 3rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8C682' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 1.1rem;
+  background-position: left 1.15rem center;
+}
+html[dir="ltr"] .select-field {
+  background-position: right 1.15rem center;
+}
+
 /* ---------- Motion primitives ---------- */
 @keyframes twinkle {
   0%, 100% { opacity: 0.15; transform: scale(0.8); }
@@ -102,6 +124,93 @@ html[lang="fa"] [class*="tracking-"]:not([dir="ltr"]) {
 .marquee-track { display: flex; width: max-content; animation: marquee 45s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+
+
+/* ================= Motion =================
+   Mostly CSS so it stays light. Scroll-driven reveals only run where the browser supports them;
+   everywhere else (and with reduced motion) the content simply sits there, fully visible. */
+@keyframes page-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+main { animation: page-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@keyframes hero-rise { from { opacity: 0; transform: translateY(30px); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.hero-rise { animation: hero-rise 1s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--d, 0) * 1s); }
+@keyframes title-in { from { opacity: 0; transform: translateY(44px) scale(0.94); filter: blur(16px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.title-in { animation: title-in 1.5s cubic-bezier(0.16, 0.85, 0.2, 1) 0.25s both; }
+@keyframes star-in { from { opacity: 0; transform: scale(0.2) rotate(120deg); } to { opacity: 1; transform: none; } }
+.star-in { display: inline-block; animation: star-in 1.6s cubic-bezier(0.16, 0.85, 0.2, 1) both; }
+@keyframes rings-in { from { opacity: 0; transform: scale(0.55); } to { opacity: 1; transform: none; } }
+.rings-in { animation: rings-in 2.4s cubic-bezier(0.16, 0.85, 0.2, 1) 0.1s both; }
+
+@keyframes drift-a { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(5vmax, 4vmax, 0) scale(1.12); } }
+@keyframes drift-b { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(-6vmax, -3vmax, 0) scale(1.1); } }
+.nebula-a { animation: drift-a 42s ease-in-out infinite alternate; }
+.nebula-b { animation: drift-b 55s ease-in-out infinite alternate; }
+
+/* Occasional shooting stars: rare, short, slow-moving */
+.meteor {
+  position: absolute;
+  top: var(--t);
+  left: var(--l);
+  width: var(--len, 130px);
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(246, 227, 176, 0.95));
+  opacity: 0;
+  transform: translate(0, 0) rotate(32deg);
+  animation: meteor var(--dur, 14s) linear var(--delay, 0s) infinite;
+}
+@keyframes meteor {
+  0% { opacity: 0; transform: translate(0, 0) rotate(32deg); }
+  1.5% { opacity: 1; }
+  7% { opacity: 0; transform: translate(380px, 238px) rotate(32deg); }
+  100% { opacity: 0; transform: translate(380px, 238px) rotate(32deg); }
+}
+
+/* Thin progress line along the top edge */
+.scroll-progress { position: fixed; top: 0; inset-inline: 0; height: 2px; z-index: 60; background: linear-gradient(90deg, var(--gold), var(--amber)); transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
+html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
+@keyframes progress { to { transform: scaleX(1); } }
+@supports (animation-timeline: scroll()) { .scroll-progress { animation: progress linear both; animation-timeline: scroll(root); } }
+
+/* Reveal on scroll */
+@keyframes rv { from { opacity: 0; transform: translateY(34px) scale(0.985); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@supports (animation-timeline: view()) {
+  main h2,
+  main :is(ul, ol) > li[class*="rounded-"],
+  main form,
+  [data-item] {
+    animation: rv linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 38%;
+  }
+  main :is(ul, ol) > li:nth-child(2), [data-item]:nth-child(2) { animation-range: entry 5% entry 43%; }
+  main :is(ul, ol) > li:nth-child(3), [data-item]:nth-child(3) { animation-range: entry 10% entry 48%; }
+  main :is(ul, ol) > li:nth-child(n + 4), [data-item]:nth-child(n + 4) { animation-range: entry 14% entry 52%; }
+}
+
+/* Packages: price change and a slow light across each tier band */
+@keyframes price-pop { from { opacity: 0; transform: translateY(10px) scale(0.94); filter: blur(5px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.price-pop { display: inline-block; animation: price-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes band-shine { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+.band-shine { animation: band-shine 6s linear infinite; }
+
+/* Nav links: underline grows from the centre */
+.nav-link { position: relative; padding-block: 4px; }
+.nav-link::after { content: ""; position: absolute; inset-inline: 0; bottom: -2px; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Primary buttons: a soft light sweeps across on hover */
+a.bg-gold, button.bg-gold { position: relative; overflow: hidden; isolation: isolate; }
+a.bg-gold::after, button.bg-gold::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  transform: translateX(-130%); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+a.bg-gold:hover::after, button.bg-gold:hover::after { transform: translateX(130%); }
+
+/* Account card: a slowly turning light around the border */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.auth-ring { animation: spin-slow 9s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { flex-wrap: wrap; width: auto; justify-content: center; }
