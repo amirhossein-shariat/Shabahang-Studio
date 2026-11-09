@@ -89,7 +89,7 @@ const contactFa: ContactDict = {
   },
   form: {
     title: "درخواست پروژه", name: "نام و نام شرکت", reach: "راه تماس", reachHint: "شماره یا ایمیل", service: "موضوع", message: "توضیح کوتاه پروژه", submit: "آماده‌سازی ایمیل",
-    services: ["برند و هویت", "سایت و نرم‌افزار", "محتوا و رشد", "IT و زیرساخت", "طراحی محصول", "هنوز مطمئن نیستم"],
+    services: ["برندینگ و هویت بصری", "طراحی سایت و اپلیکیشن", "شبکه‌های اجتماعی و محتوا", "پشتیبانی IT و شبکه", "طراحی محصول", "هنوز مطمئن نیستم"],
     opened: "برنامه‌ی ایمیل شما باز شد. پیام را ارسال کنید تا به دست ما برسد.",
     fallback: "اگر چیزی باز نشد، همین متن را به این نشانی ایمیل کنید:", required: "نام و راه تماس را وارد کنید.",
     subject: "درخواست پروژه", bodyName: "نام", bodyReach: "راه تماس", bodyService: "موضوع",
@@ -107,7 +107,7 @@ const contactEn: ContactDict = {
   },
   form: {
     title: "Project request", name: "Your name and company", reach: "How to reach you", reachHint: "Phone or email", service: "Topic", message: "A short description", submit: "Prepare email",
-    services: ["Brand", "Web & Software", "Content & Growth", "IT & Infrastructure", "Product Design", "Not sure yet"],
+    services: ["Branding & Visual Identity", "Web & App Development", "Social Media & Content", "IT Support & Networks", "Product Design", "Not sure yet"],
     opened: "Your mail app opened. Send the message to get it to us.",
     fallback: "If nothing opened, email this text to:", required: "Enter your name and how to reach you.",
     subject: "Project request", bodyName: "Name", bodyReach: "Contact", bodyService: "Topic",
