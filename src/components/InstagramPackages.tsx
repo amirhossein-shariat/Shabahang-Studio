@@ -15,7 +15,7 @@ const mix = (c: string, pct: number) => `color-mix(in srgb, ${c} ${pct}%, transp
 export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
   const durations = C.durations.filter((d) => d.enabled);
   const plans = C.plans.filter((p) => p.enabled);
-  const [id, setId] = useState(durations[0]?.id);
+  const [id, setId] = useState((durations.find((x) => x.default) ?? durations[0])?.id);
   const d = durations.find((x) => x.id === id) ?? durations[0];
   const nf = new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en-US", { maximumFractionDigits: 2 });
   if (!C.enabled || !d || plans.length === 0) return null;
@@ -55,7 +55,7 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
           return (
             <li
               key={p.id}
-              className="relative flex flex-col overflow-hidden rounded-2xl border bg-white/[0.03] p-7 pt-9 backdrop-blur-sm transition duration-300 hover:-translate-y-1.5"
+              className="relative flex flex-col overflow-hidden rounded-2xl border bg-white/[0.03] p-7 pt-9 backdrop-blur-sm transition duration-300 hover:scale-[1.03]"
               style={{ borderColor: mix(c, 60), backgroundImage: `linear-gradient(180deg, ${mix(c, 16)}, transparent 240px)` }}
             >
               <div aria-hidden="true" className="band-shine absolute inset-x-0 top-0 h-2.5" style={{ background: `linear-gradient(90deg, ${c}, color-mix(in srgb, ${c} 45%, #ffffff), ${c}, color-mix(in srgb, ${c} 45%, #ffffff), ${c})`, backgroundSize: "200% 100%" }} />
@@ -72,11 +72,11 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
               </div>
 
               <p className="mt-6 flex items-baseline gap-2">
-                <span key={`${p.id}-${d.id}-m`} className="price-pop text-4xl font-black">{nf.format(monthly)}</span>
-                <span className="text-sm text-muted">{C.currency[lang]} / {C.perMonth[lang]}</span>
+                <span key={`${p.id}-${d.id}-t`} className="price-pop text-4xl font-black">{nf.format(total)}</span>
+                <span className="text-sm text-muted">{C.currency[lang]} / {d.label[lang]}</span>
               </p>
               <p className="mt-2 text-sm text-muted">
-                {C.totalLabel[lang]}: <span key={`${p.id}-${d.id}-t`} className="price-pop font-bold text-gold-light">{nf.format(total)} {C.currency[lang]}</span>
+                {C.monthlyLabel[lang]}: <span key={`${p.id}-${d.id}-m`} className="price-pop font-bold text-gold-light">{nf.format(monthly)} {C.currency[lang]}</span>
                 {d.setupFee > 0 && <span className="block text-xs">{C.setupIncluded[lang]} ({nf.format(d.setupFee)} {C.currency[lang]})</span>}
               </p>
 

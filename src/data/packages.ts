@@ -21,6 +21,8 @@ export type Duration = {
   enabled: boolean;
   months: number;
   discountPercent: number;
+  /** Selected when the page opens (exactly one duration should have this) */
+  default?: boolean;
   /** One-time fee added to the total of this duration */
   setupFee: number;
   label: L;
@@ -28,7 +30,7 @@ export type Duration = {
 export type PackagesConfig = {
   enabled: boolean;
   kicker: L; title: L; subtitle: L; footnote: L;
-  currency: L; perMonth: L; durationTitle: L; totalLabel: L; setupIncluded: L; discountLabel: L; cta: L; included: L; notIncluded: L;
+  currency: L; durationTitle: L; monthlyLabel: L; setupIncluded: L; discountLabel: L; cta: L; included: L; notIncluded: L;
   plans: Plan[];
   durations: Duration[];
 };
@@ -40,17 +42,16 @@ export const INSTAGRAM_PACKAGES: PackagesConfig = {
   kicker: { fa: "اینستاگرام", en: "Instagram" },
   title: { fa: "پکیج‌های اینستاگرام", en: "Instagram packages" },
   subtitle: {
-    fa: "سه سطح برای همراهی ماهانه. مدت قرارداد را انتخاب کنید تا قیمت‌ها با تخفیف محاسبه شود.",
-    en: "Three levels of monthly support. Pick a contract length to see prices with the discount applied.",
+    fa: "سه سطح برای همراهی ماهانه. مدت قرارداد را انتخاب کنید تا مبلغ کل همان دوره، با تخفیف، نمایش داده شود.",
+    en: "Three levels of monthly support. Pick a contract length to see the total for that whole period, discount included.",
   },
   footnote: {
-    fa: "تخفیف روی قیمت ماهانه اعمال می‌شود و مبلغ کل برابر است با قیمت ماهانه ضرب در تعداد ماه (به‌علاوه‌ی هزینه‌ی راه‌اندازی، اگر برای آن مدت تعریف شده باشد).",
-    en: "The discount applies to the monthly price, and the total is the monthly price times the number of months (plus the setup fee, where one applies to that length).",
+    fa: "قیمت درشت، مبلغ کل کل دوره‌ی قرارداد است (نه ماهانه). تخفیف روی قیمت ماهانه اعمال می‌شود و مبلغ کل برابر است با قیمت ماهانه ضرب در تعداد ماه (به‌علاوه‌ی هزینه‌ی راه‌اندازی، اگر برای آن مدت تعریف شده باشد).",
+    en: "The large price is the total for the whole contract period, not per month. The discount applies to the monthly price, and the total is the monthly price times the number of months (plus the setup fee, where one applies to that length).",
   },
   currency: { fa: "میلیون تومان", en: "million toman" },
-  perMonth: { fa: "ماهانه", en: "per month" },
   durationTitle: { fa: "مدت قرارداد", en: "Contract length" },
-  totalLabel: { fa: "مبلغ کل", en: "Total" },
+  monthlyLabel: { fa: "معادل ماهانه", en: "Monthly equivalent" },
   setupIncluded: { fa: "شامل هزینه‌ی راه‌اندازی", en: "incl. setup fee" },
   discountLabel: { fa: "تخفیف", en: "off" },
   cta: { fa: "دریافت مشاوره‌ی این بسته", en: "Ask about this plan" },
@@ -58,7 +59,7 @@ export const INSTAGRAM_PACKAGES: PackagesConfig = {
   notIncluded: { fa: "شامل نمی‌شود", en: "Not included" },
   durations: [
     { id: "m1", enabled: true, months: 1, discountPercent: 0, setupFee: 3, label: { fa: "۱ ماهه", en: "1 month" } },
-    { id: "m3", enabled: true, months: 3, discountPercent: 6, setupFee: 0, label: { fa: "۳ ماهه", en: "3 months" } },
+    { id: "m3", enabled: true, default: true, months: 3, discountPercent: 6, setupFee: 0, label: { fa: "۳ ماهه", en: "3 months" } },
     { id: "m6", enabled: true, months: 6, discountPercent: 12, setupFee: 0, label: { fa: "۶ ماهه", en: "6 months" } },
   ],
   plans: [
