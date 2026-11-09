@@ -2,51 +2,57 @@ import type { Locale } from "./index";
 
 export type LoginDict = {
   meta: { title: string; description: string };
-  kicker: string; title: string; intro: string;
-  points: { icon: "users" | "lock" | "key"; title: string; text: string }[];
-  form: {
-    title: string; sub: string; id: string; idHint: string; password: string; show: string; hide: string; remember: string;
-    forgot: string; forgotHelp: string; submit: string; required: string; notReady: string; noSms: string;
+  tabs: { login: string; signup: string };
+  show: string; hide: string; contact: string;
+  login: {
+    title: string; sub: string; id: string; idHint: string; password: string; remember: string;
+    forgot: string; forgotHelp: string; submit: string; required: string; notReady: string; toSignup: string; toSignupLink: string;
   };
-  noAccount: string; contact: string;
+  signup: {
+    title: string; sub: string; name: string; nameHint: string; id: string; idHint: string; idRule: string; password: string; confirm: string;
+    submit: string; strength: { label: string; weak: string; fair: string; strong: string };
+    requiredAll: string; badId: string; short: string; mismatch: string; notReady: string; toLogin: string; toLoginLink: string;
+  };
 };
 
 const fa: LoginDict = {
-  meta: { title: "ورود | شباهنگ استودیو", description: "ورود به حساب شباهنگ استودیو با شناسه و رمز عبور، برای مشتریان، تیم و مدیریت." },
-  kicker: "ورود",
-  title: "یک ورود برای همه",
-  intro: "مشتریان، اعضای تیم و مدیریت با همین فرم وارد می‌شوند. بعد از ورود، بخش مناسب حساب شما باز می‌شود.",
-  points: [
-    { icon: "users", title: "نیازی به انتخاب نقش نیست", text: "شناسه و رمز را وارد کنید؛ نوع حساب شما به‌صورت خودکار تشخیص داده می‌شود." },
-    { icon: "key", title: "ورود بدون پیامک", text: "برای ورود و ثبت‌نام از پیامک و کد یک‌بارمصرف استفاده نمی‌کنیم." },
-    { icon: "lock", title: "حساب را شباهنگ می‌سازد", text: "شناسه و رمز اولیه را بعد از شروع همکاری به شما می‌دهیم." },
-  ],
-  form: {
-    title: "ورود به حساب", sub: "شناسه و رمز عبور خود را وارد کنید.", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei", password: "رمز عبور", show: "نمایش رمز", hide: "پنهان کردن رمز",
+  meta: { title: "ورود و ساخت حساب | شباهنگ استودیو", description: "ورود به حساب یا ساخت حساب در شباهنگ استودیو با شناسه و رمز عبور." },
+  tabs: { login: "ورود", signup: "ساخت حساب" },
+  show: "نمایش رمز", hide: "پنهان کردن رمز", contact: "تماس با ما",
+  login: {
+    title: "ورود به حساب", sub: "شناسه و رمز عبور خود را وارد کنید.", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei", password: "رمز عبور",
     remember: "مرا در این دستگاه نگه دار", forgot: "رمز را فراموش کرده‌اید؟", forgotHelp: "بازنشانی رمز را مدیر شباهنگ انجام می‌دهد. از صفحه‌ی تماس درخواست دهید.",
     submit: "ورود", required: "شناسه و رمز عبور را وارد کنید.", notReady: "سامانه‌ی ورود هنوز فعال نیست. به‌زودی با همین شناسه و رمز وارد می‌شوید.",
-    noSms: "ورود فقط با شناسه و رمز عبور است و پیامکی ارسال نمی‌شود.",
+    toSignup: "حساب ندارید؟", toSignupLink: "ساخت حساب",
   },
-  noAccount: "حساب ندارید؟", contact: "با ما تماس بگیرید",
+  signup: {
+    title: "ساخت حساب", sub: "اطلاعات زیر را کامل کنید.", name: "نام و نام خانوادگی یا نام شرکت", nameHint: "مثلاً علی رضایی", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei",
+    idRule: "حروف انگلیسی، عدد، نقطه و خط زیر", password: "رمز عبور", confirm: "تکرار رمز عبور", submit: "ساخت حساب",
+    strength: { label: "قدرت رمز", weak: "ضعیف", fair: "متوسط", strong: "قوی" },
+    requiredAll: "همه‌ی فیلدها را کامل کنید.", badId: "شناسه فقط می‌تواند حروف انگلیسی، عدد، نقطه و خط زیر داشته باشد.",
+    short: "رمز عبور باید حداقل ۸ نویسه باشد.", mismatch: "رمز عبور و تکرار آن یکسان نیستند.",
+    notReady: "ساخت حساب هنوز فعال نیست. به‌زودی با همین اطلاعات حساب می‌سازید.", toLogin: "حساب دارید؟", toLoginLink: "ورود",
+  },
 };
 
 const en: LoginDict = {
-  meta: { title: "Sign in | Shabahang Studio", description: "Sign in to your Shabahang Studio account with an ID and password, for clients, team and management." },
-  kicker: "Sign in",
-  title: "One sign-in for everyone",
-  intro: "Clients, team members and management use this same form. After signing in, the area that matches your account opens.",
-  points: [
-    { icon: "users", title: "No role to choose", text: "Enter your ID and password; the type of your account is detected automatically." },
-    { icon: "key", title: "No SMS", text: "We do not use text messages or one-time codes to sign in or sign up." },
-    { icon: "lock", title: "Studio-created accounts", text: "We give you your ID and first password when we start working together." },
-  ],
-  form: {
-    title: "Sign in to your account", sub: "Enter your ID and password.", id: "User ID", idHint: "e.g. ali.rezaei", password: "Password", show: "Show password", hide: "Hide password",
+  meta: { title: "Sign in & create account | Shabahang Studio", description: "Sign in to your account or create one at Shabahang Studio with an ID and password." },
+  tabs: { login: "Sign in", signup: "Create account" },
+  show: "Show password", hide: "Hide password", contact: "Contact us",
+  login: {
+    title: "Sign in to your account", sub: "Enter your ID and password.", id: "User ID", idHint: "e.g. ali.rezaei", password: "Password",
     remember: "Keep me signed in on this device", forgot: "Forgot your password?", forgotHelp: "A Shabahang admin resets passwords. Request it from the contact page.",
     submit: "Sign in", required: "Enter your ID and password.", notReady: "Sign-in is not live yet. Soon you will sign in with this same ID and password.",
-    noSms: "Sign-in uses only an ID and password. No text message is sent.",
+    toSignup: "No account?", toSignupLink: "Create one",
   },
-  noAccount: "No account?", contact: "Contact us",
+  signup: {
+    title: "Create your account", sub: "Fill in the details below.", name: "Full name or company", nameHint: "e.g. Ali Rezaei", id: "User ID", idHint: "e.g. ali.rezaei",
+    idRule: "English letters, digits, dot and underscore", password: "Password", confirm: "Repeat password", submit: "Create account",
+    strength: { label: "Password strength", weak: "Weak", fair: "Fair", strong: "Strong" },
+    requiredAll: "Fill in every field.", badId: "The ID can only contain English letters, digits, dot and underscore.",
+    short: "The password must be at least 8 characters.", mismatch: "The password and its repeat do not match.",
+    notReady: "Account creation is not live yet. Soon you will create your account with these details.", toLogin: "Already have an account?", toLoginLink: "Sign in",
+  },
 };
 
 export const getLoginDict = (l: Locale) => (l === "fa" ? fa : en);
