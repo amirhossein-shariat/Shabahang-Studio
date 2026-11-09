@@ -103,8 +103,8 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
             <h3 className="mt-10 text-sm font-bold tracking-[0.2em] text-muted">{ui.inside[lang]}</h3>
             <ul className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
               {p.subs.map((x) => (
-                <li key={x.name.fa} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-gold/40 hover:bg-white/[0.05]">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 text-gold">
+                <li key={x.name.fa} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:bg-white/[0.05] hover:shadow-[0_18px_45px_-22px_rgba(232,198,130,0.4)]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 text-gold transition duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]">
                     <ServiceIcon name={x.icon} size={20} />
                   </span>
                   <h4 className="mt-4 font-black">{x.name[lang]}</h4>
