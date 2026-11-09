@@ -172,21 +172,10 @@ html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
 @keyframes progress { to { transform: scaleX(1); } }
 @supports (animation-timeline: scroll()) { .scroll-progress { animation: progress linear both; animation-timeline: scroll(root); } }
 
-/* Reveal on scroll */
-@keyframes rv { from { opacity: 0; transform: translateY(34px) scale(0.985); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
-@supports (animation-timeline: view()) {
-  main h2,
-  main :is(ul, ol) > li[class*="rounded-"],
-  main form,
-  [data-item] {
-    animation: rv linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 38%;
-  }
-  main :is(ul, ol) > li:nth-child(2), [data-item]:nth-child(2) { animation-range: entry 5% entry 43%; }
-  main :is(ul, ol) > li:nth-child(3), [data-item]:nth-child(3) { animation-range: entry 10% entry 48%; }
-  main :is(ul, ol) > li:nth-child(n + 4), [data-item]:nth-child(n + 4) { animation-range: entry 14% entry 52%; }
-}
+/* Reveal on scroll: classes are added by src/lib/reveal.ts and removed again once the item has appeared */
+.rv-pre { opacity: 0; transform: translateY(40px) scale(0.97); filter: blur(8px); transition: opacity 0.9s cubic-bezier(0.16, 0.85, 0.2, 1), transform 0.9s cubic-bezier(0.16, 0.85, 0.2, 1), filter 0.9s ease; will-change: opacity, transform; }
+.rv-pre.rv-icon { transform: scale(0.2) rotate(-40deg); filter: none; transition-duration: 0.8s; transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+.rv-pre.rv-in { opacity: 1; transform: none; filter: blur(0); }
 
 /* Packages: price change and a slow light across each tier band */
 @keyframes price-pop { from { opacity: 0; transform: translateY(10px) scale(0.94); filter: blur(5px); } to { opacity: 1; transform: none; filter: blur(0); } }
@@ -209,6 +198,8 @@ a.bg-gold, button.bg-gold {
   box-shadow: 0 0 26px -6px rgba(232, 198, 130, 0.6), 0 0 22px -8px rgba(123, 108, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45);
   transition: background-position 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s, transform 0.3s;
 }
+/* Gold-filled buttons always keep dark text, whatever other hover colour classes are present */
+a.bg-gold, button.bg-gold, a.bg-gold:hover, button.bg-gold:hover, .hover\:bg-gold:hover { color: var(--midnight) !important; }
 a.bg-gold:hover, button.bg-gold:hover {
   background-position: 100% 50%;
   box-shadow: 0 0 34px -4px rgba(232, 198, 130, 0.75), 0 0 30px -6px rgba(123, 108, 246, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.55);
@@ -218,17 +209,6 @@ a.bg-gold:hover, button.bg-gold:hover {
   background-image: linear-gradient(115deg, #f7e6b8 0%, #e8c682 40%, #c8964f 100%);
   color: var(--midnight);
   box-shadow: 0 0 26px -6px rgba(232, 198, 130, 0.6);
-}
-
-/* Icons pop in as they scroll into view */
-@keyframes icon-pop { from { opacity: 0; transform: scale(0.3) rotate(-35deg); } to { opacity: 1; transform: none; } }
-@supports (animation-timeline: view()) {
-  main span[class*="rounded-"] > svg,
-  main li > svg {
-    animation: icon-pop linear both;
-    animation-timeline: view();
-    animation-range: entry 5% entry 55%;
-  }
 }
 
 /* Page opening: header block rises in piece by piece, with a gold line drawn under the title */
