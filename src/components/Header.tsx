@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { FEATURES } from "@/config";
 import Logo from "./Logo";
 import type { Dict, Locale } from "@/dictionaries";
 
 export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["nav"]; path?: string }) {
   const other: Locale = lang === "fa" ? "en" : "fa";
   const links = [
-    [`/${lang}/work`, t.work],
+    ...(FEATURES.showWork ? [[`/${lang}/work`, t.work]] : []),
     [`/${lang}/services`, t.services],
     [`/${lang}/about`, t.studio],
     [`/${lang}/contact`, t.contact],

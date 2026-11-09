@@ -8,7 +8,6 @@ export type ServicesDict = {
   hero: { kicker: string; title: string; desc: string };
   price: string;
   projects: { title: string; sub: string; items: { name: string; line: string; points: string[]; note?: string }[] };
-  growth: Pkg & { durationTitle: string; durations: { label: string; off: string }[]; durationNote: string; setup: string };
   it: Pkg & { basis: string; setup: string };
   web: { title: string; sub: string; free: string[]; paid: string[]; freeTitle: string; paidTitle: string; plans: string; domain: string };
   starters: { title: string; items: { name: string; text: string }[] };
@@ -27,32 +26,6 @@ const fa: ServicesDict = {
       { name: "برند و هویت", line: "به کسب‌وکارت یک چهره بده", points: ["لوگو و هویت بصری", "کاتالوگ", "بسته‌بندی گرافیکی", "موشن لوگو"] },
       { name: "طراحی محصول", line: "ایده‌ات رو محصول کن", points: ["طراحی صنعتی", "مدل‌سازی و رندر", "نمونه‌سازی و پرینت سه‌بعدی"] },
     ],
-  },
-  growth: {
-    title: "محتوا و رشد",
-    sub: "دیده شو. پکیج ماهانه با سه سطح.",
-    levels: ["برنزی", "نقره‌ای", "طلایی"],
-    priceNote: "قیمت ماهانه",
-    rows: [
-      { group: "طراحی گرافیک", label: "پست", v: ["۸", "۱۲", "۱۶"] },
-      { label: "استوری", v: ["۱۲", "۲۰", "۳۰"] },
-      { label: "قالب و کاور هایلایت", v: ["✓", "✓", "✓"] },
-      { group: "موشن و ویدیو", label: "ریلز یا موشن کوتاه", v: ["۲", "۴", "۸"] },
-      { label: "ویدیوی معرفی یا تبلیغاتی", v: ["—", "—", "۱ در ماه"] },
-      { group: "تولید محتوا", label: "متن و کپشن", v: ["✓", "✓", "✓"] },
-      { label: "عکاسی و فیلم‌برداری در محل", v: ["—", "۱ جلسه در فصل", "۱ جلسه در ماه"] },
-      { group: "مدیریت", label: "ادمین و پاسخ دایرکت", v: ["—", "✓", "✓"] },
-      { label: "مدیریت تبلیغات", v: ["—", "—", "✓"] },
-      { group: "گزارش", label: "نوع گزارش", v: ["ساده", "ماهانه", "ماهانه + جلسه‌ی استراتژی"] },
-    ],
-    durationTitle: "مدت تعهد",
-    durations: [
-      { label: "۱ ماه (آزمایشی)", off: "قیمت پایه" },
-      { label: "۳ ماه", off: "حدود ۱۰٪ تخفیف" },
-      { label: "۶ ماه", off: "حدود ۲۰٪ تخفیف" },
-    ],
-    durationNote: "سطح، دامنه‌ی کار را تعیین می‌کند و مدت، فقط میزان تعهد و تخفیف را.",
-    setup: "ماه اول شامل راه‌اندازی یک‌باره است: تحلیل پیج، استراتژی و ساخت قالب‌ها.",
   },
   it: {
     title: "IT و زیرساخت",
@@ -103,32 +76,6 @@ const en: ServicesDict = {
       { name: "Brand", line: "Give your business a face.", points: ["Logo and visual identity", "Catalogue", "Packaging graphics", "Logo motion"] },
       { name: "Product Design", line: "Turn your idea into a product.", points: ["Industrial design", "Modelling and rendering", "Prototyping and 3D printing"] },
     ],
-  },
-  growth: {
-    title: "Content & Growth",
-    sub: "Get seen. A monthly package in three levels.",
-    levels: ["Bronze", "Silver", "Gold"],
-    priceNote: "Monthly price",
-    rows: [
-      { group: "Graphic design", label: "Posts", v: ["8", "12", "16"] },
-      { label: "Stories", v: ["12", "20", "30"] },
-      { label: "Highlight templates and covers", v: ["✓", "✓", "✓"] },
-      { group: "Motion & video", label: "Reels or short motion", v: ["2", "4", "8"] },
-      { label: "Intro or promo video", v: ["—", "—", "1 per month"] },
-      { group: "Content", label: "Copy and captions", v: ["✓", "✓", "✓"] },
-      { label: "On-site photo and video", v: ["—", "1 session per quarter", "1 session per month"] },
-      { group: "Management", label: "Admin and DM replies", v: ["—", "✓", "✓"] },
-      { label: "Ad management", v: ["—", "—", "✓"] },
-      { group: "Reporting", label: "Report", v: ["Simple", "Monthly", "Monthly + strategy session"] },
-    ],
-    durationTitle: "Commitment",
-    durations: [
-      { label: "1 month (trial)", off: "Base price" },
-      { label: "3 months", off: "About 10% off" },
-      { label: "6 months", off: "About 20% off" },
-    ],
-    durationNote: "The level sets the scope of work. The duration only sets the commitment and the discount.",
-    setup: "The first month includes one-time setup: page analysis, strategy and templates.",
   },
   it: {
     title: "IT & Infrastructure",

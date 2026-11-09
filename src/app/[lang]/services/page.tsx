@@ -5,6 +5,7 @@ import { getDictionary, hasLocale } from "@/dictionaries";
 import { getServicesDict } from "@/dictionaries/services";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Sections";
+import InstagramPackages from "@/components/InstagramPackages";
 import PackageTable from "@/components/PackageTable";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/services">): Promise<Metadata> {
@@ -67,20 +68,7 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
         </section>
 
         <section id="growth" className={sect}>
-          <h2 className={h2}>{t.growth.title}</h2>
-          <p className="mt-2 text-muted">{t.growth.sub}</p>
-          <div className="mt-8"><PackageTable pkg={t.growth} price={t.price} /></div>
-          <h3 className="mt-10 font-black">{t.growth.durationTitle}</h3>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-3">
-            {t.growth.durations.map((d) => (
-              <li key={d.label} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                <p className="font-bold">{d.label}</p>
-                <p className="mt-1 text-sm text-gold-light">{d.off}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 text-sm text-muted">{t.growth.durationNote}</p>
-          <p className="mt-2 text-sm text-muted">{t.growth.setup}</p>
+          <InstagramPackages lang={lang} />
         </section>
 
         <section id="it" className={sect}>
@@ -105,7 +93,7 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/servic
 
         <section className="mx-auto max-w-3xl px-5 py-24 text-center">
           <h2 className="gold-text text-3xl font-black md:text-5xl">{t.cta.title}</h2>
-          <Link href={`/${lang}#contact`} className="mt-8 inline-block rounded-full bg-gold px-10 py-4 text-sm font-bold text-midnight transition hover:bg-gold-light">
+          <Link href={`/${lang}/contact`} className="mt-8 inline-block rounded-full bg-gold px-10 py-4 text-sm font-bold text-midnight transition hover:bg-gold-light">
             {t.cta.button}
           </Link>
           <p className="mt-6"><Link href={`/${lang}`} className="text-sm text-muted hover:text-gold-light">{t.back}</Link></p>
