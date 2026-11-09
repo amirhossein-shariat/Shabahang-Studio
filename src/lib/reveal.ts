@@ -8,7 +8,7 @@
 const BLOCKS =
   'main h2, main section > p, main section > h3, main :is(ul, ol) > li, main form, [data-item], main section[class*="rounded-"], main section > div[class*="rounded-"]:not(:has(ul, form))';
 const ICONS = 'main span[class*="rounded-"]:has(> svg)';
-const SKIP = ".page-head, .hero-rise, .title-in, .marquee, [data-no-reveal]";
+const SKIP = ".page-head, .hero-rise, .title-in, .marquee, .cine-card, [data-no-reveal]";
 
 export function initReveal(scope: ParentNode = document): () => void {
   if (typeof IntersectionObserver === "undefined" || matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};

@@ -23,9 +23,9 @@ export default function ContactForm({ t, email }: { t: ContactDict["form"]; emai
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm sm:p-9" noValidate>
+    <form onSubmit={onSubmit} style={{ "--d": 0.5 } as React.CSSProperties} className="cine-card cine-sweep cine-kids flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm sm:p-9" noValidate>
       <div className="flex flex-col items-center text-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10"><LogoMark size={22} /></span>
+        <span className="cine-pop flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10"><LogoMark size={22} /></span>
         <h2 className="mt-4 text-2xl font-black">{t.title}</h2>
       </div>
       <div className="mt-7 grid gap-5 sm:grid-cols-2">

@@ -33,8 +33,8 @@ export default async function ContactPage({ params }: PageProps<"/[lang]/contact
         </header>
 
         <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-2">
-          <section className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.04] p-7 text-center backdrop-blur-sm sm:p-9">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10 text-gold"><PhoneIcon size={22} /></span>
+          <section style={{ "--d": 0.3 } as React.CSSProperties} className="cine-card cine-sweep cine-kids flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.04] p-7 text-center backdrop-blur-sm sm:p-9">
+            <span className="cine-pop flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10 text-gold"><PhoneIcon size={22} /></span>
             <h2 className="mt-4 text-2xl font-black">{c.title}</h2>
 
             <p className="mt-8 text-xs text-muted">{c.phone}</p>

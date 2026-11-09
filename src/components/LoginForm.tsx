@@ -83,15 +83,15 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
   const heading = tab === "login" ? t.login : t.signup;
 
   return (
-    <div className="relative mx-auto w-full max-w-md">
+    <div style={{ "--d": 0.15 } as React.CSSProperties} className="cine-card relative mx-auto w-full max-w-md">
       {/* glow behind the card */}
       <div aria-hidden="true" className="nebula-a pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(123,108,246,.35),rgba(232,198,130,.12)_45%,transparent_70%)] blur-2xl" />
       {/* animated light running around the border */}
       <div className="relative overflow-hidden rounded-[1.75rem] p-px">
         <div aria-hidden="true" className="auth-ring absolute -inset-[60%] bg-[conic-gradient(from_0deg,transparent_0deg,rgba(232,198,130,.9)_60deg,transparent_130deg,rgba(123,108,246,.8)_220deg,transparent_300deg)]" />
-        <div className="relative rounded-[calc(1.75rem-1px)] bg-[#0b0e27]/95 p-7 backdrop-blur-xl sm:p-9">
+        <div className="cine-kids cine-sweep relative rounded-[calc(1.75rem-1px)] bg-[#0b0e27]/95 p-7 backdrop-blur-xl sm:p-9">
           <div className="flex flex-col items-center text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10 shadow-[0_0_30px_-6px_rgba(232,198,130,.6)]"><LogoMark size={26} /></span>
+            <span className="cine-pop flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10 shadow-[0_0_30px_-6px_rgba(232,198,130,.6)]"><LogoMark size={26} /></span>
             <h1 className="mt-5 text-2xl font-black">{heading.title}</h1>
             <p className="mt-1 text-sm text-muted">{heading.sub}</p>
           </div>
