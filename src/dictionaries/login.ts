@@ -6,7 +6,7 @@ export type LoginDict = {
   show: string; hide: string; contact: string;
   login: {
     title: string; sub: string; id: string; idHint: string; password: string;
-    forgot: string; forgotHelp: string; submit: string; required: string; notReady: string; toSignup: string; toSignupLink: string;
+    forgot: string; forgotHelp: string; submit: string; required: string; notReady: string; toSignup: string; toSignupLink: string; invalid: string;
   };
   signup: {
     title: string; sub: string; name: string; nameHint: string; id: string; idHint: string; password: string; confirm: string;
@@ -23,7 +23,7 @@ const fa: LoginDict = {
     title: "ورود به حساب", sub: "شناسه و رمز عبور خود را وارد کنید.", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei", password: "رمز عبور",
     forgot: "رمز را فراموش کرده‌اید؟", forgotHelp: "بازنشانی رمز را مدیر شباهنگ انجام می‌دهد. از صفحه‌ی تماس درخواست دهید.",
     submit: "ورود", required: "شناسه و رمز عبور را وارد کنید.", notReady: "سامانه‌ی ورود هنوز فعال نیست. به‌زودی با همین شناسه و رمز وارد می‌شوید.",
-    toSignup: "حساب ندارید؟", toSignupLink: "ساخت حساب",
+    toSignup: "حساب ندارید؟", toSignupLink: "ساخت حساب", invalid: "شناسه یا رمز عبور درست نیست.",
   },
   signup: {
     title: "ساخت حساب", sub: "اطلاعات زیر را کامل کنید.", name: "نام و نام خانوادگی یا نام شرکت", nameHint: "مثلاً علی رضایی", id: "شناسه‌ی کاربری", idHint: "مثلاً ali.rezaei",
@@ -43,7 +43,7 @@ const en: LoginDict = {
     title: "Sign in to your account", sub: "Enter your ID and password.", id: "User ID", idHint: "e.g. ali.rezaei", password: "Password",
     forgot: "Forgot your password?", forgotHelp: "A Shabahang admin resets passwords. Request it from the contact page.",
     submit: "Sign in", required: "Enter your ID and password.", notReady: "Sign-in is not live yet. Soon you will sign in with this same ID and password.",
-    toSignup: "No account?", toSignupLink: "Create one",
+    toSignup: "No account?", toSignupLink: "Create one", invalid: "The ID or password is not correct.",
   },
   signup: {
     title: "Create your account", sub: "Fill in the details below.", name: "Full name or company", nameHint: "e.g. Ali Rezaei", id: "User ID", idHint: "e.g. ali.rezaei",

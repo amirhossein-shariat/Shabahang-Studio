@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FEATURES } from "@/config";
+import { demoLogin, saveSession } from "@/lib/panel/demo";
 import ServiceIcon from "./ServiceIcon";
 import { LogoMark } from "./Logo";
 import type { LoginDict } from "@/dictionaries/login";
@@ -17,10 +20,11 @@ function score(p: string) {
   return n;
 }
 
-type Msg = "" | "required" | "badId" | "short" | "mismatch" | "notReady";
+type Msg = "" | "required" | "badId" | "short" | "mismatch" | "notReady" | "invalid";
 
 /** Design-only for now: it validates and explains that the system is not live. It sends nothing anywhere. */
 export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
+  const router = useRouter();
   const [tab, setTab] = useState<"login" | "signup">("login");
   const [show, setShow] = useState(false);
   const [help, setHelp] = useState(false);
@@ -39,7 +43,13 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
   function onLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
-    setMsg(String(d.get("username") ?? "").trim() && String(d.get("password") ?? "") ? "notReady" : "required");
+    const id = String(d.get("username") ?? "").trim();
+    const pw = String(d.get("password") ?? "");
+    if (!id || !pw) return setMsg("required");
+    const s = FEATURES.demoPanel ? demoLogin(id, pw) : null;
+    if (!s) return setMsg("invalid");
+    saveSession(s);
+    router.push(`/${lang}/panel`);
   }
 
   function onSignup(e: React.FormEvent<HTMLFormElement>) {
@@ -74,6 +84,8 @@ export default function LoginForm({ t, lang }: { t: LoginDict; lang: string }) {
     <div role="status" aria-live="polite" className="mt-4 min-h-6 text-center text-sm">
       {tab !== kind ? null : msg === "notReady" ? (
         <p className="text-muted">{kind === "login" ? t.login.notReady : t.signup.notReady}</p>
+      ) : msg === "invalid" ? (
+        <p className="text-amber">{t.login.invalid}</p>
       ) : msg ? (
         <p className="text-amber">{msg === "required" ? (kind === "login" ? t.login.required : t.signup.requiredAll) : t.signup[msg]}</p>
       ) : null}
