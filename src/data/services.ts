@@ -75,7 +75,7 @@ export const PILLARS: Pillar[] = [
     line: { fa: "سیستم‌هات همیشه سالم و روشن بمونن", en: "Keep your systems healthy and on." },
     summary: { fa: "پشتیبانی کاربران، مانیتورینگ، بکاپ و VoIP با قرارداد ماهانه.", en: "User support, monitoring, backups and VoIP on a monthly contract." },
     model: { fa: "قرارداد ماهانه", en: "Monthly contract" },
-    intro: { fa: "قیمت بر اساس تعداد کاربر است. راه‌اندازی اولیه (شبکه‌کشی، سرور، VoIP) پروژه‌ای و جدا قیمت می‌خورد.", en: "Priced per user. Initial setup (cabling, servers, VoIP) is a separate project." },
+    intro: { fa: "دو پکیج پشتیبانی ماهانه (IT Basic و IT Professional) با قرارداد ماهانه یا سه‌ماهه. خدمات پروژه‌ای مثل شبکه‌کشی، سرور و VoIP جدا و بعد از بررسی فنی قیمت می‌خورند.", en: "Two monthly support packages (IT Basic and IT Professional), billed monthly or quarterly. Project work such as cabling, servers and VoIP is priced separately after a technical review." },
     subs: [
       s("users", "پشتیبانی کاربران", "User support", "تلفنی، از راه دور و حضوری، بسته به سطح قرارداد.", "By phone, remote and on-site, depending on the plan."),
       s("activity", "مانیتورینگ شبکه و سیستم‌ها", "Network & system monitoring", "بررسی دوره‌ای یا مداوم سلامت شبکه و سیستم‌ها.", "Periodic or continuous checks of network and system health."),

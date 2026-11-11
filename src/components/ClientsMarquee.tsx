@@ -21,7 +21,7 @@ export default function ClientsMarquee({ t }: { t: Dict["clients"] }) {
           key: `${c.name}-${r}`,
           hidden: r > 0,
           // eslint-disable-next-line @next/next/no-img-element
-          node: <img src={c.logo} alt={r === 0 ? c.name : ""} width={c.w} height={c.h} style={{ height: c.height, width: "auto" }} className="opacity-70 transition-opacity hover:opacity-100" />,
+          node: <img src={c.logo} alt={r === 0 ? c.name : ""} width={c.w} height={c.h} style={{ height: c.height, width: "auto" }} className="opacity-95 transition-opacity hover:opacity-100" />,
         })),
       )
     : Array.from({ length: PLACEHOLDER_SLOTS }, (_, i) => ({

@@ -5,7 +5,7 @@ Next.js (App Router, TypeScript, Tailwind v4), fa/en routing (`/fa`, `/en`, RTL 
 calm Canvas2D starfield (`src/lib/starfield.ts`: twinkle, slow drift, faint scroll depth; no mouse/touch reaction). Note: this Next.js version differs from older ones;
 read `node_modules/next/dist/docs/` before framework-level changes (see `AGENTS.md`).
 
-Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist but are switched off (see flags).
+Pages: home, `/services`, `/about`, `/contact`, `/login`, `/panel` (demo panels, see `panels-status.md`). Portfolio pages exist but are switched off (see flags).
 
 ## Content that lives in data files (admin-panel candidates)
 - `src/data/packages.ts` — Instagram packages (see `admin-panel.md`)
@@ -16,6 +16,7 @@ Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist 
 
 ## Flags
 - `FEATURES.showLogin` in `src/config.ts` = true: sign-in + sign-up page and header link. UI only, see `auth-and-panels.md`.
+- `FEATURES.demoPanel` in `src/config.ts` = true: demo client / CEO panels with fixed preview accounts (2222 and 1111). Demo only; remove before production, see `panels-status.md`.
 - `FEATURES.showWork` in `src/config.ts` = **false**. Hides the portfolio: nav link, hero button, home section, and
   `/work` + `/work/[category]` return 404. Nothing was deleted; set it to `true` to bring everything back.
 
@@ -42,7 +43,13 @@ Pages: home, `/services`, `/about`, `/contact`, `/login`. Portfolio pages exist 
   `public/clients/` (the marquee skips missing files). "Pratti" spelling is unconfirmed.
 
 ## Working notes
-- This environment cannot `git push` (remote changes were denied). Code was pushed with the GitHub MCP tools instead, which
-  only accept text; binary files cannot be sent that way. Verify pushed files with `git hash-object` vs the GitHub blob sha.
+- `git push` to the branch works now (2026-11-11). Earlier rounds used the GitHub MCP tools (text only). Entry point for any new AI: `docs/AI-CONTEXT.md`.
 - The preview artifact is a static snapshot built from the real `next build` output by a helper script; re-publish it after
   each change.
+
+## صفحه‌ی اختصاصی هر خدمت، سوالات متداول و IT (به‌روز: ۲۰۲۶-۱۱-۱۰)
+- هر خدمت صفحه‌ی جدا دارد: `/[lang]/services/{brand|web|growth|it|product}`؛ `/services` فقط نمای کلی و کارت‌های لینک است.
+- سوالات متداول هر خدمت: `src/data/faq.ts` (تعداد پرسش‌ها آزاد است؛ کاروسل + نمای فهرست + کارت «پرسش من اینجا نبود»). ویرایش از پنل ادمین = آینده؛ فعلاً داده‌محور. پاسخ‌های غیر IT فقط واقعیت‌های موجود سایت را تکرار می‌کنند.
+- IT طبق بریف مالک: `src/data/it.ts` (دو پکیج IT Basic / IT Professional، ماهانه/سه‌ماهه، ۱۸ خدمت پروژه‌ای در ۶ گروه با قابلیت انتخاب، تعرفه‌ی خارج از پکیج، شرایط قرارداد، CTA). تغییر قیمت: فقط `IT_PLANS[...].monthly/quarterly`.
+- انتخاب خدمات پروژه‌ای و دکمه‌ی «مشکلم در فهرست نبود» به فرم تماس پیش‌پر می‌فرستند (sessionStorage `sh-prefill`، `src/lib/enhance.ts`).
+- باید مالک تأیید کند: قیمت‌ها، ساعت پشتیبانی، شهرهای حضوری، مالیات (VAT)، مسیر تماس، بازه‌ی تست بکاپ، ارزیابی رایگان. محتوای IT فقط فارسی است (`/en` همان را نشان می‌دهد).

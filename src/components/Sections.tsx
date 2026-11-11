@@ -15,7 +15,7 @@ export function Services({ t, lang }: { t: Dict["services"]; lang: "fa" | "en" }
         {PILLARS.filter((p) => p.enabled).map((p, i) => (
           <li key={p.id} data-item>
             <Link
-              href={`/${lang}/services#${p.id}`}
+              href={`/${lang}/services/${p.id}`}
               className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition duration-300 hover:scale-[1.03] hover:border-gold/60 hover:bg-white/[0.06] hover:shadow-[0_0_50px_-14px_rgba(232,198,130,0.5)]"
             >
               <div className="flex items-center justify-between">

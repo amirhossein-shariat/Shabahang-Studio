@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FEATURES } from "@/config";
 import Logo from "./Logo";
-import ServiceIcon from "./ServiceIcon";
+import HeaderAccount from "./HeaderAccount";
 import type { Dict, Locale } from "@/dictionaries";
 
 export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["nav"]; path?: string }) {
@@ -26,12 +26,7 @@ export default function Header({ lang, t, path = "" }: { lang: Locale; t: Dict["
           ))}
         </nav>
         <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
-          {FEATURES.showLogin && (
-            <Link href={`/${lang}/login`} aria-label={t.login} className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-gold">
-              <ServiceIcon name="user" size={18} />
-              <span className="hidden sm:inline">{t.login}</span>
-            </Link>
-          )}
+          {FEATURES.showLogin && <HeaderAccount lang={lang} login={t.login} panel={t.panel} />}
           <Link
             href={path ? `/${other}/${path}` : `/${other}`}
             hrefLang={other}

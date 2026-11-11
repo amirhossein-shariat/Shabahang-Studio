@@ -4,6 +4,7 @@ import { Sora, Vazirmatn } from "next/font/google";
 import { getDictionary, hasLocale, locales } from "@/dictionaries";
 import Sky from "@/components/Sky";
 import ScrollReveal from "@/components/ScrollReveal";
+import Enhance from "@/components/Enhance";
 import "../globals.css";
 
 const sora = Sora({ variable: "--font-sora", subsets: ["latin"], weight: ["300", "400", "600"], display: "swap" });
@@ -34,6 +35,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         <div className="scroll-progress" aria-hidden="true" />
         <Sky />
         <ScrollReveal />
+        <Enhance />
         {children}
       </body>
     </html>

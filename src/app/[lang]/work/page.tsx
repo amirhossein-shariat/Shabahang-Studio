@@ -38,7 +38,7 @@ export default async function WorkPage({ params }: PageProps<"/[lang]/work">) {
                   <p className="mt-3 text-sm leading-7 text-muted">{c.blurb}</p>
                   <p className="mt-6 flex items-center justify-between text-sm">
                     <span className="text-muted">{PROJECTS[slug].length} {t.count}</span>
-                    <span className="font-bold text-gold transition group-hover:text-gold-light">{t.open}</span>
+                    <span className="font-bold text-gold transition group-hover:text-gold">{t.open}</span>
                   </p>
                 </Link>
               </li>

@@ -4,6 +4,8 @@ Notes for whoever (human or Claude) continues the work. Read these before changi
 
 | File | What it holds |
 |---|---|
+| `../AI-CONTEXT.md` | **Start here**: full project orientation for a new AI or developer |
+| `panels-status.md` | Panels and invoice tool: status and decisions |
 | `project-state.md` | What exists, current decisions, placeholders, feature flags, how to update content |
 | `admin-panel.md` | **Requirements for the admin panel (not built yet)**: what must be editable and how prices are computed |
 | `auth-and-panels.md` | Single sign-in for clients / team / admin, no-SMS rule, security notes (UI built, backend not) |

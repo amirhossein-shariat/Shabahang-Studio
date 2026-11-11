@@ -1,15 +1,11 @@
 # Shabahang Studio (شباهنگ استودیو)
 
-Bilingual (fa/en) luxury-dark site for a design, motion and IT studio.
-Built with Next.js (App Router), TypeScript, Tailwind, GSAP and react-three-fiber.
+Bilingual (fa/en) luxury dark site for a design + digital + IT studio, with demo client/CEO panels and an invoice tool. Next.js 16 · React 19 · Tailwind v4.
+
+**New here (human or AI)? Read [`docs/AI-CONTEXT.md`](docs/AI-CONTEXT.md) first**, then `CLAUDE.md` (permanent owner rules) and `AGENTS.md`.
 
 ```bash
 npm install
 npm run dev
+npm run lint && npm run build
 ```
-
-Open http://localhost:3000 (redirects to `/fa` or `/en`).
-
-The full project brief is in `docs/` of the original planning notes. Placeholders (email, phone, portfolio, prices) are intentionally left as `[...]` until real content exists. The logo lives in `src/components/Logo.tsx` and is a placeholder star until the final SVG is supplied.
-
-Note: this version of Next.js differs from older ones; read `node_modules/next/dist/docs/` before changing framework-level code.

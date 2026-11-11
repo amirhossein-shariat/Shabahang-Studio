@@ -36,7 +36,7 @@ export default async function CategoryPage({ params }: PageProps<"/[lang]/work/[
       <Header lang={lang} t={home.nav} path={`work/${category}`} />
       <main className="mx-auto max-w-6xl px-5 pt-36 pb-24 md:px-10">
         <p className="text-sm font-bold tracking-[0.25em] text-gold">
-          <Link href={`/${lang}/work`} className="hover:text-gold-light">{t.kicker}</Link>
+          <Link href={`/${lang}/work`} className="hover:text-gold">{t.kicker}</Link>
         </p>
         <h1 className="gold-text mt-4 max-w-3xl text-4xl font-black leading-tight md:text-6xl">{c.name}</h1>
         <p className="mt-4 text-xl font-bold text-gold-light">{c.line}</p>
@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: PageProps<"/[lang]/work/[
           <ul className="mt-4 flex flex-wrap gap-3">
             {CATEGORY_SLUGS.filter((s) => s !== category).map((s) => (
               <li key={s}>
-                <Link href={`/${lang}/work/${s}`} className="inline-block rounded-full border border-white/20 px-5 py-2 text-sm transition hover:border-gold hover:text-gold-light">{t.cats[s].name}</Link>
+                <Link href={`/${lang}/work/${s}`} className="inline-block rounded-full border border-white/20 px-5 py-2 text-sm transition hover:border-gold hover:text-gold">{t.cats[s].name}</Link>
               </li>
             ))}
             <li><Link href={`/${lang}/work`} className="inline-block rounded-full border border-gold/50 px-5 py-2 text-sm text-gold transition hover:bg-gold hover:text-midnight">{t.allWork}</Link></li>

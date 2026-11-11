@@ -5,7 +5,7 @@ Until the panel exists, the single source of truth is `src/data/packages.ts` (ty
 (`src/components/InstagramPackages.tsx`) renders only from that object, so the panel only has to read and write it.
 
 ## What must be editable
-- **Section texts** (fa + en): kicker, title, subtitle, footnote, currency label, "per month", duration title, total label,
+- **Section texts** (fa + en): kicker, title, subtitle, footnote, currency label, duration title, monthly-equivalent label,
   "incl. setup fee", discount label, CTA label, included / not-included labels.
 - **Cards (plans)**: add, remove, hide (`enabled`), reorder. Any number of cards, not just three.
   Per card: name, tier colour (bronze / silver / gold), badge text (or none), base monthly price, and the list of rows.
@@ -19,6 +19,8 @@ Until the panel exists, the single source of truth is `src/data/packages.ts` (ty
 monthly = round2(basePrice × (1 − discountPercent / 100))
 total   = round2(basePrice × (1 − discountPercent / 100) × months + setupFee)
 ```
+The big price on each card is the **total for the whole contract length** (owner's rule, 2026-11-09); the monthly equivalent is a small line under it.
+The 3-month duration opens selected (`default: true` on that duration; the panel should let the owner pick which one is the default).
 Unit is `currency` (currently "million toman"). Current values: 1 month = 0 % + 3 setup, 3 months = 6 %, 6 months = 12 %.
 Verified against the owner's numbers: 1 month 13 / 23 / 38; 3 months 9.4 / 18.8 / 32.9 monthly, 28.2 / 56.4 / 98.7 total;
 6 months 8.8 / 17.6 / 30.8 monthly, 52.8 / 105.6 / 184.8 total.
@@ -47,3 +49,7 @@ Sign-in rules (one login, role detected after credentials, **no SMS**) are in `a
 - Route `/admin` (excluded from the sitemap, `noindex`), forms generated from the `PackagesConfig` type, live preview using the
   real `InstagramPackages` component, "reset to defaults" button.
 - Validate: base price ≥ 0, discount 0–100, months ≥ 1, at least one enabled card and one enabled duration.
+
+## ویرایش‌پذیری از پنل ادمین (افزوده)
+- سوالات متداول هر خدمت (افزودن/حذف/ترتیب، fa/en) ← `src/data/faq.ts`.
+- قیمت و محتوای پکیج‌های IT و خدمات پروژه‌ای ← `src/data/it.ts`.

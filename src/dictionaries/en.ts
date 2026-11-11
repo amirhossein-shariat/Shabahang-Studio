@@ -5,7 +5,7 @@ const en: Dict = {
     title: "Shabahang Studio | Design, Motion & IT",
     description: "A full studio for design, digital and IT, for brands that never sleep.",
   },
-  nav: { work: "Work", services: "Services", studio: "Studio", contact: "Contact", talk: "Get in touch", login: "Sign in" },
+  nav: { work: "Work", services: "Services", studio: "Studio", contact: "Contact", talk: "Get in touch", login: "Sign in", panel: "My panel" },
   hero: {
     eyebrow: "Design · Digital · IT",
     title: "Shabahang",

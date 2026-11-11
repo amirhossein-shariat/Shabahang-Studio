@@ -23,4 +23,8 @@ export const CLIENTS: Client[] = [
   { name: "Akofix", logo: "/clients/akofix.svg", w: 210, h: 40, height: 26 },
   { name: "Pratti", logo: "/clients/pratti.svg", w: 360, h: 65, height: 34 },
   { name: "دماکار", logo: "/clients/damakar.svg", w: 219, h: 69, height: 46 },
+  { name: "Infinity Galaxy", logo: "/clients/infinity.png", w: 407, h: 320, height: 56 },
+  { name: "Hejazi Dates", logo: "/clients/hejazi.png", w: 481, h: 320, height: 56 },
+  { name: "[نام مشتری ۱]", logo: "/clients/rlogo.png", w: 312, h: 320, height: 54 },
+  { name: "[نام مشتری ۲]", logo: "/clients/dlogo.png", w: 168, h: 176, height: 52 },
 ];

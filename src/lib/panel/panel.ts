@@ -6,9 +6,10 @@
  * Naming follows common Persian panels (پیشخوان، امور مالی، تیکت…). No SMS anywhere.
  */
 import type { Role, Session } from "./demo";
+import { toJalali, jMonthLen, weekCol, MONTHS, WEEKDAYS } from "./jalali";
 
 export type ServiceOpt = { id: string; name: string; line: string };
-type Opts = { session: Session; services: ServiceOpt[]; onLogout: () => void };
+type Opts = { session: Session; services: ServiceOpt[]; siteHref: string; onLogout: () => void; mountInvoices?: (el: HTMLElement) => () => void };
 
 type Party = "client" | "ceo" | "staff";
 type Stage = { n: string; done: boolean };
@@ -43,70 +44,18 @@ const nf = new Intl.NumberFormat("fa-IR", { maximumFractionDigits: 2 });
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 const nowStr = () => new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
 
-/* ---------- Jalali (Persian) calendar: standard jalaali algorithm, checked against known dates ---------- */
-const div = (a: number, b: number) => ~~(a / b);
-const mod = (a: number, b: number) => a - ~~(a / b) * b;
-const BREAKS = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210, 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
-function jalCal(jy: number, withoutLeap: boolean) {
-  const bl = BREAKS.length; const gy = jy + 621;
-  let leapJ = -14, jp = BREAKS[0], jm = 0, jump = 0, leap = 0, n = 0;
-  for (let i = 1; i < bl; i++) {
-    jm = BREAKS[i]; jump = jm - jp;
-    if (jy < jm) break;
-    leapJ += div(jump, 33) * 8 + div(mod(jump, 33), 4); jp = jm;
-  }
-  n = jy - jp;
-  leapJ += div(n, 33) * 8 + div(mod(n, 33) + 3, 4);
-  if (mod(jump, 33) === 4 && jump - n === 4) leapJ += 1;
-  const leapG = div(gy, 4) - div((div(gy, 100) + 1) * 3, 4) - 150;
-  const march = 20 + leapJ - leapG;
-  if (withoutLeap) return { gy, march, leap: 0 };
-  if (jump - n < 6) n = n - jump + div(jump + 4, 33) * 33;
-  leap = mod(mod(n + 1, 33) - 1, 4);
-  if (leap === -1) leap = 4;
-  return { gy, march, leap };
-}
-function g2d(gy: number, gm: number, gd: number) {
-  let d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4) + div(153 * mod(gm + 9, 12) + 2, 5) + gd - 34840408;
-  d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752;
-  return d;
-}
-function d2g(jdn: number) {
-  let j = 4 * jdn + 139361631;
-  j = j + div(div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
-  const i = div(mod(j, 1461), 4) * 5 + 308;
-  const gd = div(mod(i, 153), 5) + 1, gm = mod(div(i, 153), 12) + 1, gy = div(j, 1461) - 100100 + div(8 - gm, 6);
-  return { gy, gm, gd };
-}
-const j2d = (jy: number, jm: number, jd: number) => { const r = jalCal(jy, true); return g2d(r.gy, 3, r.march) + (jm - 1) * 31 - div(jm, 7) * (jm - 7) + jd - 1; };
-function d2j(jdn: number) {
-  const gy = d2g(jdn).gy; let jy = gy - 621;
-  const r = jalCal(jy, false), f = g2d(gy, 3, r.march);
-  let k = jdn - f, jm: number, jd: number;
-  if (k >= 0) {
-    if (k <= 185) { jm = 1 + div(k, 31); jd = mod(k, 31) + 1; return { jy, jm, jd }; }
-    k -= 186;
-  } else { jy -= 1; k += 179; if (r.leap === 1) k += 1; }
-  jm = 7 + div(k, 30); jd = mod(k, 30) + 1;
-  return { jy, jm, jd };
-}
-const toJalali = (gy: number, gm: number, gd: number) => d2j(g2d(gy, gm, gd));
-const toGregorian = (jy: number, jm: number, jd: number) => d2g(j2d(jy, jm, jd));
-const jMonthLen = (jy: number, jm: number) => (jm <= 6 ? 31 : jm <= 11 ? 30 : jalCal(jy, false).leap === 0 ? 30 : 29);
-const MONTHS = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
-const WEEKDAYS = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
-/** Column of a Jalali date in a Saturday-first week (0 = شنبه) */
-function weekCol(jy: number, jm: number, jd: number) { const g = toGregorian(jy, jm, jd); return (new Date(g.gy, g.gm - 1, g.gd).getDay() + 1) % 7; }
 const fullDay = (jy: number, jm: number, jd: number) => `${WEEKDAYS[weekCol(jy, jm, jd)]} ${nf.format(jd)} ${MONTHS[jm - 1]}`;
 const ek = (jy: number, jm: number, jd: number) => `${jy}-${jm}-${jd}`;
 
 /* ---------- people (names with role, in distinct colours) ---------- */
 const PEOPLE: Record<Party, { name: string; title: string; cls: string }> = {
-  client: { name: "مشتری نمونه", title: "مشتری", cls: "border-white/25 text-muted" },
+  client: { name: "آقا/خانم [نام مشتری]", title: "", cls: "" },
   ceo: { name: "آقا/خانم [نام مدیرعامل]", title: "مدیرعامل", cls: "border-gold/60 text-gold" },
   staff: { name: "آقا/خانم [نام مجری]", title: "طراح گرافیک", cls: "border-violet/60 text-[#b8aeff]" },
 };
-const person = (p: Party) => `<span class="font-bold">${PEOPLE[p].name}</span> <span class="whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-bold ${PEOPLE[p].cls}">${PEOPLE[p].title}</span>`;
+const person = (p: Party) => `<span class="inline-flex flex-wrap items-center gap-x-2 gap-y-1"><span class="font-bold">${PEOPLE[p].name}</span>${p === "client" ? "" : `<span class="inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-1 text-[10px] font-bold leading-none ${PEOPLE[p].cls}">${PEOPLE[p].title}</span>`}</span>`;
+/** Label above a message: the role for staff and CEO, the customer's own name for the customer */
+const tag = (p: Party) => (p === "client" ? PEOPLE.client.name : PEOPLE[p].title);
 const nameColor = (p: Party) => (p === "staff" ? "text-[#b8aeff]" : p === "ceo" ? "text-gold" : "text-text");
 
 function seed(): Data {
@@ -148,7 +97,7 @@ function seed(): Data {
     defaultAccount: "a1",
     invoices: [
       {
-        id: "f1", no: "[شماره فاکتور]", title: "پکیج نقره‌ای اینستاگرام (۳ ماهه)", issued: "۱ آبان", terms: "inst", methods: ["کارت‌به‌کارت", "پل"], accountId: "a1",
+        id: "f1", no: "[شماره فاکتور]", title: "پکیج نقره‌ای اینستاگرام (۳ ماهه)", issued: "۱ آبان", terms: "inst", methods: ["کارت‌به‌کارت", "پل", "پایا", "ساتنا"], accountId: "a1",
         lines: [{ t: "پکیج نقره‌ای اینستاگرام — ۳ ماه", amt: 56.4 }],
         units: [
           { id: "u1", label: "پیش‌پرداخت", amount: 28.2, due: "۱ آبان", st: "paid", method: "کارت‌به‌کارت", track: "[شماره پیگیری]", file: "receipt-0.jpg" },
@@ -156,7 +105,7 @@ function seed(): Data {
         ],
       },
       {
-        id: "f2", no: "[شماره فاکتور]", title: "طراحی لوگو و هویت بصری", issued: "۲۰ مهر", terms: "cash", methods: ["کارت‌به‌کارت", "پل"], accountId: "a2",
+        id: "f2", no: "[شماره فاکتور]", title: "طراحی لوگو و هویت بصری", issued: "۲۰ مهر", terms: "cash", methods: ["کارت‌به‌کارت", "پل", "پایا"], accountId: "a2",
         lines: [{ t: "طراحی لوگو", amt: 8 }, { t: "راهنمای هویت بصری", amt: 4 }],
         units: [{ id: "u3", label: "تسویه‌ی نقدی", amount: 12, due: "۱۵ آبان", st: "rejected", reason: "تصویر رسید ناخوانا است؛ لطفاً دوباره ثبت کنید.", file: "receipt-1.jpg", method: "کارت‌به‌کارت", track: "[شماره پیگیری]" }],
       },
@@ -193,12 +142,12 @@ function seed(): Data {
 }
 
 const CLIENT_NAV: [string, string][] = [["dash", "پیشخوان"], ["projects", "پروژه‌ها"], ["messages", "پیام‌ها"], ["files", "فایل‌ها"], ["finance", "امور مالی"], ["order", "سفارش جدید"], ["notes", "اعلان‌ها"], ["account", "حساب کاربری"]];
-const CEO_NAV: [string, string][] = [["dash", "پیشخوان"], ["users", "کاربران و حساب‌ها"], ["receipts", "فاکتورها و رسیدها"], ["accounts", "کارت‌ها و حساب‌های بانکی"], ["projects", "پروژه‌ها"], ["messages", "پیام‌ها"], ["notes", "اعلان‌ها"], ["audit", "لاگ ممیزی"], ["money", "امور مالی"], ["account", "حساب کاربری"]];
+const CEO_NAV: [string, string][] = [["dash", "پیشخوان"], ["users", "کاربران و حساب‌ها"], ["invoices", "فاکتورها"], ["receipts", "رسیدها و پرداخت‌ها"], ["accounts", "کارت‌ها و حساب‌های بانکی"], ["projects", "پروژه‌ها"], ["messages", "پیام‌ها"], ["notes", "اعلان‌ها"], ["audit", "لاگ ممیزی"], ["money", "امور مالی"], ["account", "حساب کاربری"]];
 const ROLE_FA: Record<Role, string> = { client: "مشتری", staff: "مجری", admin: "ادمین", ceo: "مدیرعامل" };
 const UNIT_FA = { unpaid: "پرداخت‌نشده", pending: "در انتظار تأیید", paid: "پرداخت‌شده", rejected: "ردشده" };
 const UNIT_CLS = { unpaid: "border-amber/50 text-amber", pending: "border-violet/60 text-[#b8aeff]", paid: "border-emerald-400/60 text-emerald-400", rejected: "border-red-400/60 text-red-300" };
 const TERMS_FA: Record<Terms, string> = { cash: "نقدی", inst: "قسطی", cheque: "چکی", credit: "اعتباری" };
-const ALL_METHODS = ["کارت‌به‌کارت", "پل", "[روش دیگر]"];
+const ALL_METHODS = ["کارت‌به‌کارت", "پل", "پایا", "ساتنا"];
 const TOUR: { k: string; t: string; d: string }[] = [
   { k: "dash", t: "پیشخوان", d: "هر چیزی که منتظر اقدام شماست در یک نگاه: تأیید تحویل، فاکتور و پیام." },
   { k: "projects", t: "پروژه‌ها", d: "نوار مراحل، گزارش‌های مجری، تقویم محتوا و تحویل‌ها اینجاست. روی روز تقویم بزنید و برای هر مورد نظر بگذارید." },
@@ -212,7 +161,7 @@ const btn = "rounded-full border border-gold/50 px-4 py-2 text-xs font-bold text
 const btnGold = "rounded-full bg-gold px-5 py-2.5 text-xs font-bold text-midnight";
 const input = "w-full rounded-xl border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm text-text placeholder:text-muted focus:border-gold";
 const chip = (st: Unit["st"]) => `<span class="shrink-0 rounded-full border px-3 py-1 text-[11px] font-bold ${UNIT_CLS[st]}">${UNIT_FA[st]}</span>`;
-const bar = (pct: number) => `<div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-gradient-to-l from-gold to-amber" style="width:${Math.round(pct)}%"></div></div>`;
+const bar = (pct: number) => `<div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10"><div class="pn-grow h-full rounded-full bg-gradient-to-l from-gold to-amber" style="width:${Math.round(pct)}%"></div></div>`;
 const empty = (t: string) => `<p class="rounded-xl border border-dashed border-white/15 p-5 text-center text-sm text-muted">${t}</p>`;
 const head = (t: string, sub = "") => `<div class="mb-5"><h1 class="text-2xl font-black md:text-3xl">${t}</h1>${sub ? `<p class="mt-1 text-sm text-muted">${sub}</p>` : ""}</div>`;
 const svg = (p: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5" aria-hidden="true">${p}</svg>`;
@@ -221,17 +170,38 @@ const I_CLIP = svg('<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.5
 const I_MIC = svg('<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>');
 const I_CHEV_R = svg('<path d="m9 18 6-6-6-6"/>');
 const I_CHEV_L = svg('<path d="m15 18-6-6 6-6"/>');
+const badge = (n: number, pop = false) => (n ? `<span class="${pop ? "pn-badge-pop " : ""}inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-black leading-none text-midnight">${nf.format(n)}</span>` : "");
+const ICONS: Record<string, string> = {
+  dash: '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+  projects: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
+  messages: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  files: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>',
+  finance: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  order: '<circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/>',
+  notes: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  account: '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  receipts: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 17.5v-11"/>',
+  accounts: '<rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>',
+  audit: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  invoices: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M8 13h8M8 17h6"/>',
+  money: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+};
+const ic = (k: string, extra = "") => `<span class="pn-ic ${extra}">${svg(ICONS[k] ?? ICONS.dash)}</span>`;
+const I_MENU = svg('<path d="M4 6h16M4 12h16M4 18h16"/>');
+const I_X = svg('<path d="M18 6 6 18M6 6l12 12"/>');
 const sendBtn = (id: string, hasText: boolean) => (hasText ? `<button data-act="send" data-id="${id}" class="js-send flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold text-midnight" aria-label="ارسال">${I_SEND}</button>` : `<button data-act="voice" class="js-send flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold text-midnight" aria-label="پیام صوتی">${I_MIC}</button>`);
 
 export function mountPanel(root: HTMLElement, o: Opts): () => void {
   const role = o.session.role;
   const isCeo = role === "ceo" || role === "admin";
   const me: Party = isCeo ? "ceo" : "client";
-  const nav = isCeo ? CEO_NAV.filter(([k]) => role === "ceo" || k !== "money") : CLIENT_NAV;
+  const nav = isCeo ? CEO_NAV.filter(([k]) => role === "ceo" || (k !== "money" && k !== "invoices")) : CLIENT_NAV;
+  let stopInv: (() => void) | null = null;
   let D: Data;
   try { const raw = sessionStorage.getItem(DATA_KEY); D = raw ? (JSON.parse(raw) as Data) : seed(); } catch { D = seed(); }
   const today = toJalali(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
-  const S = { view: "dash", pid: "", tid: "", mtab: "staff", cy: today.jy, cm: today.jm, day: 0, editFor: "", rejectFor: "", star: 0, tour: -1, payFor: "", payMethod: "", invView: "" };
+  const S = { anim: false, drawerAnim: false, menu: false, fresh: [] as string[], view: "dash", pid: "", tid: "", mtab: "staff", cy: today.jy, cm: today.jm, day: 0, editFor: "", rejectFor: "", star: 0, tour: -1, payFor: "", payMethod: "", invView: "" };
   const save = () => { try { sessionStorage.setItem(DATA_KEY, JSON.stringify(D)); } catch { /* demo keeps working without saving */ } };
   const audit = (act: string, target: string) => { D.audit.unshift({ at: nowStr(), who: o.session.name, act, target }); };
   const notify = (to: "client" | "ceo", t: string) => { D.notes[to].unshift({ id: "n" + Date.now() + Math.random().toString(36).slice(2, 5), t, d: "هم‌اکنون", read: false }); };
@@ -254,29 +224,33 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
   }
 
   /* ---------- views ---------- */
-  function actionItems() {
-    const out: { t: string; v: string; id?: string }[] = [];
-    D.projects.forEach((p) => p.deliveries.filter((d) => d.st === "await").forEach((d) => out.push({ t: `تأیید تحویل: ${d.title}`, v: "projects", id: p.id })));
-    allUnits().filter(({ u, i }) => (u.st === "unpaid" || u.st === "rejected") && i.terms !== "cheque").forEach(({ u, i }) => out.push({ t: `${u.st === "rejected" ? "رسید ردشده" : "پرداخت"}: ${u.label} — ${i.title} (${nf.format(u.amount)} میلیون تومان)`, v: "finance" }));
-    const um = unreadMsgs();
-    if (um) out.push({ t: `${nf.format(um)} پیام بی‌پاسخ`, v: "messages" });
-    return out;
-  }
-
   function dashClient() {
-    const acts = actionItems();
     const active = D.projects.filter((p) => p.total > 0);
     const run = D.projects.filter((p) => p.stages.some((s) => !s.done) || p.deliveries.some((d) => d.st !== "ok"));
+    const unpaid = allUnits().filter(({ u, i }) => (u.st === "unpaid" || u.st === "rejected") && i.terms !== "cheque");
+    const nextPay = unpaid[0];
+    const tile = (v: string, n: number, lbl: string) => `<button data-act="go" data-v="${v}" class="${card} text-start transition hover:border-gold/50"><span class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">${ic(v)}</span><p data-count="${n}" class="mt-4 text-3xl font-black text-gold-light">${nf.format(n)}</p><p class="mt-1 text-sm text-muted">${lbl}</p></button>`;
+    const notes = myNotes().slice(0, 3);
+    const threads = myThreads().slice(0, 3);
+    const lastMsg = (th: Thread) => th.msgs[th.msgs.length - 1];
+    const noteRows = notes.length ? notes.map((n) => `<button data-act="go" data-v="notes" class="flex w-full items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-start text-sm transition hover:border-gold/50"><span aria-hidden="true" class="mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.read ? "bg-white/20" : "bg-gold shadow-[0_0_8px_rgba(232,198,130,.8)]"}"></span><span class="flex-1 ${n.read ? "text-muted" : "text-text"}">${esc(n.t)}</span><span class="shrink-0 text-xs text-muted">${esc(n.d)}</span></button>`).join("") : empty("اعلان تازه‌ای نیست.");
+    const msgRows = threads.length ? threads.map((th) => { const m = lastMsg(th); const u = th.unread[me]; return `<button data-act="dthread" data-id="${th.id}" class="flex w-full items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-start text-sm transition hover:border-gold/50"><span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-gold/10 text-xs font-black text-gold">${esc((PEOPLE[other(th, me)].title || PEOPLE[other(th, me)].name).charAt(0))}</span><span class="min-w-0 flex-1"><span class="flex items-center justify-between gap-2"><b class="truncate">${person(other(th, me))}</b><span class="shrink-0 text-xs text-muted">${m ? esc(m.at) : ""}</span></span><span class="mt-0.5 block truncate text-muted">${m ? esc(m.file ? "📎 " + m.file : m.t) : "بدون پیام"}</span></span>${u ? `<span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[11px] font-black text-midnight">${nf.format(u)}</span>` : ""}</button>`; }).join("") : empty("گفت‌وگویی وجود ندارد.");
+    const more = (v: string, txt: string) => `<button data-act="go" data-v="${v}" class="mt-3 text-xs font-bold text-gold hover:underline">${txt} ‹</button>`;
     return head(`سلام، ${esc(o.session.name)}`, "خلاصه‌ی وضعیت شما. با کلیک روی هر کارت جزئیاتش را ببینید.") + `
-    <div class="grid gap-4 md:grid-cols-2">
-      <div class="${card} md:col-span-2"><h2 class="font-black">در انتظار اقدام شما</h2>
-        <div class="mt-3 grid gap-2">${acts.length ? acts.map((a) => `<button data-act="go" data-v="${a.v}" data-id="${a.id || ""}" class="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-start text-sm transition hover:border-gold/50"><span>${esc(a.t)}</span><span class="text-gold">‹</span></button>`).join("") : empty("همه‌چیز مرتب است.")}</div></div>
+    <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      ${tile("projects", run.length, "پروژه‌ی در حال انجام")}${tile("order", active.length, "پکیج فعال")}${tile("finance", unpaid.length, "پرداخت باز")}${tile("messages", unreadMsgs(), "پیام خوانده‌نشده")}
+    </div>
+    <div class="mt-4 grid gap-4 md:grid-cols-2">
+      <div class="${card}"><h2 class="flex items-center gap-2 font-black"><span class="text-gold">${ic("notes")}</span>آخرین اعلان‌ها</h2><div class="mt-3 grid gap-2">${noteRows}</div>${more("notes", "همه‌ی اعلان‌ها")}</div>
+      <div class="${card}"><h2 class="flex items-center gap-2 font-black"><span class="text-gold">${ic("messages")}</span>آخرین پیام‌ها</h2><div class="mt-3 grid gap-2">${msgRows}</div>${more("messages", "همه‌ی پیام‌ها")}</div>
       <div class="${card}"><h2 class="font-black">پکیج‌های فعال</h2>
         ${active.length ? active.map((p) => `<div class="mt-4"><div class="flex items-center justify-between text-sm"><span>${esc(p.title)}</span><span class="text-xs text-muted">${nf.format(p.left)} روز مانده</span></div>${bar(((p.total - p.left) / p.total) * 100)}<button data-act="go" data-v="order" class="${btn} mt-3">تمدید</button></div>`).join("") : empty("پکیج فعالی ندارید.")}</div>
       <div class="${card}"><h2 class="font-black">پروژه‌های در حال انجام</h2>
         ${run.length ? run.map((p) => { const d = p.stages.filter((s) => s.done).length; return `<button data-act="open" data-id="${p.id}" class="mt-4 block w-full text-start"><div class="flex justify-between text-sm"><span>${esc(p.title)}</span><span class="text-xs text-muted">${nf.format(d)} از ${nf.format(p.stages.length)} مرحله</span></div>${bar((d / p.stages.length) * 100)}</button>`; }).join("") : empty("پروژه‌ی فعالی نیست.")}</div>
-      <button data-act="go" data-v="notes" class="${card} text-start transition hover:border-gold/50"><h2 class="font-black">اعلان‌ها</h2><p class="mt-3 text-sm text-muted">${unreadNotes() ? nf.format(unreadNotes()) + " اعلان خوانده‌نشده" : "اعلان تازه‌ای نیست"}</p></button>
-      <button data-act="go" data-v="messages" class="${card} text-start transition hover:border-gold/50"><h2 class="font-black">پیام‌ها</h2><p class="mt-3 text-sm text-muted">${unreadMsgs() ? nf.format(unreadMsgs()) + " پیام خوانده‌نشده" : "پیام تازه‌ای نیست"}</p></button>
+      <div class="${card}"><h2 class="font-black">پرداخت بعدی</h2>
+        ${nextPay ? `<p class="mt-3 text-sm">${esc(nextPay.u.label)} — ${esc(nextPay.i.title)}</p><p class="mt-1 text-2xl font-black text-gold-light">${nf.format(nextPay.u.amount)} <span class="text-sm font-normal text-muted">میلیون تومان</span></p><p class="mt-1 text-xs text-muted">سررسید: ${esc(nextPay.u.due)}</p><button data-act="go" data-v="finance" class="${btn} mt-4">رفتن به امور مالی</button>` : `<div class="mt-3">${empty("پرداخت بازی ندارید.")}</div>`}</div>
+      <div class="${card}"><h2 class="font-black">میانبرها</h2><div class="mt-3 grid grid-cols-2 gap-2 text-sm">
+        ${([["order", "سفارش جدید"], ["files", "فایل‌ها"], ["messages", "پیام به مجری"], ["finance", "امور مالی"]] as const).map(([v, l]) => `<button data-act="go" data-v="${v}" class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3 text-start transition hover:border-gold/50"><span class="text-gold">${ic(v)}</span>${l}</button>`).join("")}</div></div>
     </div>`;
   }
 
@@ -284,7 +258,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     const pend = D.users.filter((u) => u.st === "pending").length;
     const rc = allUnits().filter(({ u }) => u.st === "pending").length;
     const aw = D.projects.reduce((n, p) => n + p.deliveries.filter((d) => d.st === "await").length, 0);
-    const tile = (v: string, big: number, t: string) => `<button data-act="go" data-v="${v}" class="${card} text-start transition hover:border-gold/50"><p class="text-4xl font-black text-gold-light">${nf.format(big)}</p><p class="mt-2 text-sm text-muted">${t}</p></button>`;
+    const tile = (v: string, big: number, t: string) => `<button data-act="go" data-v="${v}" class="${card} text-start transition hover:border-gold/50"><span class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">${ic(v)}</span><p data-count="${big}" class="mt-4 text-4xl font-black text-gold-light">${nf.format(big)}</p><p class="mt-2 text-sm text-muted">${t}</p></button>`;
     return head("پیشخوان مدیرعامل", "چیزهایی که به تصمیم شما نیاز دارند.") + `<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       ${tile("users", pend, "حساب منتظر تأیید")}${tile("receipts", rc, "رسید منتظر بررسی")}${tile("projects", aw, "تحویل منتظر تأیید مشتری")}${tile("messages", unreadMsgs(), "پیام خوانده‌نشده")}</div>
       <div class="${card} mt-4"><h2 class="font-black">آخرین رویدادها</h2><div class="mt-3 grid gap-2 text-sm">${D.audit.slice(0, 5).map((a) => `<p class="flex justify-between gap-3 rounded-xl bg-white/[0.03] px-4 py-2"><span>${esc(a.act)} ${a.target !== "—" ? "· " + esc(a.target) : ""}</span><span class="text-xs text-muted">${esc(a.at)}</span></p>`).join("")}</div></div>`;
@@ -296,7 +270,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     const items = p.stages.map((s, i) => {
       const cur = !s.done && p.stages.slice(0, i).every((x) => x.done);
       const dot = s.done ? "border-emerald-400 bg-emerald-400 text-midnight" : cur ? "border-gold bg-gold text-midnight shadow-[0_0_18px_rgba(232,198,130,.55)]" : "border-white/20 bg-[#0b0e27] text-muted";
-      const line = i < n - 1 ? `<span aria-hidden="true" class="absolute start-[15px] top-8 h-[calc(100%-1rem)] w-0.5 md:start-1/2 md:top-[15px] md:h-0.5 md:w-full ${s.done ? "bg-gradient-to-b from-emerald-400 to-emerald-400/60 md:bg-gradient-to-l" : "bg-white/10"}"></span>` : "";
+      const line = i < n - 1 ? `<span aria-hidden="true" class="pn-line absolute start-[15px] top-8 h-[calc(100%-1rem)] w-0.5 md:start-1/2 md:top-[15px] md:h-0.5 md:w-full ${s.done ? "bg-gradient-to-b from-emerald-400 to-emerald-400/60 md:bg-gradient-to-l" : "bg-white/10"}"></span>` : "";
       const node = `<span class="relative z-[1] flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-black ${dot}">${s.done ? "✓" : nf.format(i + 1)}</span>`;
       const label = `<span class="text-sm md:mt-2 ${cur ? "font-bold text-gold-light" : s.done ? "text-text" : "text-muted"}">${esc(s.n)}</span><span class="hidden text-[11px] md:block ${cur ? "text-gold" : "text-muted"}">${s.done ? "انجام شد" : cur ? "در حال انجام" : "در انتظار"}</span>`;
       const inner = `${line}${node}<span class="flex flex-col md:items-center">${label}</span>`;
@@ -328,7 +302,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     const body = evs.length ? evs.map((e) => `<div class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
         <div class="flex flex-wrap items-center justify-between gap-2"><p><span class="text-xs text-gold">${esc(e.kind)}</span><span class="mx-2 text-white/20">|</span><span class="font-black">${esc(e.title)}</span></p><span class="rounded-full border border-white/15 px-3 py-0.5 text-[11px] text-muted">${esc(e.st)}</span></div>
         <p class="mt-2 text-sm leading-7 text-white/70">${esc(e.detail)}</p>
-        <div class="mt-3 grid gap-2">${e.comments.map((c) => `<div class="rounded-lg bg-black/25 px-3 py-2 text-sm"><p class="text-[11px] ${nameColor(c.from)}">${PEOPLE[c.from].name} · ${PEOPLE[c.from].title} · ${esc(c.at)}</p><p class="mt-0.5 whitespace-pre-wrap">${esc(c.t)}</p></div>`).join("")}</div>
+        <div class="mt-3 grid gap-2">${e.comments.map((c) => `<div class="rounded-lg bg-black/25 px-3 py-2 text-sm"><p class="text-[11px] ${nameColor(c.from)}">${tag(c.from)} · ${esc(c.at)}</p><p class="mt-0.5 whitespace-pre-wrap">${esc(c.t)}</p></div>`).join("")}</div>
         <div data-wrap class="mt-3 flex items-end gap-2"><textarea data-f="ec-${e.id}" rows="1" class="${input} resize-none" placeholder="${isCeo ? "پاسخ یا نظر…" : "نظر شما برای مجری…"}"></textarea><button data-act="ecomment" data-p="${p.id}" data-k="${ek(y, m, d)}" data-id="${e.id}" class="js-send ${btnGold} shrink-0">ثبت نظر</button></div></div>`).join("") : empty("برای این روز کاری ثبت نشده.");
     return `<div class="mt-5 border-t border-white/10 pt-4"><h4 class="text-lg font-black text-gold-light">${fullDay(y, m, d)}</h4><p class="mb-3 mt-1 text-xs text-muted">نظر شما برای مجری ارسال می‌شود و مدیرعامل همه‌چیز را می‌بیند.</p><div class="grid gap-3">${body}</div></div>`;
   }
@@ -368,16 +342,16 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     const t = ts.find((x) => x.id === S.tid) ?? ts[0];
     const label = (x: Thread) => (monitor ? `${person("client")} ⟷ ${person("staff")}` : person(other(x, me)));
     const tabs = isCeo ? `<div class="mb-4 grid gap-1 rounded-2xl border border-white/10 bg-black/20 p-1 sm:grid-cols-3">${([["staff", "گفت‌وگو با مجریان"], ["client", "گفت‌وگو با مشتریان"], ["watch", "نظارت: مجریان و مشتریان"]] as const).map(([k, tt]) => `<button data-act="mtab" data-id="${k}" class="rounded-xl px-3 py-2 text-sm font-bold ${S.mtab === k ? "bg-gold/15 text-gold-light" : "text-muted"}">${tt}</button>`).join("")}</div>` : "";
-    const sub = isCeo ? (S.mtab === "staff" ? "چت‌های شما با مجریان" : S.mtab === "client" ? "پیام‌های شما با مشتریان" : "همه‌ی گفت‌وگوهای بین مجریان و مشتریان (فقط خواندنی)") : "صندوق عمومی؛ با مدیرعامل یا مجری خودتان گفت‌وگو کنید.";
+    const sub = isCeo ? (S.mtab === "staff" ? "چت‌های شما با مجریان" : S.mtab === "client" ? "پیام‌های شما با مشتریان" : "همه‌ی گفت‌وگوهای بین مجریان و مشتریان (فقط خواندنی)") : "";
     if (!t) return head("پیام‌ها", sub) + tabs + empty("گفت‌وگویی وجود ندارد.");
-    const list = ts.map((x) => { const u = x.unread[me]; return `<button data-act="thread" data-id="${x.id}" class="flex w-full items-center justify-between gap-2 rounded-xl border px-4 py-3 text-start text-sm ${x.id === t.id ? "border-gold/60 bg-gold/10" : "border-white/10"}"><span class="flex flex-wrap items-center gap-x-2 gap-y-1">${label(x)}</span>${u ? `<span class="rounded-full bg-gold px-2 text-[11px] font-black text-midnight">${nf.format(u)}</span>` : ""}</button>`; }).join("");
-    const bubbles = t.msgs.map((m) => `<div class="flex ${monitor ? (m.from === "client" ? "justify-start" : "justify-end") : m.from === me ? "justify-start" : "justify-end"}"><div class="max-w-[82%] rounded-2xl px-4 py-2 text-sm ${m.from === me && !monitor ? "border border-gold/30 bg-gold/15" : "border border-white/10 bg-white/[0.06]"}"><p class="mb-0.5 text-[11px] font-bold ${nameColor(m.from)}">${PEOPLE[m.from].name} · ${PEOPLE[m.from].title}</p><p class="whitespace-pre-wrap">${esc(m.t)}</p>${m.file ? `<p class="mt-1 text-xs text-gold-light">📎 ${esc(m.file)}</p>` : ""}<p class="mt-1 text-[10px] text-muted">${esc(m.at)}</p></div></div>`).join("");
+    const list = ts.map((x) => { const u = x.unread[me]; return `<button data-act="thread" data-id="${x.id}" class="flex w-full items-center justify-between gap-2 rounded-xl border px-4 py-3 text-start text-sm ${x.id === t.id ? "border-gold/60 bg-gold/10" : "border-white/10"}"><span class="flex flex-wrap items-center gap-x-2 gap-y-1">${label(x)}</span>${badge(u)}</button>`; }).join("");
+    const bubbles = t.msgs.map((m) => `<div class="flex ${monitor ? (m.from === "client" ? "justify-start" : "justify-end") : m.from === me ? "justify-start" : "justify-end"}"><div class="max-w-[82%] rounded-2xl px-4 py-2 text-sm ${m.from === me && !monitor ? "border border-gold/30 bg-gold/15" : "border border-white/10 bg-white/[0.06]"}"><p class="mb-0.5 text-[11px] font-bold ${nameColor(m.from)}">${tag(m.from)}</p><p class="whitespace-pre-wrap">${esc(m.t)}</p>${m.file ? `<p class="mt-1 text-xs text-gold-light">📎 ${esc(m.file)}</p>` : ""}<p class="mt-1 text-[10px] text-muted">${esc(m.at)}</p></div></div>`).join("");
     const draft = D.drafts[t.id] ?? "";
     const composer = monitor ? `<p class="mt-4 rounded-xl border border-white/10 p-3 text-center text-xs text-muted">این گفت‌وگو فقط برای نظارت است.</p>` : `<div data-wrap class="mt-4 flex items-end gap-2 rounded-3xl border border-white/10 bg-white/[0.04] p-2">
         <label class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted transition hover:text-gold" aria-label="پیوست">${I_CLIP}<input data-act="attach" data-id="${t.id}" type="file" accept="image/*,application/pdf" class="hidden"></label>
         <textarea data-f="draft" data-t="${t.id}" rows="1" class="max-h-32 min-h-10 flex-1 resize-none bg-transparent px-1 py-2.5 text-sm text-text outline-none placeholder:text-muted" placeholder="پیام…">${esc(draft)}</textarea>
         <span data-sendslot>${sendBtn(t.id, draft.trim().length > 0)}</span></div>
-        <p class="mt-2 text-[11px] text-muted">Enter ارسال · Shift+Enter خط بعد · پیوست تا ۳ مگابایت · پیام صوتی تا ۲ دقیقه</p>`;
+        <p class="mt-2 text-[11px] text-muted">پیوست تا ۳ مگابایت · پیام صوتی تا ۲ دقیقه</p>`;
     return head("پیام‌ها", sub) + tabs + `<div class="grid gap-4 md:grid-cols-[17rem_1fr]">
       <div class="grid content-start gap-2">${list}</div>
       <div class="${card} flex min-h-[26rem] flex-col"><div class="mb-3 flex flex-wrap items-center gap-2 border-b border-white/10 pb-3 text-sm">${label(t)}</div><div class="flex-1 space-y-2 overflow-y-auto">${bubbles}</div>${composer}</div></div>`;
@@ -394,9 +368,10 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
   /* ----- finance ----- */
   const copy = (v: string) => `<button data-act="copy" data-v="${esc(v)}" class="rounded-full border border-white/15 px-2.5 py-0.5 text-[11px] text-muted transition hover:border-gold hover:text-gold">کپی</button>`;
   function accountBlock(a: Account) {
-    return `<div class="rounded-xl border border-gold/25 bg-gold/5 p-4 text-sm"><p class="font-bold">${esc(a.holder)} <span class="text-xs font-normal text-muted">· ${esc(a.bank)}</span></p>
-      <p class="mt-2 flex flex-wrap items-center gap-2"><span class="text-xs text-muted">شماره کارت</span><span dir="ltr" class="font-latin tracking-wider">${esc(a.card)}</span>${copy(a.card)}</p>
-      <p class="mt-2 flex flex-wrap items-center gap-2"><span class="text-xs text-muted">شماره شبا</span><span dir="ltr" class="font-latin tracking-wider">${esc(a.sheba)}</span>${copy(a.sheba)}</p></div>`;
+    return `<div class="rounded-xl border border-gold/25 bg-gold/5 p-4 text-sm">
+      <p class="flex flex-wrap items-center gap-2"><span class="text-xs text-muted">شماره کارت</span><span dir="ltr" class="font-latin tracking-wider">${esc(a.card)}</span>${copy(a.card)}</p>
+      <p class="mt-2 flex flex-wrap items-center gap-2"><span class="text-xs text-muted">شماره شبا</span><span dir="ltr" class="font-latin tracking-wider">${esc(a.sheba)}</span>${copy(a.sheba)}</p>
+      <p class="mt-3 border-t border-white/10 pt-3 font-bold">${esc(a.holder)} <span class="text-xs font-normal text-muted">· ${esc(a.bank)}</span></p></div>`;
   }
   function unitRow(i: Invoice, u: Unit) {
     const paying = S.payFor === u.id;
@@ -407,7 +382,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     const method = S.payMethod;
     const form = paying ? `<div class="mt-3 rounded-xl border border-white/10 bg-black/20 p-4"><p class="text-sm font-bold">نحوه‌ی پرداخت</p>
         <div class="mt-2 flex flex-wrap gap-2">${i.methods.map((m) => `<button data-act="pm" data-id="${esc(m)}" class="rounded-full border px-4 py-1.5 text-xs font-bold ${method === m ? "border-gold bg-gold/15 text-gold-light" : "border-white/15 text-muted"}">${esc(m)}</button>`).join("")}</div>
-        ${method ? `<div class="mt-3 grid gap-3">${method === "کارت‌به‌کارت" ? accountBlock(acc(i.accountId)) : ""}
+        ${method ? `<div class="mt-3 grid gap-3">${accountBlock(acc(i.accountId))}
           <label class="block text-xs text-muted">شماره پیگیری<input data-f="track" dir="ltr" class="${input} mt-1" placeholder="شماره پیگیری تراکنش"></label>
           <label class="block text-xs text-muted">عکس رسید<input data-f="payfile" type="file" accept="image/*,application/pdf" class="${input} mt-1 text-xs"></label>
           <div class="flex gap-2"><button data-act="paysend" data-id="${u.id}" class="${btnGold}">ثبت پرداخت</button><button data-act="paycancel" class="${btn}">انصراف</button></div></div>` : `<p class="mt-3 text-xs text-muted">یکی از روش‌ها را انتخاب کنید.</p>`}</div>` : "";
@@ -431,8 +406,8 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
   }
   function finance() {
     const a = acc(D.defaultAccount);
-    return head("امور مالی", "هر فاکتور در یک کادر جدا؛ فاکتور را ببینید و با «پرداخت» شیوه‌ی پرداخت را ثبت کنید.") +
-      `<div class="${card} mb-8"><h2 class="font-black">حساب مقصد واریز</h2><p class="mb-3 mt-1 text-xs text-muted">برای پرداخت‌های کارت‌به‌کارت؛ حساب هر فاکتور را مدیرعامل تعیین می‌کند و هنگام پرداخت دوباره نشان داده می‌شود.</p>${accountBlock(a)}</div>` + D.invoices.map(invoiceBox).join("");
+    return head("امور مالی") +
+      `<div class="${card} mb-8"><h2 class="mb-3 font-black">حساب مقصد واریز</h2>${accountBlock(a)}</div>` + D.invoices.map(invoiceBox).join("");
   }
 
   /* ----- CEO: invoices, receipts, accounts ----- */
@@ -459,7 +434,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
 
   function notes() {
     const ns = myNotes();
-    return head("اعلان‌ها") + `<div class="grid gap-2">${ns.length ? ns.map((n) => `<button data-act="read" data-id="${n.id}" class="${card} flex items-center justify-between gap-3 text-start text-sm ${n.read ? "opacity-60" : "border-gold/40"}"><span>${esc(n.t)}</span><span class="shrink-0 text-xs text-muted">${esc(n.d)}</span></button>`).join("") : empty("اعلانی نیست.")}</div>`;
+    return head("اعلان‌ها") + `<div class="grid gap-2">${ns.length ? ns.map((n) => `<button data-act="read" data-id="${n.id}" class="${card} flex items-center justify-between gap-3 text-start text-sm ${S.fresh.includes(n.id) ? "border-gold/40" : "opacity-60"}"><span>${esc(n.t)}</span><span class="shrink-0 text-xs text-muted">${esc(n.d)}</span></button>`).join("") : empty("اعلانی نیست.")}</div>`;
   }
 
   function account() {
@@ -485,7 +460,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
   }
 
   const VIEWS: Record<string, () => string> = {
-    dash: () => (isCeo ? dashCeo() : dashClient()), projects, messages, files, finance, order, notes, account, users, receipts, accounts, audit: auditView, money,
+    dash: () => (isCeo ? dashCeo() : dashClient()), projects, messages, files, finance, order, notes, account, users, receipts, accounts, audit: auditView, money, invoices: () => `<div data-inv-root></div>`,
   };
 
   function tourHtml() {
@@ -512,23 +487,89 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     tip.style.left = left + "px"; tip.style.top = Math.max(12, Math.min(top, window.innerHeight - tip.offsetHeight - 12)) + "px";
   }
 
+  const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
+  let mobile = isMobile();
+  let built = "";
+  let navReady = false;
+  const navBadge = (k: string) => (k === "messages" ? unreadMsgs() : k === "notes" ? unreadNotes() : k === "users" ? D.users.filter((u) => u.st === "pending").length : k === "receipts" ? allUnits().filter(({ u }) => u.st === "pending").length : 0);
+  const navItems = () => nav.map(([k, t]) => {
+    const on = S.view === k;
+    return `<button data-act="go" data-v="${k}" ${on ? 'aria-current="page"' : ""} class="relative z-[1] flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm ${on ? "font-black text-gold-light" : "text-muted hover:text-text"}">${ic(k, on && S.anim ? "pn-ic-pop" : "")}<span class="flex-1 text-start">${t}</span>${badge(navBadge(k), S.anim)}</button>`;
+  }).join("");
+  const brandHtml = (closeBtn: boolean) => `<div class="flex items-start justify-between gap-3"><div><p class="text-lg font-black"><span class="gold-text">شباهنگ</span></p><p class="mt-1 text-xs text-muted">${esc(o.session.name)} · ${ROLE_FA[role]}</p></div>${closeBtn ? `<button data-act="menu" aria-label="بستن منو" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-muted">${I_X}</button>` : ""}</div>`;
+  /* the gold pill lives outside the re-rendered items, so it can glide from tab to tab */
+  const navShell = `<nav aria-label="پنل" class="mt-4 flex-1 overflow-y-auto"><div class="relative"><i data-pill aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-11 rounded-xl border border-gold/50 bg-gradient-to-l from-gold/25 to-gold/5 opacity-0 shadow-[0_0_22px_-8px_rgba(232,198,130,.7)] transition-[top,height,opacity] duration-[450ms] ease-[cubic-bezier(.34,1.3,.64,1)]"><b class="absolute inset-y-2.5 start-0 w-1 rounded-full bg-gold"></b></i><div data-slot="items" class="relative space-y-1"></div></div></nav>`;
+  const footHtml = `<a href="${o.siteHref}" class="mt-3 flex w-full shrink-0 items-center justify-center rounded-xl border border-white/10 px-4 py-2.5 text-sm text-muted hover:border-gold/50 hover:bg-gold/10 hover:text-gold">صفحه‌ی اصلی سایت</a>
+    <button data-act="logout" class="mt-2 w-full shrink-0 rounded-xl border border-white/10 px-4 py-2.5 text-sm text-muted hover:border-red-400/50 hover:bg-red-500/10 hover:text-red-300">خروج</button>`;
+
+  /** Fill a nav and slide its pill under the active tab (instant = place it without animating) */
+  function updateNav(navEl: Element | null, instant: boolean) {
+    const items = navEl?.querySelector<HTMLElement>("[data-slot=items]"); const pill = navEl?.querySelector<HTMLElement>("[data-pill]");
+    if (!items || !pill) return;
+    items.innerHTML = navItems();
+    const act = items.querySelector<HTMLElement>("[aria-current]");
+    if (!act) { pill.style.opacity = "0"; return; }
+    if (instant) pill.style.transition = "none";
+    pill.style.top = act.offsetTop + "px"; pill.style.height = act.offsetHeight + "px"; pill.style.opacity = "1";
+    if (instant) { void pill.offsetWidth; pill.style.transition = ""; }
+  }
+
+  function countUp(scope: Element) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    scope.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
+      const n = Number(el.dataset.count); if (!n) return;
+      const t0 = performance.now();
+      const tick = (t: number) => { const k = Math.min(1, (t - t0) / 900); const e = 1 - Math.pow(1 - k, 3); el.textContent = nf.format(Math.round(n * e)); if (k < 1) requestAnimationFrame(tick); };
+      el.textContent = nf.format(0); requestAnimationFrame(tick);
+    });
+  }
+
+  function build() {
+    root.innerHTML = `<div dir="rtl" class="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-16 md:flex-row md:items-start md:px-8 md:pt-4">
+      ${mobile ? `<div data-slot="bar" class="sticky top-0 z-40 -mx-4 mb-4 flex items-center justify-between border-b border-white/10 bg-midnight/70 px-4 py-3 backdrop-blur-md"></div>` : `<aside class="shrink-0 md:sticky md:top-4 md:h-[calc(100svh-2rem)] md:w-64"><div class="${card} flex h-full flex-col !p-4">${brandHtml(false)}${navShell}${footHtml}</div></aside>`}
+      <section class="min-w-0 flex-1"><p class="mb-4 rounded-xl border border-violet/40 bg-violet/10 px-4 py-2 text-xs text-[#d5cfff]">نسخه‌ی نمایشی: داده‌ها نمونه‌اند، ورود و ذخیره‌ی واقعی هنوز ساخته نشده و چیزی به جایی ارسال نمی‌شود.</p><div data-slot="main"></div></section></div><div data-slot="over"></div>`;
+    built = mobile ? "mob" : "desk"; navReady = false;
+  }
+
   function render() {
     const y = window.scrollY;
-    const items = nav.map(([k, t]) => {
-      const badge = k === "messages" ? unreadMsgs() : k === "notes" ? unreadNotes() : k === "users" ? D.users.filter((u) => u.st === "pending").length : k === "receipts" ? allUnits().filter(({ u }) => u.st === "pending").length : 0;
-      return `<button data-act="go" data-v="${k}" class="flex shrink-0 items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm transition ${S.view === k ? "bg-gold/15 font-bold text-gold-light" : "text-muted hover:text-text"}"><span>${t}</span>${badge ? `<span class="rounded-full bg-gold px-2 text-[11px] font-black text-midnight">${nf.format(badge)}</span>` : ""}</button>`;
-    }).join("");
-    root.innerHTML = `<div dir="rtl" class="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pt-8 pb-16 md:flex-row md:px-8">
-      <aside class="shrink-0 md:sticky md:top-6 md:h-fit md:w-64"><div class="${card} !p-4"><p class="text-lg font-black"><span class="gold-text">شباهنگ</span></p><p class="mt-1 text-xs text-muted">${esc(o.session.name)} · ${ROLE_FA[role]}</p>
-        <nav aria-label="پنل" class="chip-row mt-4 flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">${items}</nav>
-        <button data-act="logout" class="mt-3 w-full rounded-xl border border-white/10 px-4 py-2 text-sm text-muted transition hover:text-gold">خروج</button></div></aside>
-      <section class="min-w-0 flex-1"><p class="mb-4 rounded-xl border border-violet/40 bg-violet/10 px-4 py-2 text-xs text-[#d5cfff]">نسخه‌ی نمایشی: داده‌ها نمونه‌اند، ورود و ذخیره‌ی واقعی هنوز ساخته نشده و چیزی به جایی ارسال نمی‌شود.</p>${(VIEWS[S.view] ?? VIEWS.dash)()}</section></div>${tourHtml()}${invoiceModal()}`;
+    if (built !== (mobile ? "mob" : "desk")) build();
+    const anim = S.anim;
+    if (mobile) {
+      const bar = root.querySelector("[data-slot=bar]");
+      if (bar) bar.innerHTML = `<button data-act="menu" aria-label="منو" class="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/15">${I_MENU}${unreadMsgs() + unreadNotes() > 0 ? `<i class="absolute -end-0.5 -top-0.5 h-3 w-3 rounded-full bg-gold"></i>` : ""}</button><p class="text-lg font-black"><span class="gold-text">شباهنگ</span></p>`;
+    } else { updateNav(root.querySelector("aside nav"), !navReady); navReady = true; }
+    const main = root.querySelector<HTMLElement>("[data-slot=main]");
+    if (main) {
+      stopInv?.(); stopInv = null;
+      main.innerHTML = (VIEWS[S.view] ?? VIEWS.dash)();
+      if (S.view === "invoices" && role === "ceo" && o.mountInvoices) { const host = main.querySelector<HTMLElement>("[data-inv-root]"); if (host) stopInv = o.mountInvoices(host); }
+      main.classList.remove("pn-view");
+      if (anim) { void main.offsetWidth; main.classList.add("pn-view"); countUp(main); }
+    }
+    const da = S.drawerAnim; S.drawerAnim = false;
+    const over = root.querySelector<HTMLElement>("[data-slot=over]");
+    if (over) {
+      const hadDrawer = !!over.querySelector(".pn-drawer");
+      over.innerHTML = `${mobile && S.menu ? `<div data-act="menu" class="pn-backdrop fixed inset-0 z-[61] bg-black/45 backdrop-blur-sm ${da ? "pn-in" : ""}"></div><aside class="pn-drawer fixed inset-y-0 start-0 z-[62] w-72 max-w-[85vw] p-3 ${da ? "pn-in" : ""}"><div class="${card} flex h-full flex-col bg-[#0b0e27]/95 !p-4">${brandHtml(true)}${navShell}${footHtml}</div></aside>` : ""}${tourHtml()}${invoiceModal()}`;
+      if (mobile && S.menu) updateNav(over.querySelector(".pn-drawer nav"), true);
+      void hadDrawer;
+    }
+    S.anim = false;
     window.scrollTo(0, y);
     placeTour();
   }
 
+  /** Slide the phone menu out (and fade the backdrop) before running the next step */
+  function closeDrawer(next: () => void) {
+    const d = root.querySelector(".pn-drawer"), bd = root.querySelector(".pn-backdrop");
+    if (!d) return next();
+    d.classList.add("pn-out"); bd?.classList.add("pn-out");
+    setTimeout(next, 230);
+  }
+
   /* ---------- events ---------- */
-  const go = (v: string, id = "") => { S.view = v; S.pid = v === "projects" ? id : ""; S.editFor = ""; S.rejectFor = ""; S.payFor = ""; S.day = 0; S.star = 0; window.scrollTo(0, 0); render(); };
+  const go = (v: string, id = "") => { S.menu = false; S.anim = true; if (v === "notes") { S.fresh = myNotes().filter((n) => !n.read).map((n) => n.id); myNotes().forEach((n) => { n.read = true; }); save(); } else S.fresh = []; S.view = v; S.pid = v === "projects" ? id : ""; S.editFor = ""; S.rejectFor = ""; S.payFor = ""; S.day = 0; S.star = 0; window.scrollTo(0, 0); render(); };
   const fval = (sel: string) => (root.querySelector(sel) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() ?? "";
   const proj = (id?: string) => D.projects.find((p) => p.id === id);
   const unitById = (id?: string) => allUnits().find(({ u }) => u.id === id);
@@ -548,10 +589,11 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     if (!el || el.tagName === "INPUT" || el.tagName === "SELECT") return;
     const a = el.dataset.act, id = el.dataset.id;
     switch (a) {
-      case "go": return go(el.dataset.v ?? "dash", id);
-      case "open": S.view = "projects"; S.pid = id ?? ""; window.scrollTo(0, 0); return render();
-      case "back": S.pid = ""; return render();
+      case "go": if (mobile && S.menu && S.tour < 0) return closeDrawer(() => go(el.dataset.v ?? "dash", id)); return go(el.dataset.v ?? "dash", id);
+      case "open": S.view = "projects"; S.pid = id ?? ""; S.anim = true; window.scrollTo(0, 0); return render();
+      case "back": S.pid = ""; S.anim = true; return render();
       case "logout": return o.onLogout();
+      case "menu": if (S.menu) return closeDrawer(() => { S.menu = false; render(); }); S.menu = true; S.drawerAnim = true; return render();
       case "stage": { const p = proj(id); const i = Number(el.dataset.i); if (p) { p.stages[i].done = !p.stages[i].done; audit(`تغییر مرحله «${p.stages[i].n}»`, p.title); notify("client", `مرحله‌ی «${p.stages[i].n}» در «${p.title}» به‌روز شد.`); save(); render(); } return; }
       case "cal": { const dlt = Number(el.dataset.d); let m = S.cm + dlt, y = S.cy; if (m > 12) { m = 1; y++; } if (m < 1) { m = 12; y--; } S.cm = m; S.cy = y; S.day = 0; return render(); }
       case "day": S.day = S.day === Number(el.dataset.d) ? 0 : Number(el.dataset.d); return render();
@@ -566,6 +608,7 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
       case "star": S.star = Number(el.dataset.n); return render();
       case "rate": { const p = proj(id); if (p) { p.rating = { stars: S.star, text: fval("[data-f=rate]") }; save(); toast("ممنون از بازخورد شما."); render(); } return; }
       case "mtab": S.mtab = id ?? "staff"; S.tid = ""; return render();
+      case "dthread": S.tid = id ?? ""; { const th = D.threads.find((x) => x.id === S.tid); if (th) { th.unread[me] = 0; save(); } } return go("messages");
       case "thread": S.tid = id ?? ""; { const t = D.threads.find((x) => x.id === S.tid); if (t) { t.unread[me] = 0; save(); } } return render();
       case "send": return sendMessage(id);
       case "voice": return toast("ضبط پیام صوتی (تا ۲ دقیقه) در نسخه‌ی واقعی فعال می‌شود.");
@@ -596,11 +639,11 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
       case "accadd": { const n = D.accounts.length + 1; D.accounts.push({ id: "a" + Date.now(), label: `کارت ${nf.format(n)}`, holder: "[نام صاحب حساب]", bank: "[نام بانک]", card: "[شماره کارت]", sheba: "IR[شماره شبا]", on: true }); audit("افزودن کارت", `کارت ${n}`); save(); return render(); }
       case "accdef": D.defaultAccount = id ?? D.defaultAccount; audit("تغییر حساب پیش‌فرض مشتری", acc(D.defaultAccount).label); save(); return render();
       case "acctoggle": { const ac = D.accounts.find((x) => x.id === id); if (ac && !(ac.on && D.accounts.filter((x) => x.on).length === 1)) { ac.on = !ac.on; audit(ac.on ? "فعال‌سازی کارت" : "غیرفعال‌سازی کارت", ac.label); save(); render(); } else toast("حداقل یک کارت باید فعال بماند."); return; }
-      case "tour": S.tour = 0; window.scrollTo(0, 0); return render();
-      case "tourgo": S.tour = 0; window.scrollTo(0, 0); try { localStorage.setItem(TOUR_KEY, "1"); } catch { /* ignore */ } return render();
+      case "tour": S.tour = 0; S.menu = mobile; S.drawerAnim = mobile; window.scrollTo(0, 0); return render();
+      case "tourgo": S.tour = 0; S.menu = mobile; S.drawerAnim = mobile; window.scrollTo(0, 0); try { localStorage.setItem(TOUR_KEY, "1"); } catch { /* ignore */ } return render();
       case "tourlater": S.tour = -1; try { localStorage.setItem(TOUR_KEY, "later"); } catch { /* ignore */ } return render();
-      case "tournext": S.tour = S.tour >= TOUR.length - 1 ? -1 : S.tour + 1; window.scrollTo(0, 0); return render();
-      case "tourclose": S.tour = -1; return render();
+      case "tournext": S.tour = S.tour >= TOUR.length - 1 ? -1 : S.tour + 1; if (S.tour < 0) S.menu = false; window.scrollTo(0, 0); return render();
+      case "tourclose": S.tour = -1; S.menu = false; return render();
       case "reset": D = seed(); save(); return render();
     }
   }
@@ -638,16 +681,18 @@ export function mountPanel(root: HTMLElement, o: Opts): () => void {
     b.click();
   }
 
+  function onResize() { const m = isMobile(); if (m !== mobile) { mobile = m; S.menu = false; render(); } else placeTour(); }
   root.addEventListener("click", onClick);
   root.addEventListener("change", onChange);
   root.addEventListener("input", onInput);
   root.addEventListener("keydown", onKeydown);
-  window.addEventListener("resize", placeTour);
+  window.addEventListener("resize", onResize);
   window.addEventListener("scroll", placeTour, { passive: true });
   save();
   render();
   return () => {
+    stopInv?.();
     root.removeEventListener("click", onClick); root.removeEventListener("change", onChange); root.removeEventListener("input", onInput); root.removeEventListener("keydown", onKeydown);
-    window.removeEventListener("resize", placeTour); window.removeEventListener("scroll", placeTour); root.innerHTML = "";
+    window.removeEventListener("resize", onResize); window.removeEventListener("scroll", placeTour); root.innerHTML = "";
   };
 }
