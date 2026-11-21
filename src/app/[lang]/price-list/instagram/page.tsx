@@ -18,7 +18,8 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
   const durations = C.durations.filter((d) => d.enabled);
   const nf = new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en-US", { maximumFractionDigits: 2 });
   const fa = lang === "fa";
-  const full = (m: number) => { const n = String(Math.round(m * 1_000_000)).replace(/\B(?=(\d{3})+(?!\d))/g, fa ? "." : ","); const s = fa ? n.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]) : n; return `${s} ${fa ? "تومان" : "toman"}`; };
+  const full = (m: number) => { const n = String(Math.round(m * 1_000_000)).replace(/\B(?=(\d{3})+(?!\d))/g, fa ? "." : ","); const s = fa ? n.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]) : n; return s; };
+  const unit = fa ? "تومان" : "toman";
   const T = {
     title: fa ? "لیست پکیج‌های اینستاگرام" : "Instagram packages",
     price: fa ? "مبلغ کل دوره" : "Total for the period",
@@ -49,7 +50,7 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
             <div key={d.id} className="contents">
               <div className="pl-label">{d.label[lang]}{d.discountPercent > 0 && <small>{nf.format(d.discountPercent)}٪ {C.discountLabel[lang]}</small>}</div>
               {plans.map((p) => { const { total } = priceFor(p, d); return (
-                <div key={p.id} className="pl-price"><b>{full(total)}</b></div>
+                <div key={p.id} className="pl-price"><b>{full(total)}</b><span>{unit}</span></div>
               ); })}
             </div>
           ))}
@@ -66,9 +67,9 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
           ))}
         </section>
 
-        {setupFee > 0 && <p className="pl-setup"><b>{T.setup}: {full(setupFee)}</b><span>{T.setupNote}</span></p>}
+        {setupFee > 0 && <p className="pl-setup"><b>{T.setup}: {full(setupFee)} {unit}</b><span>{T.setupNote}</span></p>}
         <footer className="pl-foot">
-          <div className="pl-contact"><span>{T.contact}</span><b dir="ltr">{PHONE.display}</b><b dir="ltr">{EMAIL}</b></div>
+          <div className={"pl-contact" + (fa ? " pl-fa" : "")}><span>{T.contact}</span><b dir="ltr">{PHONE.display}</b><b dir="ltr">{EMAIL}</b></div>
         </footer>
       </div>
     </main>
