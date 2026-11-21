@@ -49,3 +49,9 @@ Next.js 16 (App Router، `proxy.ts` به‌جای middleware، `PageProps<"/[lan
 - فاکتور: PDF ابتدا `window.print()`؛ اگر بلاک شد، فایل PDF تصویری ساخته و دانلود می‌شود. در Artifact پیش‌نمایش Claude چاپ/دانلود بسته است.
 - لوگوها: سفید روی شفاف (SVG با ماسک یا PNG سفید با آلفا)؛ `opacity-95` در `ClientsMarquee.tsx`.
 - `git push` مستقیم اکنون کار می‌کند (remote با پروکسی)؛ قبلاً فقط MCP متنی بود.
+
+## ۸. لیست قیمت قابل‌چاپ (PDF) برای مشتری
+- صفحه‌ی `/[lang]/price-list/instagram` (A4، همان طراحی سایت، noindex) از همان داده‌ی `src/data/packages.ts` ساخته می‌شود؛ هر تغییر قیمت خودکار در آن اعمال می‌شود.
+- فایل‌های PDF: `public/price-lists/instagram-packages-{fa,en}.pdf`. بازسازی بعد از تغییر قیمت: `npm run build`، `npx next start -p 3099 &`، `node tools/make-price-pdf.js http://localhost:3099`.
+- «اعتبار قیمت‌ها» فعلاً `[جای‌گذار]` است.
+- واژه‌ی «کلینیک» از متن سایت حذف شد (سایت عمومی است).

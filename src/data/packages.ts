@@ -86,7 +86,7 @@ export const INSTAGRAM_PACKAGES: PackagesConfig = {
       features: [
         f("استراتژی و تقویم محتوایی", "Strategy & content calendar", "ماهانه + بازبینی هفتگی", "Monthly + weekly review"),
         f("سناریو و شات‌لیست", "Scripts & shot lists", "۶ ریلز", "6 reels"),
-        f("فیلمبرداری", "Filming", "۱ جلسه نیم‌روزه در کلینیک", "1 half-day session at the clinic"),
+        f("فیلمبرداری", "Filming", "۱ جلسه نیم‌روزه در محل کسب‌وکار شما", "1 half-day session at your business"),
         f("تدوین ریلز", "Reels editing", "۶ ریلز", "6 reels"),
         f("پست ثابت / کروسل", "Static / carousel posts", "۶ پست", "6 posts"),
         f("استوری", "Stories", "۲۰ استوری", "20 stories"),
@@ -103,7 +103,7 @@ export const INSTAGRAM_PACKAGES: PackagesConfig = {
       features: [
         f("استراتژی و تقویم محتوایی", "Strategy & content calendar", "ماهانه + تحلیل رقبا و ترند هفتگی", "Monthly + weekly competitor and trend analysis"),
         f("سناریو و شات‌لیست", "Scripts & shot lists", "۱۰ ریلز", "10 reels"),
-        f("فیلمبرداری", "Filming", "۲ جلسه نیم‌روزه در کلینیک", "2 half-day sessions at the clinic"),
+        f("فیلمبرداری", "Filming", "۲ جلسه نیم‌روزه در محل کسب‌وکار شما", "2 half-day sessions at your business"),
         f("تدوین ریلز", "Reels editing", "۱۰ ریلز", "10 reels"),
         f("پست ثابت / کروسل", "Static / carousel posts", "۸ پست", "8 posts"),
         f("استوری", "Stories", "۳۰ استوری (روزانه)", "30 stories (daily)"),

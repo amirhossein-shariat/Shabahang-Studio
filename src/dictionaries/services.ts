@@ -48,7 +48,7 @@ const fa: ServicesDict = {
   starters: {
     title: "پیشنهادهای آماده",
     items: [
-      { name: "راه‌اندازی کلینیک و مطب", text: "لوگو + سایت ساده با نوبت‌دهی + پکیج نقره‌ای اینستاگرام." },
+      { name: "راه‌اندازی کسب‌وکار جدید", text: "لوگو + سایت ساده + پکیج نقره‌ای اینستاگرام." },
       { name: "شرکت‌های صنعتی و تاسیساتی", text: "کاتالوگ و عکس محصول + سایت شرکتی با ۳ ماه پشتیبانی رایگان + IT نقره‌ای." },
     ],
   },
@@ -90,7 +90,7 @@ const en: ServicesDict = {
   starters: {
     title: "Ready-made offers",
     items: [
-      { name: "Clinic launch", text: "Logo + simple site with booking + Silver Instagram package." },
+      { name: "New business launch", text: "Logo + simple site + Silver Instagram package." },
       { name: "Industrial and HVAC companies", text: "Catalogue and product photos + company site with 3 months of free support + Silver IT." },
     ],
   },

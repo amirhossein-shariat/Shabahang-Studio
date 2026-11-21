@@ -25,7 +25,7 @@ export const FAQ: Record<PillarId, Faq[]> = {
   growth: [
     f("پکیج‌ها چه مدت‌هایی دارند و تخفیف چقدر است؟", "پکیج‌ها ۱، ۳ و ۶ ماهه‌اند. تخفیف سه‌ماهه ۶٪ و شش‌ماهه ۱۲٪ است و برای قرارداد یک‌ماهه هزینه‌ی راه‌اندازی ۳ میلیون تومان در مبلغ کل لحاظ می‌شود.", "What contract lengths exist and what is the discount?", "Packages run for 1, 3 or 6 months. The 3-month discount is 6% and the 6-month discount is 12%; a 1-month contract includes a 3 million toman setup fee in the total."),
     f("قیمت درشت روی کارت‌ها چیست؟", "مبلغ کل همان مدت قرارداد است (نه ماهانه)؛ معادل ماهانه زیر آن نوشته شده است.", "What is the large price on the cards?", "The total for the whole contract period (not per month); the monthly equivalent is written under it."),
-    f("فیلمبرداری در پکیج‌ها چگونه است؟", "برنزی فیلمبرداری ندارد و راهنمای فیلمبرداری با موبایل می‌گیرد؛ نقره‌ای یک جلسه‌ی نیم‌روزه و طلایی دو جلسه‌ی نیم‌روزه در کلینیک دارد.", "How is filming handled?", "Bronze has no filming (a phone filming guide is included); Silver has one half-day session and Gold two, at the clinic."),
+    f("فیلمبرداری در پکیج‌ها چگونه است؟", "برنزی فیلمبرداری ندارد و راهنمای فیلمبرداری با موبایل می‌گیرد؛ نقره‌ای یک جلسه‌ی نیم‌روزه و طلایی دو جلسه‌ی نیم‌روزه در محل کسب‌وکار شما دارد.", "How is filming handled?", "Bronze has no filming (a phone filming guide is included); Silver has one half-day session and Gold two, at your business."),
     f("پاسخ‌گویی به کامنت و دایرکت چگونه است؟", "برنزی ندارد؛ نقره‌ای در ساعات اداری (شنبه تا پنجشنبه، ۹ تا ۱۷) و طلایی هر روز هفته از ۹ تا ۲۱.", "How are comments and DMs handled?", "Bronze has none; Silver covers office hours (Sat to Thu, 9 to 17) and Gold every day, 9 to 21."),
   ],
   it: [

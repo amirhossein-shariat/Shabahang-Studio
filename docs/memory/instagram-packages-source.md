@@ -19,7 +19,7 @@ Kept verbatim. `src/data/packages.ts` is built from this; English wording there 
 ## بسته نقره‌ای — ۲۰ میلیون تومان / ماهانه
 - استراتژی و تقویم محتوایی: ماهانه + بازبینی هفتگی
 - سناریو و شات‌لیست: ۶ ریلز
-- فیلمبرداری: ۱ جلسه نیم‌روزه در کلینیک
+- فیلمبرداری: ۱ جلسه نیم‌روزه در محل کسب‌وکار شما (واژه‌ی «کلینیک» برای عمومی بودن سایت حذف شد)
 - تدوین ریلز: ۶ ریلز
 - پست ثابت / کروسل: ۶ پست
 - استوری: ۲۰ استوری
@@ -33,7 +33,7 @@ Kept verbatim. `src/data/packages.ts` is built from this; English wording there 
 ## بسته طلایی — ۳۵ میلیون تومان / ماهانه
 - استراتژی و تقویم محتوایی: ماهانه + تحلیل رقبا و ترند هفتگی
 - سناریو و شات‌لیست: ۱۰ ریلز
-- فیلمبرداری: ۲ جلسه نیم‌روزه در کلینیک
+- فیلمبرداری: ۲ جلسه نیم‌روزه در محل کسب‌وکار شما (واژه‌ی «کلینیک» برای عمومی بودن سایت حذف شد)
 - تدوین ریلز: ۱۰ ریلز
 - پست ثابت / کروسل: ۸ پست
 - استوری: ۳۰ استوری (روزانه)
@@ -56,5 +56,5 @@ memory and build it later. See `admin-panel.md`.
 
 ## Notes added by Claude
 - The "پیشنهادی" (recommended) badge on the silver card is Claude's addition, not the owner's. Edit or remove it freely.
-- The packages mention "کلینیک": they were written for a clinic client. Reword if the section should address all businesses.
+- "کلینیک" was removed from the site copy (2026-11-21): the site is public, so filming is "at your business location". The line above is the original owner text.
 - This replaces the earlier Bronze/Silver/Gold table (brief section 5) and its 10 % / 20 % discounts.
