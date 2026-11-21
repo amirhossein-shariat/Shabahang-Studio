@@ -59,7 +59,7 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
             <div key={i} className="contents">
               <div className="pl-label">{f.label[lang]}</div>
               {plans.map((p) => { const x = p.features[i]; return (
-                <div key={p.id} className={"pl-cell" + (x.off ? " off" : "")}><i aria-hidden="true">{x.off ? "—" : "✓"}</i><span>{x.value[lang]}</span></div>
+                <div key={p.id} className={"pl-cell" + (x.off ? " off" : "")}><i aria-hidden="true">{x.off ? "—" : "✓"}</i> <span>{x.value[lang]}</span></div>
               ); })}
             </div>
           ))}
