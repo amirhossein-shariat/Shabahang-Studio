@@ -2,16 +2,16 @@ import type { Dict } from "./index";
 
 const en: Dict = {
   meta: {
-    title: "Shabahang Studio | Design, Motion & IT",
-    description: "A full studio for design, digital and IT, for brands that never sleep.",
+    title: "Shabahang Studio | Design, Motion & Digital",
+    description: "A full studio for design and digital, for brands that never sleep.",
   },
   nav: { work: "Work", services: "Services", studio: "Studio", contact: "Contact", talk: "Get in touch", login: "Sign in", panel: "My panel" },
   hero: {
-    eyebrow: "Design · Digital · IT",
+    eyebrow: "Design · Digital",
     title: "Shabahang",
     sub: "STUDIO",
     tagline: "While everyone sleeps, we stay awake.",
-    desc: "Design, motion and IT, crafted for brands that never sleep.",
+    desc: "Design, motion and digital, crafted for brands that never sleep.",
     cta1: "Start a project",
     cta2: "View our work",
     scroll: "Scroll",

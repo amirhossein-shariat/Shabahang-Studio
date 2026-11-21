@@ -70,7 +70,7 @@ export const PILLARS: Pillar[] = [
     ],
   },
   {
-    id: "it", enabled: true, icon: "server",
+    id: "it", enabled: false, icon: "server",
     name: { fa: "پشتیبانی IT و شبکه", en: "IT Support & Networks" },
     line: { fa: "سیستم‌هات همیشه سالم و روشن بمونن", en: "Keep your systems healthy and on." },
     summary: { fa: "پشتیبانی کاربران، مانیتورینگ، بکاپ و VoIP با قرارداد ماهانه.", en: "User support, monitoring, backups and VoIP on a monthly contract." },
@@ -86,7 +86,7 @@ export const PILLARS: Pillar[] = [
     ],
   },
   {
-    id: "product", enabled: true, icon: "box",
+    id: "product", enabled: false, icon: "box",
     name: { fa: "طراحی محصول", en: "Product Design" },
     line: { fa: "ایده‌ات رو محصول کن", en: "Turn your idea into a product." },
     summary: { fa: "طراحی صنعتی، مدل‌سازی و رندر، نمونه‌سازی و پرینت سه‌بعدی.", en: "Industrial design, modelling and rendering, prototyping and 3D printing." },

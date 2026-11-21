@@ -102,7 +102,7 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
           );
         })}
       </ul>
-      <p className="mt-6 max-w-3xl text-xs leading-6 text-muted">{C.footnote[lang]}</p>
+      {C.footnote[lang] && <p className="mt-6 max-w-3xl text-xs leading-6 text-muted">{C.footnote[lang]}</p>}
     </div>
   );
 }

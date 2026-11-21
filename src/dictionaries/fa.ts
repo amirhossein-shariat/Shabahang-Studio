@@ -2,16 +2,16 @@ import type { Dict } from "./index";
 
 const fa: Dict = {
   meta: {
-    title: "شباهنگ استودیو | طراحی، موشن و IT",
-    description: "استودیوی کامل طراحی، دیجیتال و IT برای برندهایی که هیچ‌وقت نمی‌خوابند.",
+    title: "شباهنگ استودیو | طراحی، موشن و دیجیتال",
+    description: "استودیوی کامل طراحی و دیجیتال برای برندهایی که هیچ‌وقت نمی‌خوابند.",
   },
   nav: { work: "نمونه‌کارها", services: "خدمات", studio: "درباره‌ی ما", contact: "تماس", talk: "درخواست مشاوره", login: "ورود", panel: "پنل کاربری" },
   hero: {
-    eyebrow: "طراحی · دیجیتال · IT",
+    eyebrow: "طراحی · دیجیتال",
     title: "شباهنگ",
     sub: "STUDIO",
     tagline: "وقتی همه خوابن، ما بیداریم",
-    desc: "Design, motion and IT, crafted for brands that never sleep.",
+    desc: "Design, motion and digital, crafted for brands that never sleep.",
     cta1: "شروع پروژه",
     cta2: "دیدن نمونه‌کارها",
     scroll: "اسکرول کنید",

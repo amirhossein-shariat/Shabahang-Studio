@@ -23,11 +23,11 @@ export type ContactDict = {
 };
 
 const aboutFa: AboutDict = {
-  meta: { title: "درباره‌ی ما | شباهنگ استودیو", description: "شباهنگ استودیو، استودیوی طراحی، دیجیتال و IT برای برندهایی که هیچ‌وقت نمی‌خوابند." },
+  meta: { title: "درباره‌ی ما | شباهنگ استودیو", description: "شباهنگ استودیو، استودیوی طراحی و دیجیتال برای برندهایی که هیچ‌وقت نمی‌خوابند." },
   kicker: "درباره‌ی ما",
   title: "استودیویی که شب هم بیدار است",
-  intro: "شباهنگ استودیو طراحی، دیجیتال و IT را زیر یک سقف جمع کرده است تا شرکت‌ها و کسب‌وکارها برای هویت، سایت، محتوا و زیرساخت‌شان با یک تیم کار کنند.",
-  name: { title: "معنی نام", text: "شباهنگ یعنی ستاره‌ی سحری، ستاره‌ی صبح، و کسی که شب بیدار است. برای ما یعنی بیدار، هوشیار و همیشه در دسترس؛ همان حسی که از پشتیبانی و IT انتظار دارید." },
+  intro: "شباهنگ استودیو طراحی و دیجیتال را زیر یک سقف جمع کرده است تا شرکت‌ها و کسب‌وکارها برای هویت، سایت و محتوای‌شان با یک تیم کار کنند.",
+  name: { title: "معنی نام", text: "شباهنگ یعنی ستاره‌ی سحری، ستاره‌ی صبح، و کسی که شب بیدار است. برای ما یعنی بیدار، هوشیار و همیشه در دسترس؛ همان حسی که از یک همراه خوب انتظار دارید." },
   concept: { title: "حال‌وهوای برند", text: "لحظه‌ی بین شب و سپیده؛ نوری که تاریکی را می‌شکافد. به همین دلیل سایت و هویت ما تیره و لوکس است، با طلایی ستاره‌ی صبح." },
   steps: {
     title: "ترتیب کار",
@@ -43,7 +43,7 @@ const aboutFa: AboutDict = {
     items: [
       { name: "مرز کار مشخص است", text: "رفع باگ همیشه رایگان است. امکان یا صفحه‌ی جدید جدا قیمت می‌خورد و این در قرارداد نوشته می‌شود." },
       { name: "قیمت پیش از شروع", text: "قیمت پروژه و پکیج‌ها پس از جلسه‌ی اول و بر اساس نیاز شما اعلام می‌شود." },
-      { name: "یک تیم برای همه‌چیز", text: "طراح، توسعه‌دهنده و پشتیبان IT در یک استودیو کار می‌کنند و لازم نیست چند پیمانکار را هماهنگ کنید." },
+      { name: "یک تیم برای همه‌چیز", text: "طراح و توسعه‌دهنده در یک استودیو کار می‌کنند و لازم نیست چند پیمانکار را هماهنگ کنید." },
     ],
   },
   team: { title: "تیم", placeholder: "[معرفی تیم — در انتظار محتوا]" },
@@ -51,11 +51,11 @@ const aboutFa: AboutDict = {
 };
 
 const aboutEn: AboutDict = {
-  meta: { title: "About | Shabahang Studio", description: "Shabahang Studio is a design, digital and IT studio for brands that never sleep." },
+  meta: { title: "About | Shabahang Studio", description: "Shabahang Studio is a design and digital studio for brands that never sleep." },
   kicker: "About",
   title: "A studio that stays awake too",
-  intro: "Shabahang Studio brings design, digital and IT under one roof, so companies and businesses can work with a single team on identity, web, content and infrastructure.",
-  name: { title: "What the name means", text: "Shabahang is the morning star, and the one who stays up through the night. For us it means awake, alert and always reachable, the feeling you expect from support and IT." },
+  intro: "Shabahang Studio brings design and digital under one roof, so companies and businesses can work with a single team on identity, web and content.",
+  name: { title: "What the name means", text: "Shabahang is the morning star, and the one who stays up through the night. For us it means awake, alert and always reachable, the feeling you expect from a good partner." },
   concept: { title: "The feel of the brand", text: "The moment between night and dawn, light breaking through the dark. That is why our site and identity are dark and luxurious, with the gold of the morning star." },
   steps: {
     title: "How we work",
@@ -71,7 +71,7 @@ const aboutEn: AboutDict = {
     items: [
       { name: "A clear boundary", text: "Bug fixes are always free. A new feature or page is priced separately, and the contract says so." },
       { name: "Price before we start", text: "Project and package prices are shared after the first call, based on your need." },
-      { name: "One team for everything", text: "Designers, developers and IT support work in one studio, so you do not coordinate several contractors." },
+      { name: "One team for everything", text: "Designers and developers work in one studio, so you do not coordinate several contractors." },
     ],
   },
   team: { title: "Team", placeholder: "[Team introduction — awaiting content]" },
@@ -89,7 +89,7 @@ const contactFa: ContactDict = {
   },
   form: {
     title: "درخواست پروژه", name: "نام و نام شرکت", reach: "راه تماس", reachHint: "شماره یا ایمیل", service: "موضوع", message: "توضیح کوتاه پروژه", submit: "آماده‌سازی ایمیل",
-    services: ["برندینگ و هویت بصری", "طراحی سایت و اپلیکیشن", "شبکه‌های اجتماعی و محتوا", "پشتیبانی IT و شبکه", "طراحی محصول", "هنوز مطمئن نیستم"],
+    services: ["برندینگ و هویت بصری", "طراحی سایت و اپلیکیشن", "شبکه‌های اجتماعی و محتوا", "هنوز مطمئن نیستم"],
     opened: "برنامه‌ی ایمیل شما باز شد. پیام را ارسال کنید تا به دست ما برسد.",
     fallback: "اگر چیزی باز نشد، همین متن را به این نشانی ایمیل کنید:", required: "نام و راه تماس را وارد کنید.",
     subject: "درخواست پروژه", bodyName: "نام", bodyReach: "راه تماس", bodyService: "موضوع",
@@ -107,7 +107,7 @@ const contactEn: ContactDict = {
   },
   form: {
     title: "Project request", name: "Your name and company", reach: "How to reach you", reachHint: "Phone or email", service: "Topic", message: "A short description", submit: "Prepare email",
-    services: ["Branding & Visual Identity", "Web & App Development", "Social Media & Content", "IT Support & Networks", "Product Design", "Not sure yet"],
+    services: ["Branding & Visual Identity", "Web & App Development", "Social Media & Content", "Not sure yet"],
     opened: "Your mail app opened. Send the message to get it to us.",
     fallback: "If nothing opened, email this text to:", required: "Enter your name and how to reach you.",
     subject: "Project request", bodyName: "Name", bodyReach: "Contact", bodyService: "Topic",

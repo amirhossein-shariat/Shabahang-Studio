@@ -15,7 +15,7 @@ export type ServicesDict = {
 };
 
 const fa: ServicesDict = {
-  meta: { title: "خدمات و پکیج‌ها | شباهنگ استودیو", description: "پنج ستون خدمات شباهنگ استودیو و پکیج‌های ماهانه‌ی اینستاگرام و IT." },
+  meta: { title: "خدمات و پکیج‌ها | شباهنگ استودیو", description: "سه ستون خدمات شباهنگ استودیو و پکیج‌های ماهانه‌ی اینستاگرام." },
   hero: { kicker: "خدمات و پکیج‌ها", title: "هر چیزی که برندت برای بیدار ماندن لازم دارد", desc: "کارهای پروژه‌ای یک‌بار قیمت می‌خورند و خدمات مستمر به‌صورت پکیج ماهانه ارائه می‌شوند. قیمت‌ها پس از جلسه‌ی اول و بر اساس نیاز شما اعلام می‌شود." },
   price: "[قیمت]",
   it: {
@@ -49,7 +49,7 @@ const fa: ServicesDict = {
     title: "پیشنهادهای آماده",
     items: [
       { name: "راه‌اندازی کسب‌وکار جدید", text: "لوگو + سایت ساده + پکیج نقره‌ای اینستاگرام." },
-      { name: "شرکت‌های صنعتی و تاسیساتی", text: "کاتالوگ و عکس محصول + سایت شرکتی با ۳ ماه پشتیبانی رایگان + IT نقره‌ای." },
+      { name: "شرکت‌های صنعتی و تاسیساتی", text: "کاتالوگ و عکس محصول + سایت شرکتی با ۳ ماه پشتیبانی رایگان." },
     ],
   },
   cta: { title: "نمی‌دانی کدام پکیج به کارت می‌آید؟", button: "گفتگو با ما" },
@@ -57,7 +57,7 @@ const fa: ServicesDict = {
 };
 
 const en: ServicesDict = {
-  meta: { title: "Services & Packages | Shabahang Studio", description: "Shabahang Studio's five service pillars, with monthly Instagram and IT packages." },
+  meta: { title: "Services & Packages | Shabahang Studio", description: "Shabahang Studio's three service pillars, with monthly Instagram packages." },
   hero: { kicker: "Services & Packages", title: "Everything a brand needs to stay awake", desc: "Projects are priced once; ongoing work runs as monthly packages. Prices are shared after a first call, based on what you need." },
   price: "[price]",
   it: {
@@ -91,7 +91,7 @@ const en: ServicesDict = {
     title: "Ready-made offers",
     items: [
       { name: "New business launch", text: "Logo + simple site + Silver Instagram package." },
-      { name: "Industrial and HVAC companies", text: "Catalogue and product photos + company site with 3 months of free support + Silver IT." },
+      { name: "Industrial and HVAC companies", text: "Catalogue and product photos + company site with 3 months of free support." },
     ],
   },
   cta: { title: "Not sure which package fits?", button: "Talk to us" },
