@@ -10,7 +10,7 @@ for lang in ('fa', 'en'):
     pages[lang] = f'{APP}/{lang}.html'
     for sub in ('services', 'about', 'contact', 'login', 'panel'):
         pages[f'{lang}-{sub}'] = f'{APP}/{lang}/{sub}.html'
-    for sv in ('brand', 'web', 'growth', 'it', 'product'):
+    for sv in ('brand', 'web', 'growth'):
         pages[f'{lang}-services-{sv}'] = f'{APP}/{lang}/services/{sv}.html'
 
 css_href = re.search(r'<link rel="stylesheet" href="([^"]+\.css)"', open(pages['fa']).read()).group(1)
