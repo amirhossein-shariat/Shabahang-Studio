@@ -77,7 +77,7 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
               </p>
               <p className="mt-2 text-sm text-muted">
                 {C.monthlyLabel[lang]}: <span key={`${p.id}-${d.id}-m`} className="price-pop font-bold text-gold-light">{nf.format(monthly)} {C.currency[lang]}</span>
-                {d.setupFee > 0 && <span className="block text-xs">{C.setupIncluded[lang]} ({nf.format(d.setupFee)} {C.currency[lang]})</span>}
+                <span className="block text-xs">{d.setupFee > 0 ? `${C.setupIncluded[lang]} (${nf.format(d.setupFee)} ${C.currency[lang]})` : `${C.terms.setup[lang]}: ${lang === "fa" ? "رایگان" : "free"}`}</span>
               </p>
 
               <ul className="mt-6 flex-1 divide-y divide-white/5 text-sm">
@@ -102,7 +102,26 @@ export default function InstagramPackages({ lang }: { lang: "fa" | "en" }) {
           );
         })}
       </ul>
-      {C.footnote[lang] && <p className="mt-6 max-w-3xl text-xs leading-6 text-muted">{C.footnote[lang]}</p>}
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <h4 className="font-black">{C.terms.paymentTitle[lang]}</h4>
+          <ul className="mt-3 space-y-2 text-sm">
+            {C.terms.payment.map((x, i) => (<li key={i}><span className="font-bold text-gold-light">{x.when[lang]}:</span> <span className="text-muted">{x.text[lang]}</span></li>))}
+          </ul>
+        </div>
+        <div className="rounded-2xl border border-gold/30 bg-white/[0.03] p-5">
+          <h4 className="font-black text-gold-light">{C.terms.setup[lang]}: {nf.format(C.terms.setupAmount)} {C.currency[lang]}</h4>
+          <p className="mt-2 text-sm text-muted">{C.terms.setupFree[lang]}</p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm leading-7 text-muted md:col-span-2">
+          <p>{C.terms.setupTime[lang]}</p>
+          <p className="mt-2">{C.terms.setupIncludes[lang]}</p>
+        </div>
+      </div>
+      <ul className="mt-6 max-w-4xl list-disc space-y-1 ps-5 text-xs leading-6 text-muted marker:text-gold">
+        {C.terms.notes.map((n, i) => (<li key={i}>{n[lang]}</li>))}
+        <li>{C.terms.validity[lang]}</li>
+      </ul>
     </div>
   );
 }

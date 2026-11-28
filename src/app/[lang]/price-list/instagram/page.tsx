@@ -18,17 +18,17 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
   const durations = C.durations.filter((d) => d.enabled);
   const nf = new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en-US", { maximumFractionDigits: 2 });
   const fa = lang === "fa";
-  const full = (m: number) => { const n = String(Math.round(m * 1_000_000)).replace(/\B(?=(\d{3})+(?!\d))/g, fa ? "." : ","); const s = fa ? n.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]) : n; return s; };
+  const full = (m: number) => { const n = String(Math.round(m * 1_000_000)).replace(/\B(?=(\d{3})+(?!\d))/g, fa ? "٬" : ","); const s = fa ? n.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]) : n; return s; };
   const unit = fa ? "تومان" : "toman";
   const T = {
     title: fa ? "لیست پکیج‌های اینستاگرام" : "Instagram packages",
     price: fa ? "مبلغ کل دوره" : "Total for the period",
     print: fa ? "ذخیره به‌صورت PDF" : "Save as PDF",
     contact: fa ? "برای مشاوره و ثبت سفارش" : "For advice and orders",
-    setup: fa ? "هزینه‌ی راه‌اندازی" : "Setup fee",
-    setupNote: fa ? "فقط یک‌بار و در صورت نیاز دریافت می‌شود." : "Charged once only, and only if needed.",
+    setupTime: fa ? "زمان راه‌اندازی" : "Setup time",
+    includes: fa ? "شامل" : "Includes",
   };
-  const setupFee = Math.max(0, ...durations.map((d) => d.setupFee));
+  const K = C.terms;
   const col = `${plans.length}`;
   return (
     <main className="pl-root">
@@ -56,6 +56,7 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
           ))}
         </section>
 
+        <div className="pl-pay">{K.payment.map((x, i) => (<p key={i}><b>{x.when[lang]}:</b> {x.text[lang]}</p>))}</div>
         <section className="pl-grid pl-feats">
           {plans[0].features.map((f, i) => (
             <div key={i} className="contents">
@@ -67,9 +68,14 @@ export default async function PriceListPage({ params }: PageProps<"/[lang]/price
           ))}
         </section>
 
-        {setupFee > 0 && <p className="pl-setup"><b>{T.setup}: {full(setupFee)} {unit}</b><span>{T.setupNote}</span></p>}
+        <div className="pl-setupbox">
+          <p><b>{K.setup[lang]}: {full(K.setupAmount)} {unit}</b> — {K.setupFree[lang]}</p>
+          <p><b>{T.setupTime}:</b> {K.setupTime[lang]}</p>
+          <p><b>{T.includes}:</b> {K.setupIncludes[lang]}</p>
+        </div>
         <footer className="pl-foot">
           <div className={"pl-contact" + (fa ? " pl-fa" : "")}><span>{T.contact}</span><b dir="ltr">{PHONE.display}</b><b dir="ltr">{EMAIL}</b></div>
+          <p className="pl-notes">{K.notes.map((n) => n[lang]).join(" · ")} · {K.validity[lang]}</p>
         </footer>
       </div>
     </main>

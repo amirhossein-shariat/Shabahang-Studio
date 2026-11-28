@@ -168,12 +168,12 @@ initProgress(document.querySelector('.scroll-progress'));
     }});
     grp.parentNode.parentNode.querySelectorAll(':scope > ul > li').forEach(function(li,i){{
       var p=ps[i];if(!p)return;
-      var monthly=r2(p.basePrice*(1-d.discountPercent/100)),total=r2(p.basePrice*(1-d.discountPercent/100)*d.months+d.setupFee);
+      var monthly=r2(p.basePrice*(1-d.discountPercent/100)),total=Math.round(p.basePrice*(1-d.discountPercent/100)*d.months*10)/10;
       var pm=li.querySelector('.text-4xl'),pt=li.querySelector('p.mt-2 .font-bold'),un=li.querySelector('p.mt-6 .text-sm');
       pm.textContent=nf.format(total);pt.textContent=nf.format(monthly)+' '+PKG.currency[lang];un.textContent=PKG.currency[lang]+' / '+d.label[lang];
       [pm,pt].forEach(function(el){{el.classList.remove('price-pop');void el.offsetWidth;el.classList.add('price-pop')}});
       var su=li.querySelector('p.mt-2 span.block');
-      if(su){{su.hidden=!(d.setupFee>0);su.textContent=PKG.setupIncluded[lang]+' ('+nf.format(d.setupFee)+' '+PKG.currency[lang]+')'}}
+      if(su){{su.hidden=false;su.textContent=d.setupFee>0?PKG.setupIncluded[lang]+' ('+nf.format(d.setupFee)+' '+PKG.currency[lang]+')':PKG.terms.setup[lang]+': '+(lang==='fa'?'رایگان':'free')}}
     }});
   }});
   createStarfield(document.getElementById('sky-canvas'),{{reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}});

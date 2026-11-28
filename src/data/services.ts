@@ -65,7 +65,7 @@ export const PILLARS: Pillar[] = [
       s("film", "ریلز: سناریو، فیلمبرداری و تدوین", "Reels: script, filming, editing", "از شات‌لیست تا ریلز آماده‌ی انتشار.", "From shot list to a reel ready to post."),
       s("image", "پست، کروسل و استوری", "Posts, carousels & stories", "طراحی پست ثابت، کروسل، استوری و استوری موشن.", "Static posts, carousels, stories and motion stories."),
       s("text", "کپشن، هشتگ و هایلایت", "Captions, hashtags & highlights", "متن همه‌ی محتوا و طراحی هایلایت و کاور.", "Copy for all content, plus highlight and cover design."),
-      s("headset", "کامنت و دایرکت", "Comments & DMs", "پاسخ‌گویی در ساعت‌های مشخص، بسته به پکیج.", "Replies during set hours, depending on the plan."),
+      s("headset", "پاسخ‌های آماده", "Ready replies", "پاسخ‌های آماده برای سؤالات پرتکرار، در پکیج‌های نقره‌ای و طلایی.", "Ready replies for frequent questions, in Silver and Gold."),
       s("activity", "گزارش و مشاوره", "Reports & advice", "گزارش دوره‌ای و جلسه‌ی مشاوره با مدیر اکانت.", "Periodic reports and advice sessions."),
     ],
   },
