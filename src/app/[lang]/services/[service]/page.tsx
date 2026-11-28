@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "@/dictionaries";
 import { getServicesDict } from "@/dictionaries/services";
 import { PILLARS, SERVICES_UI, type PillarId } from "@/data/services";
-import { FAQ } from "@/data/faq";
+import { FAQ, FAQ_UI } from "@/data/faq";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Sections";
 import ServiceIcon from "@/components/ServiceIcon";
 import InstagramPackages from "@/components/InstagramPackages";
 import FaqCarousel from "@/components/FaqCarousel";
+import FaqAccordion from "@/components/FaqAccordion";
 import ItServices, { ItCta } from "@/components/ItServices";
 
 const LANGS = ["fa", "en"] as const;
@@ -62,6 +63,16 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/service
     growth: (
       <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.02] p-5 sm:p-8">
         <InstagramPackages lang={lang} />
+        <FaqAccordion items={FAQ.growth} lang={lang} title={FAQ_UI.title[lang]} id="ig-faq" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            inLanguage: lang,
+            mainEntity: FAQ.growth.map((x) => ({ "@type": "Question", name: x.q[lang] ?? x.q.fa, acceptedAnswer: { "@type": "Answer", text: x.a[lang] ?? x.a.fa } })),
+          }).replace(/</g, "\\u003c") }}
+        />
       </div>
     ),
     it: null,
@@ -102,7 +113,7 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/service
           </section>
         )}
 
-        <FaqCarousel items={FAQ[id]} lang={lang} />
+        {id !== "growth" && <FaqCarousel items={FAQ[id]} lang={lang} />}
 
         {id === "it" ? <ItCta lang={lang} /> : (
           <section className="mx-auto max-w-3xl px-5 py-16 text-center">

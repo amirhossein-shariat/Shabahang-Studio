@@ -81,6 +81,13 @@ function enhClick(e: Event) {
       return;
     }
   }
+  const acc = t.closest<HTMLElement>("[data-acc-btn]");
+  if (acc) { // FAQ accordion: button toggles aria-expanded and shows/hides its answer panel
+    const open = acc.getAttribute("aria-expanded") !== "true";
+    acc.setAttribute("aria-expanded", String(open));
+    document.getElementById(acc.getAttribute("aria-controls") ?? "")?.toggleAttribute("hidden", !open);
+    return;
+  }
   if (t.closest("[data-sel-clear]")) { document.querySelectorAll<HTMLInputElement>("[data-sel]").forEach((i) => { i.checked = false; }); return enhSelBar(); }
   const a = t.closest<HTMLElement>("[data-prefill], [data-prefill-sel]");
   if (a) { try { sessionStorage.setItem(PREFILL_KEY, a.hasAttribute("data-prefill-sel") ? enhSelectedPayload() : (a.getAttribute("data-prefill") ?? "")); } catch { /* ignore */ } }
